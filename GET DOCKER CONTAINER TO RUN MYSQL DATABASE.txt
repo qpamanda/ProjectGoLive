@@ -1,0 +1,14 @@
+Start cmd prompt and run the following commands one by one. The port to run the database is defaulted as 55005.
+•	docker run --name Grp2-mysql -p 55005:3306 -e MYSQL_ROOT_PASSWORD=password -d  mysql:latest
+•	docker ps
+•	docker port Grp2-mysql
+•	mysql -P 55005 --protocol=tcp -u root –p 
+•	Set PATH=%PATH%;"C:\Program Files\MySQL\MySQL Server 8.0\bin\" (run this if the previous statement has 'mysql' is not recognized … issue)
+•	mysql -P 55005 --protocol=tcp -u root –p (re-run this statement)
+
+•	Enter password as “password” when prompted
+•	At the SQL prompt, perform the following SQL statements to:
+o	Create Database
+		CREATE DATABASE dbProject;
+o	Use Database
+		USE dbProject;
