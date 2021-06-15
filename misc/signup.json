@@ -1,0 +1,31 @@
+{
+    "Username": "leewm",
+    "HashedPassword": "1r21r0ub12r1jbro1brs",
+    "Name": {
+        "first": "Wei-Meng",
+        "last": "Lee"
+    },
+    "DOB": "09/12/1978",
+    "NRIC": "S1234567A",
+    "Contact": {
+        "Email": "weimenglee@learn2develop.net",
+        "Mobile": 1234567
+    },
+    "MemberType": [
+        "helper",
+        "representative",
+        "aidrecipient"
+    ],
+    "RelatedOrganizations": "orgname",
+    "OrganizationDetails": [
+        {
+            "Name": "Helper Org.",
+            "RegNo": "A02241313",
+            "Founded": "01/01/1991",
+            "Contact": {
+                "Email": "contact@helper.org",
+                "Mobile": 1234568
+            }
+        }
+    ]
+}
