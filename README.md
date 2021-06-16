@@ -17,7 +17,9 @@ The following is the discussion and jobs delegations for our group thus far:
 APPLICATION FEATURES
 
 1)  ACCOUNT REGISTRATION FEATURE (FOR REPRESENTATIVES/HELPERS) - AMANDA
+
     Fields Required:
+    
     RepresentativeID (Primary key , unique identifier for the account)
     Email 
     Password
@@ -30,6 +32,7 @@ APPLICATION FEATURES
     ..
     ..
     ..
+    
     CRUD representative (To allow user manage their group. Kind of like adding a person into the Group in the trace together for family safe entry thingy)
     representative Fields:
     representative id (Primary key)
@@ -40,6 +43,7 @@ APPLICATION FEATURES
 
 
 2) RECIPIENT FEATURE (INDIVIDUAL/ORGANISATION NEED HELP) - YANPING
+
     Recipent is the person or organisation needing help
     
     Recipient to tie to a Representative
@@ -52,7 +56,9 @@ APPLICATION FEATURES
 
 
 3) REQUEST FEATURE (THE REQUESTED NEEDED BY THE RECIPIENT) - JUN JIE
-    CRUD Request (Eg Add request . I need xxxx, update request status ) - 
+
+    CRUD Request (Eg Add request . I need xxxx, update request status ) 
+    
       Fields Required:
         RequestID (Primary key , unique identifier for the request)
         RepresentativeID - Hosted by
@@ -71,6 +77,7 @@ APPLICATION FEATURES
 
 
 5) ADMIN MODULE (FOR SYSTEM SETUP) - AHMAD
+
     CategoryID/CategoryName: 1 Donation (Monetary), 2 Donation (Physical Items), 3 Errands
 
     MemberTypeID/MemberType: Requestor, Helper
@@ -80,6 +87,7 @@ APPLICATION FEATURES
 
 
 FEATURES - COMPLETED
+
 6) Connection to server via https
 7) Connection to database
 8) Login/Logout
@@ -89,10 +97,12 @@ FEATURES - COMPLETED
 
 
 FEATURES - ON HOLD      
+
 7) Chat system ? (To facilitate the helpers and requestors) 
 
 
 ADHOC    
+
 - For every tables created we will include following fields for tracking purpose.
   CreatedBy
   Created_DT
