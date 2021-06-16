@@ -55,7 +55,7 @@ APPLICATION FEATURES
       ...
 
 
-3) REQUEST FEATURE (THE REQUESTED NEEDED BY THE RECIPIENT) - JUN JIE
+3) REQUEST FEATURE (THE REQUESTS NEEDED BY THE RECIPIENT) - JUN JIE
 
     CRUD Request (Eg Add request . I need xxxx, update request status ) 
     
@@ -104,10 +104,10 @@ FEATURES - ON HOLD
 ADHOC    
 
 - For every tables created we will include following fields for tracking purpose.
-  CreatedBy
-  Created_DT
-  ModifiedBy
-  Modified_DT   
+    - CreatedBy
+    - Created_DT
+    - ModifiedBy
+    - Modified_DT   
     
     
     
