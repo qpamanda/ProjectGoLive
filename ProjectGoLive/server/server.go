@@ -117,6 +117,7 @@ func initaliseHandlers(router *mux.Router) {
 	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
+	router.HandleFunc("/request", request)
 	//router.HandleFunc("/addcourse", addcourse)
 	//router.HandleFunc("/updcourse", updcourse)
 	//router.HandleFunc("/delcourse", delcourse)

@@ -115,6 +115,10 @@ func signup(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "signup.gohtml", data)
 }
 
+func request(res http.ResponseWriter, req *http.Request) {
+	tpl.ExecuteTemplate(res, "request.gohtml", nil)
+}
+
 /*
 // edituser is a handler func to edit user account information.
 // Redirects to index page if user has not login.
