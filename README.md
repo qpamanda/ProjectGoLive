@@ -26,7 +26,7 @@ APPLICATION FEATURES
     FirstName
     LastName
     PhoneNo
-    Oranisation (optional)
+    Organisation (optional)
     
     MemberType: Requestor, Helper?
     ..
@@ -105,9 +105,9 @@ ADHOC
 
 - For every tables created we will include following fields for tracking purpose.
     - CreatedBy
-    - Created_DT
-    - ModifiedBy
-    - Modified_DT   
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt   
     
     
     
