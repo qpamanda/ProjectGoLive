@@ -40,7 +40,26 @@ CREATE TABLE `RepMemberType` (
   `LastModifiedBy` varchar(25) DEFAULT NULL,
   `LastModified_dt` datetime DEFAULT NULL,
   PRIMARY KEY (`RepID`,`MemberTypeID`)
-); 
+);
+
+CREATE TABLE `Recipients` (
+  `RecipientID` INT NOT NULL AUTO_INCREMENT,
+  `RepID_FK` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Category` TINYINT NOT NULL,
+  `Profile` MEDIUMTEXT NOT NULL,
+  `ContactNo` VARCHAR(20) NOT NULL,
+  `CreatedDT` DATETIME NOT NULL,
+  `LastModifiedDT` DATETIME NOT NULL,
+  PRIMARY KEY (`RecipientID`),
+  UNIQUE INDEX `RecipientID_UNIQUE` (`RecipientID` ASC) VISIBLE,
+  INDEX `RepID_idx` (`RepID_FK` ASC) VISIBLE,
+  CONSTRAINT `RepID`
+    FOREIGN KEY (`RepID_FK`)
+    REFERENCES `dbProject`.`representatives` (`RepID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    );
 
 
 -----------
