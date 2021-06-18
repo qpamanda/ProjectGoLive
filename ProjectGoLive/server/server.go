@@ -58,6 +58,39 @@ type user struct {
 	LastLoginDT    time.Time
 }
 
+// req struct for storing request information
+type req struct {
+	RequestId        int
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
+}
+
 // InitServer initialises the templates for displaying the web pages at the server
 func InitServer() {
 	// Parse templates
@@ -117,7 +150,7 @@ func initaliseHandlers(router *mux.Router) {
 	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
-	router.HandleFunc("/request", request)
+	router.HandleFunc("/addrequest", addrequest)
 	//router.HandleFunc("/addcourse", addcourse)
 	//router.HandleFunc("/updcourse", updcourse)
 	//router.HandleFunc("/delcourse", delcourse)
