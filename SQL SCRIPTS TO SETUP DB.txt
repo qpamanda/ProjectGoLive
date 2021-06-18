@@ -1,9 +1,51 @@
+---------------------
 -- Create Database --
+---------------------
 CREATE DATABASE dbProject;
 
 
+-------------------
 -- Use Database --
+-------------------
 USE dbProject;
 
 
--- Create Tables - 
+-------------------
+-- Create Tables --
+-------------------
+CREATE TABLE `Representatives` (
+  `RepID` int NOT NULL,
+  `UserName` varchar(25) NOT NULL,
+  `Password` varchar(25) NOT NULL,
+  `FirstName` varchar(45) DEFAULT NULL,
+  `LastName` varchar(45) DEFAULT NULL,
+  `Email` varchar(256) DEFAULT NULL,
+  `ContactNo` varchar(20) DEFAULT NULL,
+  `Organisation` varchar(256) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`),
+  UNIQUE KEY `RepID_UNIQUE` (`RepID`),
+  UNIQUE KEY `UserName_UNIQUE` (`UserName`)
+); 
+
+
+CREATE TABLE `RepMemberType` (
+  `RepID` int NOT NULL,
+  `MemberTypeID` int NOT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`,`MemberTypeID`)
+); 
+
+
+-----------
+-- Adhoc --
+-----------
+DROP TABLE [TABLE_NAME];
+
+
