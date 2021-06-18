@@ -1,6 +1,6 @@
 # ProjectGoLive by Group 2
 
-### **MEMBERS**
+#### **MEMBERS**
     - Ahmad Bahrudin
     - Amanda Soh Chiew Pheng
     - Huang Yanping
@@ -86,6 +86,7 @@ The following is the discussion and jobs delegations for our group thus far:
 ###### 4) HELPER FEATURE (PERSON HELPING THE REQUEST) - AMANDA
     
     The helper who has selected to fulfil the request(s).
+    
     **Helpers Table**
     - RepID 
     - RequestID
@@ -132,18 +133,19 @@ The following is the discussion and jobs delegations for our group thus far:
 
 #### **BASIC FEATURES - COMPLETED**
 
-[X] Connection to server via https (@port 5221)
-[X] Connection to database (using docker container @port 55005)
-[X] Login/Logout
-[X] Session Management
-[X] Events Logging
+- [x] Connection to server via https (@port 5221)
+- [x] Connection to server via https (@port 5221)
+- [x] Connection to database (using docker container @port 55005)
+- [x] Login/Logout
+- [x] Session Management
+- [x] Events Logging
 
 
 
 #### **FEATURES - ON HOLD**      
 
-###### *Chat system ? (To facilitate the helpers and requesters) 
-###### *Web Service for Helpers/Requesters to update request status?
+- [ ] Chat system ? (To facilitate the helpers and requesters) 
+- [ ] Web Service for Helpers/Requesters to update request status?
 
 
 
