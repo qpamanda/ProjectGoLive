@@ -1,4 +1,4 @@
-# ProjectGoLive by Group 2
+# ProjectGoLive - by Group 2 of GoSchool Run 4
 
 #### **MEMBERS**
     - Ahmad Bahrudin
@@ -133,7 +133,6 @@ The following is the discussion and jobs delegations for our group thus far:
 
 #### **BASIC FEATURES - COMPLETED**
 
-- [x] Connection to server via https (@port 5221)
 - [x] Connection to server via https (@port 5221)
 - [x] Connection to database (using docker container @port 55005)
 - [x] Login/Logout
