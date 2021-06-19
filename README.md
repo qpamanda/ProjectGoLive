@@ -32,6 +32,8 @@ The following is the discussion and jobs delegations for our group thus far:
     - LastName
     - ContactNo
     - Organisation (optional)
+    - CurrentLogin_dt
+    - LastLogin_dt
     - CreatedBy
     - Created_dt
     - LastModifiedBy
