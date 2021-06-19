@@ -22,6 +22,8 @@ CREATE TABLE `Representatives` (
   `Email` varchar(256) DEFAULT NULL,
   `ContactNo` varchar(20) DEFAULT NULL,
   `Organisation` varchar(256) DEFAULT NULL,
+  `CurrentLogin_dt` datetime DEFAULT NULL,
+  `LastLogin_dt` datetime DEFAULT NULL,
   `CreatedBy` varchar(25) DEFAULT NULL,
   `Created_dt` datetime DEFAULT NULL,
   `LastModifiedBy` varchar(25) DEFAULT NULL,
@@ -30,6 +32,7 @@ CREATE TABLE `Representatives` (
   UNIQUE KEY `RepID_UNIQUE` (`RepID`),
   UNIQUE KEY `UserName_UNIQUE` (`UserName`)
 ); 
+
 
 
 CREATE TABLE `RepMemberType` (
