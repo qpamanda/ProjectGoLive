@@ -1,17 +1,23 @@
 {{template "header"}}
 
-<h2>Create a New Account</h2>
+<h2>Post a New Request</h2>
 
 <p style="color:red;">{{.ClientMsg}} </p> 
 
-<p>Enter the following to create a new account</p>
+<p>Enter the following to create a new request.</p>
 
 <form method="post" autocomplete="off">
     <table border="0">
     <tr>
-        <td><label for ="username">Username</label></td>
+        <td><label for ="requestcategory">Request Type</label></td>
         <td>:</td>
-        <td><input type="text" name="username" placeholder="Username" value="{{.UserName}}"></td>
+        <td>
+            <select>
+                <option value="1" name="requestcategory">Monetary Donation</option>
+                <option value="2" name="requestcategory">Item Donation</option>
+                <option value="3" name="requestcategory">Errand</option>
+            </select>
+        </td>
     </tr>
 
     <tr>
