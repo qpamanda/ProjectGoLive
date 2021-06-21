@@ -59,7 +59,7 @@ type user struct {
 }
 
 // req struct for storing request information
-type req struct {
+type newRequest struct {
 	RequestId        int
 	RepresentativeId int // id of the coordinator/representative
 	/*
