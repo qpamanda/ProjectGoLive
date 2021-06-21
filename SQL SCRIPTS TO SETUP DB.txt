@@ -1,9 +1,73 @@
+---------------------
 -- Create Database --
+---------------------
 CREATE DATABASE dbProject;
 
 
+-------------------
 -- Use Database --
+-------------------
 USE dbProject;
 
 
--- Create Tables - 
+-------------------
+-- Create Tables --
+-------------------
+CREATE TABLE `Representatives` (
+  `RepID` int NOT NULL,
+  `UserName` varchar(25) NOT NULL,
+  `Password` varchar(25) NOT NULL,
+  `FirstName` varchar(45) DEFAULT NULL,
+  `LastName` varchar(45) DEFAULT NULL,
+  `Email` varchar(256) DEFAULT NULL,
+  `ContactNo` varchar(20) DEFAULT NULL,
+  `Organisation` varchar(256) DEFAULT NULL,
+  `CurrentLogin_dt` datetime DEFAULT NULL,
+  `LastLogin_dt` datetime DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`),
+  UNIQUE KEY `RepID_UNIQUE` (`RepID`),
+  UNIQUE KEY `UserName_UNIQUE` (`UserName`)
+); 
+
+
+
+CREATE TABLE `RepMemberType` (
+  `RepID` int NOT NULL,
+  `MemberTypeID` int NOT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`,`MemberTypeID`)
+);
+
+CREATE TABLE `Recipients` (
+  `RecipientID` INT NOT NULL AUTO_INCREMENT,
+  `RepID_FK` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Category` TINYINT NOT NULL,
+  `Profile` MEDIUMTEXT NOT NULL,
+  `ContactNo` VARCHAR(20) NOT NULL,
+  `CreatedDT` DATETIME NOT NULL,
+  `LastModifiedDT` DATETIME NOT NULL,
+  PRIMARY KEY (`RecipientID`),
+  UNIQUE INDEX `RecipientID_UNIQUE` (`RecipientID` ASC) VISIBLE,
+  INDEX `RepID_idx` (`RepID_FK` ASC) VISIBLE,
+  CONSTRAINT `RepID`
+    FOREIGN KEY (`RepID_FK`)
+    REFERENCES `dbProject`.`representatives` (`RepID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    );
+
+
+-----------
+-- Adhoc --
+-----------
+DROP TABLE [TABLE_NAME];
+
+

@@ -1,12 +1,14 @@
-# ProjectGoLive by Group 2
+# ProjectGoLive - by Group 2 of GoSchool Run 4
 
-Members:
-- Ahmad Bahrudin
-- Amanda Soh Chiew Pheng
-- Huang Yanping
-- Tan Jun Jie
+#### **MEMBERS**
+    - Ahmad Bahrudin
+    - Amanda Soh Chiew Pheng
+    - Huang Yanping
+    - Tan Jun Jie
 
-INTRODUCTION
+#### **INTRODUCTION**
+
+Project Name: Giving Grace Portal??
 
 A platform for helping the needy, elderly, or charity organisations. An application that allows representatives for the needy (individuals or organisations) to sign up and put up requests for the needs required. The needy (individuals or organisation) will be our recipients. The requests to put up can be for a donation (monetary), donation (items) or errands. Example of an errand "XXX needs lunch/dinner for date/time". A helper who is also a user of the application can view the list of request and select a request to fulfill.
 
@@ -14,105 +16,146 @@ Constraints: The application cannot validate if the request is really fullfilled
 
 The following is the discussion and jobs delegations for our group thus far:
 
-APPLICATION FEATURES
+#### **APPLICATION FEATURES**
 
-1)  ACCOUNT REGISTRATION FEATURE (FOR REPRESENTATIVES/HELPERS) - AMANDA
+###### 1)  ACCOUNT REGISTRATION FEATURE (FOR REPRESENTATIVES/HELPERS) - AMANDA
 
-    Fields Required:
-    
-    RepresentativeID (Primary key , unique identifier for the account)
-    Email 
-    Password
-    FirstName
-    LastName
-    PhoneNo
-    Oranisation (optional)
-    
-    MemberType: Requestor, Helper?
-    ..
-    ..
-    ..
-    
-    CRUD representative (To allow user manage their group. Kind of like adding a person into the Group in the trace together for family safe entry thingy)
-    representative Fields:
-    representative id (Primary key)
-    Managed by (email, Foreign key)
-    name ( the 1 receiving help)
-    phone no.
-    NRIC ???
-
-
-2) RECIPIENT FEATURE (INDIVIDUAL/ORGANISATION NEED HELP) - YANPING
-
-    Recipent is the person or organisation needing help
-    
-    Recipient to tie to a Representative
-    RepresentativeID
-    RecipentID (Individual) / RecipentID (Organisation) - Same tables or different tables?
-    Recipient Info:
-      ...
-      ...
-      ...
-
-
-3) REQUEST FEATURE (THE REQUESTS NEEDED BY THE RECIPIENT) - JUN JIE
-
-    CRUD Request (Eg Add request . I need xxxx, update request status ) 
-    
-      Fields Required:
-        RequestID (Primary key , unique identifier for the request)
-        RepresentativeID - Hosted by
-        CategoryID    
-        IndividualID --> RecipientID
-        OrganisationID --> RecipientID
-        ContactNo
-        RequestStatus: Pending, Being Handled, Completed
-        Request Details
-          RequestDescription
-          Date/time (Mainly for errands ?)
-          Location/Address ?? (maybe not specific location but rather a region. Eg East , SouthEast area)
-      
-      
-4) HELPER FEATURE (PERSON HELPING THE REQUEST) - AMANDA
-
-
-5) ADMIN MODULE (FOR SYSTEM SETUP) - AHMAD
-
-    CategoryID/CategoryName: 1 Donation (Monetary), 2 Donation (Physical Items), 3 Errands
-
-    MemberTypeID/MemberType: Requestor, Helper
-
-    StatusCode/RequestStatus: Pending, Being Handled, Completed
-
-
-
-FEATURES - COMPLETED
-
-6) Connection to server via https
-7) Connection to database
-8) Login/Logout
-9) Session Management
-10) Events Logging
-11) 
-
-
-FEATURES - ON HOLD      
-
-7) Chat system ? (To facilitate the helpers and requestors) 
-
-
-ADHOC    
-
-- For every tables created we will include following fields for tracking purpose.
+    **Representatives Table**
+    - RepID INT (Primary key , unique identifier for the account)
+    - UserName
+    - Password
+    - FirstName
+    - LastName
+    - Email 
+    - Password
+    - FirstName
+    - LastName
+    - ContactNo
+    - Organisation (optional)
+    - CurrentLogin_dt
+    - LastLogin_dt
     - CreatedBy
-    - Created_DT
-    - ModifiedBy
-    - Modified_DT   
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
     
+    **RepMemberType Table**
+    - RepID INT (Primary key , unique identifier for the account)
+    - MemberTypeID (1 - Admin, 2 - Requester, 3 - Helper)
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified    
+   
+
+###### 2) RECIPIENT FEATURE (INDIVIDUAL/ORGANISATION NEED HELP) - YANPING
+
+    Recipent is the person or organisation needing help. Each Recipient is tied to a Representative
     
+    **Recipients Table**
+    - RecipientID INT (Primary key)
+    - RepID
+    - Name
+    - Category (boolean - true for individual , false for organisation)
+    - Profile
+    - ContactNo
+    - Email?
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
+
+
+###### 3) REQUEST FEATURE (THE REQUESTS NEEDED BY THE RECIPIENT) - JUN JIE
+
+    Requests made by individuals or organisations. To handle CRUD Request (Eg Add request . I need xxxx, update request status ) 
     
+     **Requests Table**
+     - RequestID (Primary key , unique identifier for the request)
+     - RepID
+     - CategoryID (1 - Donation (Monetary), 2 - Donation (Physical Items), 3 - Errands)
+     - RecipientID
+     - RequestStatusCode (P - Pending, H - Being Handled, C - Completed)
+     - RequestDetails
+     - ToCompleteBy_dt
+     - FulfilledAt (Location/Address - maybe not specific location but rather a region. Eg East , SouthEast area?)
+     - CreatedBy
+     - Created_dt
+     - LastModifiedBy
+     - LastModified_dt
       
+      
+###### 4) HELPER FEATURE (PERSON HELPING THE REQUEST) - AMANDA
+    
+    The helper who has selected to fulfil the request(s).
+    
+    **Helpers Table**
+    - RepID 
+    - RequestID
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
+    
+
+###### 5) ADMIN MODULES (FOR SYSTEM SETUP) - AHMAD
+
+    - CategoryID/CategoryName: 1 - Donation (Monetary), 2 - Donation (Physical Items), 3 - Errands
+    
+    **Category Table**
+    - CategoryID
+    - Category
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
     
     
+    - MemberTypeID/MemberType: 1 - Admin, 2 - Requester, 3 - Helper
     
+    **MemberType Table**
+    - MemberTypeID
+    - MemberType
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
+
+
+    - StatusCode/RequestStatus: P - Pending, H - Being Handled, C - Completed
     
+    **RequestStatus Table**
+    - StatusCode
+    - Status
+    - CreatedBy
+    - Created_dt
+    - LastModifiedBy
+    - LastModified_dt
+
+
+#### **BASIC FEATURES - COMPLETED**
+
+- [x] Connection to server via https (@port 5221)
+- [x] Connection to database (using docker container @port 55005)
+- [x] Login/Logout
+- [x] Session Management
+- [x] Events Logging
+
+
+
+#### **FEATURES - ON HOLD**      
+
+- [ ] Chat system ? (To facilitate the helpers and requesters) 
+- [ ] Web Service for Helpers/Requesters to update request status?
+
+
+
+#### **ADHOC**    
+
+    - For every tables created we will include following fields for accountability purpose.
+        - CreatedBy
+        - Created_dt
+        - LastModifiedBy
+        - LastModified_dt   
+    
+   
