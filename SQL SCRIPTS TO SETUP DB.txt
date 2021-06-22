@@ -16,7 +16,7 @@ USE dbProject;
 CREATE TABLE `Representatives` (
   `RepID` int NOT NULL,
   `UserName` varchar(25) NOT NULL,
-  `Password` varchar(25) NOT NULL,
+  `Password` char(60) NOT NULL,
   `FirstName` varchar(45) DEFAULT NULL,
   `LastName` varchar(45) DEFAULT NULL,
   `Email` varchar(256) DEFAULT NULL,
@@ -34,7 +34,6 @@ CREATE TABLE `Representatives` (
 ); 
 
 
-
 CREATE TABLE `RepMemberType` (
   `RepID` int NOT NULL,
   `MemberTypeID` int NOT NULL,
@@ -44,6 +43,7 @@ CREATE TABLE `RepMemberType` (
   `LastModified_dt` datetime DEFAULT NULL,
   PRIMARY KEY (`RepID`,`MemberTypeID`)
 );
+
 
 CREATE TABLE `Recipients` (
   `RecipientID` INT NOT NULL AUTO_INCREMENT,
