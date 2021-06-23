@@ -21,6 +21,17 @@
     </tr>
 
     <tr>
+        <td><label for ="recipient">Select Beneficiary</label></td>
+        <td>:</td>
+        <td>
+            <select name="recipient">
+                {{range .RecipientSlice}}
+                    <option value="{{.RecipientID}}">{{.Name}}</option>
+                {{end}}
+            </select>
+        </td>
+    </tr>
+    <tr>
         <td><label for ="description">Request Description</label></td>
         <td>:</td>
         <td><input type="text" name="description" placeholder="Get lunch for Mr. Kim" autocomplete="off"></td>

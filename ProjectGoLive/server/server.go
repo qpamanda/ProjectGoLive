@@ -91,6 +91,11 @@ type requestDetails struct {
 	FulfilAt           string
 }
 
+type viewRecipient struct {
+	RecipientID int
+	Name        string
+}
+
 // InitServer initialises the templates for displaying the web pages at the server
 func InitServer() {
 	// Parse templates

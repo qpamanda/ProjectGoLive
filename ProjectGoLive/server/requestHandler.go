@@ -1,9 +1,12 @@
 package server
 
 import (
+	"ProjectGoLive/database"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/kennygrant/sanitize"
 )
 
 // addrequest is a handler func to create a new request.
@@ -15,6 +18,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	*/
+	currentUser := getUser(res, req)
 
 	// Initialize request information
 	reqID := 0
@@ -31,17 +35,38 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	lastModifiedDT := time.Now()
 	clientMsg := "" // To display message to the user on the client
 
+	viewRecipientSlice := make([]viewRecipient, 0)
+
+	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
+
+	// Only 1 key-value pair in repDetails
+	for k, v := range repDetails {
+		repID = k
+		tmpName := v[0] + " " + v[1]
+		createdBy = tmpName
+		lastModifiedBy = tmpName
+	}
+	recipients := database.GetRecipientDetails(repID)
+
+	// Parse recipients into viewRecipient format
+	for k, v := range recipients {
+		viewR := viewRecipient{k, v[0]}
+		viewRecipientSlice = append(viewRecipientSlice, viewR)
+	}
+
 	// Process the form submission
 	if req.Method == http.MethodPost {
 		categoryID, _ = strconv.Atoi(req.FormValue("requestcategory"))
-		reqDesc = req.FormValue("description")
+		reqDesc = sanitize.Accents(req.FormValue("description"))
 
 		// Convert UTC timestamp to time.Time object set to GMT +8.
 		timezoneSuffix := ":00+08:00"
 		tmpTime := req.FormValue("tocompletebyDT") + timezoneSuffix
 		toCompleteBy, _ = time.Parse(time.RFC3339, tmpTime)
 
-		address = req.FormValue("address")
+		address = sanitize.Accents(req.FormValue("address"))
+
+		//fmt.Fprintln(res, viewRecipientSlice)
 	}
 
 	request := newRequest{
@@ -58,10 +83,12 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	}
 
 	data := struct {
-		details   newRequest
-		ClientMsg string
+		details        newRequest
+		RecipientSlice []viewRecipient
+		ClientMsg      string
 	}{
 		request,
+		viewRecipientSlice,
 		clientMsg,
 	}
 

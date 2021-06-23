@@ -38,6 +38,71 @@ func GetConnectionString(config Config) string {
 	return connectionString
 }
 
+// Author: Tan Jun Jie
+// GetRepresentativeDetails queries the database for a logged-in representative's ID and name.
+func GetRepresentativeDetails(username string) map[int][]string {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	var repID int
+	var firstName string
+	var lastName string
+
+	// Instantiate representative details
+	var details = make(map[int][]string)
+
+	query := "SELECT RepID, FirstName, LastName FROM Representatives WHERE UserName=?"
+
+	results, err := DB.Query(query, username)
+	if err != nil {
+		panic("error executing sql select: " + err.Error())
+	} else {
+		if results.Next() {
+			err := results.Scan(&repID, &firstName, &lastName)
+			if err != nil {
+				panic("error getting results from sql select")
+			}
+			details[repID] = []string{firstName, lastName}
+		}
+		return details
+	}
+}
+
+// Author: Tan Jun Jie
+// GetRecipientDetails queries the database for the ID and names of recipients that a representative is in charge of.
+func GetRecipientDetails(RepresentativeId int) map[int][]string {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	var recipientID int
+	var name string
+
+	// Instantiate recipients' details
+	var details = make(map[int][]string)
+
+	query := "SELECT RecipientID, Name FROM Recipients WHERE RepID_FK=?"
+
+	results, err := DB.Query(query, RepresentativeId)
+	if err != nil {
+		panic("error executing sql select: " + err.Error())
+	} else {
+		for results.Next() {
+			err := results.Scan(&recipientID, &name)
+			if err != nil {
+				panic("error getting results from sql select")
+			}
+			details[recipientID] = []string{name}
+		}
+		return details
+	}
+}
+
 /*
 // AddCourse implements the sql operations to insert a new course as invoked by the REST API.
 func AddXXX(courseID string, courseTitle string) {
