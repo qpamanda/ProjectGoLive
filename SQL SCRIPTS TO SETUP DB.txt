@@ -59,7 +59,7 @@ CREATE TABLE `Recipients` (
   INDEX `RepID_idx` (`RepID_FK` ASC) VISIBLE,
   CONSTRAINT `RepID`
     FOREIGN KEY (`RepID_FK`)
-    REFERENCES `dbProject`.`representatives` (`RepID`)
+    REFERENCES `dbProject`.`Representatives` (`RepID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     );
