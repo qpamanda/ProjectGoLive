@@ -4,7 +4,9 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -15,6 +17,38 @@ type Config struct {
 	User       string
 	Password   string
 	DB         string
+}
+
+// req struct for storing request information
+type newRequest struct {
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
 }
 
 // Connector variable used for DB operations
@@ -101,6 +135,71 @@ func GetRecipientDetails(RepresentativeId int) map[int][]string {
 		}
 		return details
 	}
+}
+
+// Author: Tan Jun Jie
+// AddRequest inserts a new request into the database.
+func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (Err error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+			Err = errors.New(err.(string))
+		}
+	}()
+
+	request := newRequest{
+		repID,
+		categoryID,
+		recipientID,
+		reqStatus,
+		requestDetails{reqDesc, toCompleteBy, address},
+		createdBy,
+		createdDT,
+		lastModifiedBy,
+		lastModifiedDT,
+	}
+
+	query := `
+	INSERT INTO Requests 
+		(RepID_FK,
+		CategoryID,
+		RecipientID_FK,
+		RequestStatusCode,
+		RequestDescription,
+		ToCompleteBy,
+		FulfillAt,
+		CreatedBy,
+		CreatedDT,
+		LastModifiedBy,
+		LastModifiedDT)
+		VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+
+	stmt, err := DB.Prepare(query)
+	if err != nil {
+		panic("error preparing sql insert" + err.Error())
+	}
+
+	_, err = stmt.Exec(unpackRequest(request))
+
+	if err != nil {
+		panic("error executing sql insert: " + err.Error())
+	}
+
+	return nil
+}
+
+func unpackRequest(request newRequest) (repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
+	return request.RepresentativeId,
+		request.RequestCategoryId,
+		request.RecipientId,
+		request.RequestStatus,
+		request.RequestDetails.RequestDescription,
+		request.RequestDetails.ToCompleteBy,
+		request.RequestDetails.FulfilAt,
+		request.CreatedBy,
+		request.CreatedDT,
+		request.LastModifiedBy,
+		request.LastModifiedDT
 }
 
 /*

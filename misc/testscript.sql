@@ -21,3 +21,12 @@ VALUES
       03, 'Benjamin', 1, 'test', '999', '2020-02-22', '2020-02-22' 
    )
 ;
+
+
+SELECT
+   `COLUMN_NAME` 
+FROM
+   `INFORMATION_SCHEMA`.`COLUMNS` 
+WHERE
+   `TABLE_SCHEMA` = 'dbProject' 
+   AND `TABLE_NAME` = 'Requests'

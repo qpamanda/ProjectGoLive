@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/kennygrant/sanitize"
+	"github.com/sirupsen/logrus"
 )
 
 // addrequest is a handler func to create a new request.
@@ -21,19 +22,21 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	currentUser := getUser(res, req)
 
 	// Initialize request information
-	reqID := 0
+	// Decide whether to add admin entry in Representative table
+	// or to add an arbitary non-zero value for admin repID in this method
+	// to avoid failing isValidRequest check.
 	repID := 0
 	categoryID := 0
 	recipientID := 0
 	reqStatus := 0
 	reqDesc := ""
-	toCompleteBy := time.Now()
 	address := ""
 	createdBy := ""
 	createdDT := time.Now()
 	lastModifiedBy := ""
 	lastModifiedDT := time.Now()
 	clientMsg := "" // To display message to the user on the client
+	var toCompleteBy time.Time
 
 	viewRecipientSlice := make([]viewRecipient, 0)
 
@@ -64,33 +67,91 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		tmpTime := req.FormValue("tocompletebyDT") + timezoneSuffix
 		toCompleteBy, _ = time.Parse(time.RFC3339, tmpTime)
 
+		recipientID, _ = strconv.Atoi(req.FormValue("recipientid"))
 		address = sanitize.Accents(req.FormValue("address"))
 
-		//fmt.Fprintln(res, viewRecipientSlice)
-	}
+		request := newRequest{
+			repID,
+			categoryID,
+			recipientID,
+			reqStatus,
+			requestDetails{reqDesc, toCompleteBy, address},
+			createdBy,
+			createdDT,
+			lastModifiedBy,
+			lastModifiedDT,
+		}
 
-	request := newRequest{
-		reqID,
-		repID,
-		categoryID,
-		recipientID,
-		reqStatus,
-		requestDetails{reqDesc, toCompleteBy, address},
-		createdBy,
-		createdDT,
-		lastModifiedBy,
-		lastModifiedDT,
+		//fmt.Fprintln(res, isValidRequest(request))
+
+		if isValidRequest(request) {
+
+			err := database.AddRequest(
+				repID,
+				categoryID,
+				recipientID,
+				reqStatus,
+				reqDesc,
+				toCompleteBy,
+				address,
+				createdBy,
+				createdDT,
+				lastModifiedBy,
+				lastModifiedDT)
+
+			if err != nil {
+				clientMsg = "Could not add request"
+
+				log.WithFields(logrus.Fields{
+					"repID":     repID,
+					"createdBy": createdBy,
+					"createdDT": createdDT,
+				}).Info(clientMsg)
+			}
+
+			clientMsg = "Request successfully added"
+
+			log.WithFields(logrus.Fields{
+				"repID":      repID,
+				"createdBy":  createdBy,
+				"createdDT":  createdDT,
+				"reqDetails": request.RequestDetails,
+			}).Info(clientMsg)
+
+		} else {
+			clientMsg = "No request added"
+
+			log.WithFields(logrus.Fields{
+				"repID":     repID,
+				"createdBy": createdBy,
+				"createdDT": createdDT,
+			}).Info(clientMsg)
+		}
 	}
 
 	data := struct {
-		details        newRequest
 		RecipientSlice []viewRecipient
 		ClientMsg      string
 	}{
-		request,
 		viewRecipientSlice,
 		clientMsg,
 	}
 
 	tpl.ExecuteTemplate(res, "addrequest.gohtml", data)
+}
+
+// Author: Tan Jun Jie
+// isValidRequest checks that a request has non-empty fields
+func isValidRequest(req newRequest) bool {
+
+	// skip RequestCategoryId, RecipientId check
+	// as there is a default option in the dropdown of the form
+	if req.RepresentativeId == 0 ||
+		req.RequestDetails.RequestDescription == "" ||
+		req.RequestDetails.FulfilAt == "" ||
+		req.CreatedBy == "" ||
+		req.LastModifiedBy == "" {
+		return false
+	}
+	return true
 }

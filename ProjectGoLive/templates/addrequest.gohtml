@@ -21,10 +21,10 @@
     </tr>
 
     <tr>
-        <td><label for ="recipient">Select Beneficiary</label></td>
+        <td><label for ="recipientid">Select Beneficiary</label></td>
         <td>:</td>
         <td>
-            <select name="recipient">
+            <select name="recipientid">
                 {{range .RecipientSlice}}
                     <option value="{{.RecipientID}}">{{.Name}}</option>
                 {{end}}

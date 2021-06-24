@@ -60,7 +60,6 @@ type user struct {
 
 // req struct for storing request information
 type newRequest struct {
-	RequestId        int
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
@@ -106,7 +105,7 @@ func InitServer() {
 	logFileName := "log/" + date + "_events.log"
 
 	// Create a new log file for append
-	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal("FATAL: OpenFile - ", err)
 	}

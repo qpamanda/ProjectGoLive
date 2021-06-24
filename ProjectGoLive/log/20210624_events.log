@@ -1,0 +1,6 @@
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-24T16:50:23+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-24T16:50:29.330771+08:00","level":"info","line":"server/requestHandler.go:104","msg":"No request added","repID":1,"time":"2021-06-24T16:50:29+08:00"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-24T16:51:08.119792+08:00","level":"info","line":"server/requestHandler.go:96","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"get lunch","ToCompleteBy":"2021-06-24T04:51:00+08:00","FulfilAt":"7 changi rd"},"time":"2021-06-24T16:51:08+08:00"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-24T18:24:43+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-24T18:24:49.730904+08:00","level":"info","line":"server/requestHandler.go:128","msg":"No request added","repID":1,"time":"2021-06-24T18:24:49+08:00"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-24T18:26:18.621294+08:00","level":"info","line":"server/requestHandler.go:119","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"Get lunch for Mr Cheng","ToCompleteBy":"2021-06-25T12:30:00+08:00","FulfilAt":"6 Beach Rd"},"time":"2021-06-24T18:26:18+08:00"}
