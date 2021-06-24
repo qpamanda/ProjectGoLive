@@ -69,6 +69,7 @@ type newRequest struct {
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
+	Recipient         string
 	/*
 		RequestStatus
 		0 (pending/waiting to be matched to a helper)
@@ -93,6 +94,13 @@ type requestDetails struct {
 type viewRecipient struct {
 	RecipientID int
 	Name        string
+}
+
+type viewRequest struct {
+	RequestID     int
+	CategoryID    int
+	RecipientName string
+	Description   string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server
@@ -155,6 +163,7 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/addrequest", addrequest)
+	router.HandleFunc("/deleterequest", deleterequest)
 	//router.HandleFunc("/addcourse", addcourse)
 	//router.HandleFunc("/updcourse", updcourse)
 	//router.HandleFunc("/delcourse", delcourse)

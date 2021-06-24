@@ -10,15 +10,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
 // It creates a new request and adds in to the database.
 func addrequest(res http.ResponseWriter, req *http.Request) {
 
-	/*if !alreadyLoggedIn(req) {
+	if !alreadyLoggedIn(req) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
-	*/
+
 	currentUser := getUser(res, req)
 
 	// Initialize request information
@@ -28,6 +29,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	repID := 0
 	categoryID := 0
 	recipientID := 0
+	recipient := ""
 	reqStatus := 0
 	reqDesc := ""
 	address := ""
@@ -68,12 +70,14 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		toCompleteBy, _ = time.Parse(time.RFC3339, tmpTime)
 
 		recipientID, _ = strconv.Atoi(req.FormValue("recipientid"))
+		recipient = recipients[recipientID][0]
 		address = sanitize.Accents(req.FormValue("address"))
 
 		request := newRequest{
 			repID,
 			categoryID,
 			recipientID,
+			recipient,
 			reqStatus,
 			requestDetails{reqDesc, toCompleteBy, address},
 			createdBy,
@@ -90,6 +94,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 				repID,
 				categoryID,
 				recipientID,
+				recipient,
 				reqStatus,
 				reqDesc,
 				toCompleteBy,
@@ -141,12 +146,96 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 }
 
 // Author: Tan Jun Jie
+// deleterequest is a handler func to delete an existing request.
+// A representative can only choose from the requests he made,
+// whereas an admin can choose any request to delete.
+func deleterequest(res http.ResponseWriter, req *http.Request) {
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	currentUser := getUser(res, req)
+
+	repID := 0
+	requestID := 0
+	clientMsg := "" // To display message to the user on the client
+	var isAdmin bool
+
+	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
+
+	// Only 1 key-value pair in repDetails
+	for k, _ := range repDetails {
+		repID = k
+	}
+
+	if currentUser.UserName == "admin" {
+		isAdmin = true
+		// Decide whether to add admin entry in Representative table
+		// or to add an arbitary non-zero value for admin repID
+		repID = 5221
+	} else {
+		isAdmin = false
+	}
+
+	viewRequestSlice := make([]viewRequest, 0)
+
+	requests := database.GetRequest(repID, isAdmin)
+
+	// Parse recipients into viewRecipient format
+	for k, v := range requests {
+		viewR := viewRequest{k, v.CategoryID, v.RecipientName, v.Description}
+		viewRequestSlice = append(viewRequestSlice, viewR)
+	}
+
+	//fmt.Fprintln(res, viewRequestsSlice)
+
+	// Process the form submission
+	if req.Method == http.MethodPost {
+		requestID, _ = strconv.Atoi(req.FormValue("requestid"))
+
+		if err := database.DeleteRequest(requestID); err == nil {
+
+			clientMsg = "Request successfully deleted"
+
+			log.WithFields(logrus.Fields{
+				"repID":       repID,
+				"requestID":   requestID,
+				"recipient":   requests[requestID].RecipientName,
+				"description": requests[requestID].Description,
+				"deleteDT":    time.Now(),
+			}).Info(clientMsg)
+
+		} else {
+			clientMsg = "No request deleted"
+
+			log.WithFields(logrus.Fields{
+				"repID": repID,
+				"time":  time.Now(),
+			}).Info(clientMsg)
+		}
+	}
+
+	data := struct {
+		RequestSlice []viewRequest
+		ClientMsg    string
+	}{
+		viewRequestSlice,
+		clientMsg,
+	}
+
+	tpl.ExecuteTemplate(res, "deleterequest.gohtml", data)
+}
+
+// Author: Tan Jun Jie
 // isValidRequest checks that a request has non-empty fields
 func isValidRequest(req newRequest) bool {
 
 	// skip RequestCategoryId, RecipientId check
 	// as there is a default option in the dropdown of the form
 	if req.RepresentativeId == 0 ||
+		req.Recipient == "" ||
 		req.RequestDetails.RequestDescription == "" ||
 		req.RequestDetails.FulfilAt == "" ||
 		req.CreatedBy == "" ||

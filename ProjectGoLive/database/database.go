@@ -30,6 +30,7 @@ type newRequest struct {
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
+	Recipient         string
 	/*
 		RequestStatus
 		0 (pending/waiting to be matched to a helper)
@@ -49,6 +50,12 @@ type requestDetails struct {
 	RequestDescription string
 	ToCompleteBy       time.Time
 	FulfilAt           string
+}
+
+type viewRequest struct {
+	CategoryID    int
+	RecipientName string
+	Description   string
 }
 
 // Connector variable used for DB operations
@@ -139,11 +146,18 @@ func GetRecipientDetails(RepresentativeId int) map[int][]string {
 
 // Author: Tan Jun Jie
 // AddRequest inserts a new request into the database.
-func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (Err error) {
+func AddRequest(repID, categoryID, recipientID int, recipient string, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (e error) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(">> Panic:", err)
-			Err = errors.New(err.(string))
+			switch x := err.(type) {
+			case string:
+				e = errors.New(x)
+			case error:
+				e = x
+			default:
+				e = errors.New("Unknown panic")
+			}
 		}
 	}()
 
@@ -151,6 +165,7 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 		repID,
 		categoryID,
 		recipientID,
+		recipient,
 		reqStatus,
 		requestDetails{reqDesc, toCompleteBy, address},
 		createdBy,
@@ -164,6 +179,7 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 		(RepID_FK,
 		CategoryID,
 		RecipientID_FK,
+		Recipient,
 		RequestStatusCode,
 		RequestDescription,
 		ToCompleteBy,
@@ -172,11 +188,11 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 		CreatedDT,
 		LastModifiedBy,
 		LastModifiedDT)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
 
 	stmt, err := DB.Prepare(query)
 	if err != nil {
-		panic("error preparing sql insert" + err.Error())
+		panic("error preparing sql insert: " + err.Error())
 	}
 
 	_, err = stmt.Exec(unpackRequest(request))
@@ -188,10 +204,93 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 	return nil
 }
 
-func unpackRequest(request newRequest) (repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
+// Author: Tan Jun Jie
+// GetRequest gets all requests tied to a representative
+// or all requests if one is logged in as an admin.
+func GetRequest(repID int, isAdmin bool) map[int]viewRequest {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	var requestID int
+	var categoryID int
+	var name string
+	var desc string
+
+	// Instantiate requests
+	var requests = make(map[int]viewRequest)
+	if isAdmin {
+		query := "SELECT RequestID, CategoryID, Recipient, RequestDescription FROM Requests"
+
+		results, err := DB.Query(query)
+
+		if err != nil {
+			panic("error executing sql select: " + err.Error())
+		} else {
+			for results.Next() {
+				err := results.Scan(&requestID, &categoryID, &name, &desc)
+				if err != nil {
+					panic("error getting results from sql select")
+				}
+				requests[requestID] = viewRequest{categoryID, name, desc}
+			}
+		}
+	} else {
+		query := "SELECT RequestID, RequestID, CategoryID, Recipient, RequestDescription FROM Requests WHERE RepID_FK=?"
+
+		results, err := DB.Query(query, repID)
+
+		if err != nil {
+			panic("error executing sql select: " + err.Error())
+		} else {
+			for results.Next() {
+				err := results.Scan(&requestID, &categoryID, &name, &desc)
+				if err != nil {
+					panic("error getting results from sql select")
+				}
+				requests[requestID] = viewRequest{categoryID, name, desc}
+			}
+		}
+	}
+	return requests
+}
+
+// Author: Tan Jun Jie
+// DeleteRequest deletes the request belonging to reqID.
+func DeleteRequest(reqID int) (e error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+			switch x := err.(type) {
+			case string:
+				e = errors.New(x)
+			case error:
+				e = x
+			default:
+				e = errors.New("Unknown panic")
+			}
+		}
+	}()
+
+	stmt, err := DB.Prepare("DELETE FROM Requests WHERE RequestID=?")
+	if err != nil {
+		panic("error preparing sql update: " + err.Error())
+	}
+
+	_, err = stmt.Exec(reqID)
+	if err != nil {
+		panic("error executing sql update: " + err.Error())
+	}
+	return nil
+}
+
+func unpackRequest(request newRequest) (repID, categoryID, recipientID int, recipient string, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
 	return request.RepresentativeId,
 		request.RequestCategoryId,
 		request.RecipientId,
+		request.Recipient,
 		request.RequestStatus,
 		request.RequestDetails.RequestDescription,
 		request.RequestDetails.ToCompleteBy,
