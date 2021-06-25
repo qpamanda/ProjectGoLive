@@ -64,37 +64,6 @@ CREATE TABLE `Recipients` (
     ON UPDATE NO ACTION
     );
 
-CREATE TABLE `Requests` (
-  `RequestID` INT NOT NULL AUTO_INCREMENT,
-  `RepID_FK` INT NOT NULL,
-  `CategoryID` TINYINT NOT NULL,
-  `RecipientID_FK` INT NOT NULL,
-  `RequestStatusCode` TINYINT NOT NULL,
-  `RequestDescription` MEDIUMTEXT NOT NULL,
-  `ToCompleteBy` DATETIME NOT NULL,
-  `FulfillAt` TEXT NOT NULL,
-  `CreatedBy` TEXT NOT NULL,
-  `CreatedDT` DATETIME NOT NULL,
-  `LastModifiedBy` TEXT NOT NULL,
-  `LastModifiedDT` DATETIME NOT NULL,
-  PRIMARY KEY (`RequestID`),
-  UNIQUE INDEX `RequestID_UNIQUE` (`RequestID` ASC) VISIBLE,
-  INDEX `RepID_idx` (`RepID_FK` ASC) VISIBLE,
-  INDEX `RecipientID_idx` (`RecipientID_FK` ASC) VISIBLE,
-  CONSTRAINT `Requests_Representatives_RepID`
-    FOREIGN KEY (`RepID_FK`)
-    REFERENCES `dbProject`.`Representatives` (`RepID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Requests_Recipients_RecipientID`
-    FOREIGN KEY (`RecipientID_FK`)
-    REFERENCES `dbProject`.`Recipients` (`RecipientID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
-
-
 
 -----------
 -- Adhoc --
