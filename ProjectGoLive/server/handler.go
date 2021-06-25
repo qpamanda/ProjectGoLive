@@ -1,25 +1,21 @@
 package server
 
 import (
+	"ProjectGoLive/authenticate"
+	"ProjectGoLive/database"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
-/*
-// index is the handler function to display the home page of the server.
-func index(w http.ResponseWriter, r *http.Request) {
-	tpl.ExecuteTemplate(w, "index.gohtml", "")
-}
-*/
-
 // index is a handler func that display the home page of the application.
 // On start, it will default as the login page first. Once user login,
 // the page will change to show the main menu for the users.
 // If user is an admin, it will display the admin menu as well.
+// Author: Amanda
 func index(res http.ResponseWriter, req *http.Request) {
-	bFirst = true
+
 	clientMsg := "" // To display client-side message to user
 
 	// Process the form submission
@@ -31,46 +27,57 @@ func index(res http.ResponseWriter, req *http.Request) {
 			clientMsg = "ERROR: username and/or password cannot be blank"
 			log.Error("username and/or password cannot be blank")
 		} else {
-			// Check if user exist with username
-			myUser, ok := mapUsers[username]
-
-			if !ok {
+			if !database.UserNameExist(username) {
 				clientMsg = "ERROR: username and/or password do not match"
 				log.Error("username and/or password do not match")
 			} else {
-				// Matching of password entered
-				err := bcrypt.CompareHashAndPassword(myUser.Password, []byte(password))
+				hashpassword, err := database.GetHashPassword(username)
 				if err != nil {
-					clientMsg = "ERROR: " + "username and/or password do not match"
+					clientMsg = "ERROR: username and/or password do not match"
 					log.Error("username and/or password do not match")
 				} else {
-					sessionToken, err := req.Cookie("sessionToken")
+					// Matching of password entered
+					err := bcrypt.CompareHashAndPassword([]byte(hashpassword), []byte(password))
 					if err != nil {
-						clientMsg = "ERROR: " + "session cookie not found"
-						log.Error("session cookie not found")
+						clientMsg = "ERROR: " + "username and/or password do not match"
+						log.Error("username and/or password do not match")
 					} else {
-						http.SetCookie(res, sessionToken)
-						// Set user to session token cookie
-						mapSessions[sessionToken.Value] = username
+						sessionToken, err := req.Cookie("sessionToken")
+						if err != nil {
+							clientMsg = "ERROR: " + "session cookie not found"
+							log.Error("session cookie not found")
+						} else {
+							http.SetCookie(res, sessionToken)
+							// Set user to session token cookie
+							authenticate.MapSessions[sessionToken.Value] = username
 
-						updateLoginDate(myUser)
+							// Checks if user is an admin
+							authenticate.IsAdmin = database.IsAdmin(username)
 
-						log.WithFields(logrus.Fields{
-							"userName": username,
-						}).Infof("[%s] user login successfully", username)
+							// Update LastLogin datetime in database
+							database.UpdateLoginDate(username)
+
+							log.WithFields(logrus.Fields{
+								"userName": username,
+							}).Infof("[%s] user login successfully", username)
+						}
 					}
 				}
 			}
 		}
 	}
 
-	myUser := getUser(res, req)
+	myUser, validSession := getUser(res, req)
 
 	data := struct {
-		User      user
-		ClientMsg string
+		User         authenticate.User
+		ValidSession bool
+		IsAdmin      bool
+		ClientMsg    string
 	}{
 		myUser,
+		validSession,
+		authenticate.IsAdmin,
 		clientMsg,
 	}
 

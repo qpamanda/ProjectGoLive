@@ -1,10 +1,8 @@
 {{template "header"}}
 
-<h2>Create a New Account</h2>
+<h2>Create a New Representatives Account</h2>
 
 <p style="color:red;">{{.ClientMsg}} </p> 
-
-<p>Enter the following to create a new account</p>
 
 <form method="post" autocomplete="off">
     <table border="0">
@@ -42,6 +40,29 @@
         <td><label for ="email">Email</label></td>
         <td>:</td>
         <td><input type="text" name="email" placeholder="Email" value="{{.Email}}"></td>
+    </tr>
+
+    <tr>
+        <td><label for ="contactno">Contact No</label></td>
+        <td>:</td>
+        <td><input type="text" name="contactno" placeholder="Contact No" value="{{.ContactNo}}"></td>
+    </tr>
+
+    <tr>
+        <td><label for ="organisation">Organisation</label></td>
+        <td>:</td>
+        <td><input type="text" name="organisation" placeholder="Organisation" value="{{.Organisation}}"></td>
+    </tr>
+
+    <tr>
+        <td><label for ="membertype">Member Type</label></td>
+        <td>:</td>
+        <td>
+             {{range $key, $val := .MemberType}}
+                <input type="checkbox" name="membertype{{$key}}" value="{{$key}}" {{$val.Checked}} {{$val.Disabled}}>&nbsp;
+                {{$val.MemberType}}
+            {{end}}
+        </td>
     </tr>
 
     <tr><td colspan="3">&nbsp;</td></tr>

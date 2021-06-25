@@ -25,7 +25,27 @@
         padding-top: 8px;
         padding-bottom: 8px;
         text-align: left;
-        background-color: #4CAF50;
+        background-color: #2572b1;
+        color: white;
+        }
+
+        #aboutus {
+        border-collapse: collapse;
+        width: 60%;
+        font-family: "Verdana"; 
+        font-size: 9pt;
+        }
+
+        #aboutus td, #aboutus th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+
+        #aboutus th {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: justify;
+        background-color: #2572b1;
         color: white;
         }
     </style>
@@ -36,5 +56,12 @@
 
 <body>
 <h1>Welcome to Giving Grace Portal</h1>
+
+{{if .UserName}}
+<i>User [{{.UserName}}] is currently logged in (Last Login: {{.LastLoginDT.Format "2006-01-02 15:04:05"}})</i>
+<br><br>
+[<a href="/edituser">Edit User Account</a>]&nbsp;[<a href="/changepwd">Change Password</a>]
+<br>
+{{end}}
 
 {{end}}
