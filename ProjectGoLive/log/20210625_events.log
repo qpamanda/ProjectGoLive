@@ -1,3 +1,68 @@
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T00:09:38+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T00:10:07.678969+08:00","level":"info","line":"server/requestHandler.go:124","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"$20.00","ToCompleteBy":"2021-06-25T13:00:00+08:00","FulfilAt":"nil"},"time":"2021-06-25T00:10:07+08:00"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T00:11:25+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T00:11:42.915334+08:00","level":"info","line":"server/requestHandler.go:124","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"Frying Pan","ToCompleteBy":"2021-06-25T00:11:00+08:00","FulfilAt":"nil"},"time":"2021-06-25T00:11:42+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:15:28+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:16:21+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:18:58+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:24:53+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:29:25+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:34:09+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:36:52+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:38:36+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:39:55+08:00","userName":"admin"}
+{"deleteDT":"2021-06-25T00:40:18.873518+08:00","description":"Frying Pan","level":"info","line":"server/requestHandler.go:208","msg":"Request successfully deleted","recipient":"Jimmy","repID":5221,"requestID":3,"time":"2021-06-25T00:40:18+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T00:42:55+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T10:37:03+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T10:38:13+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T10:39:43.671376+08:00","level":"info","line":"server/requestHandler.go:124","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"Get lunch","ToCompleteBy":"2021-06-25T10:40:00+08:00","FulfilAt":"7 Changi Rd"},"time":"2021-06-25T10:39:43+08:00"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T17:19:04+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T17:24:57+08:00","userName":"user1"}
+{"level":"fatal","line":"server/server.go:153","msg":"FATAL: ListenAndServeTLS - listen tcp :5221: bind: address already in use","time":"2021-06-25T17:26:28+08:00"}
+{"level":"fatal","line":"server/server.go:153","msg":"FATAL: ListenAndServeTLS - listen tcp :5221: bind: address already in use","time":"2021-06-25T17:27:27+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T17:28:14+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:280","msg":"[admin] user logout successfully","time":"2021-06-25T17:28:44+08:00","userName":"admin"}
+{"level":"error","line":"server/userHandler.go:48","msg":"password must have at least one numeric character","time":"2021-06-25T17:29:01+08:00"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T17:29:11+08:00","userName":"user1"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T17:30:18.34876+08:00","level":"info","line":"server/requestHandler.go:120","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"get chocolate ","ToCompleteBy":"2021-06-26T09:30:00+08:00","FulfilAt":"7 Flora Rd"},"time":"2021-06-25T17:30:18+08:00"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T17:31:23.142001+08:00","level":"info","line":"server/requestHandler.go:120","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"Change chimney","ToCompleteBy":"2021-06-26T19:32:00+08:00","FulfilAt":"test"},"time":"2021-06-25T17:31:23+08:00"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T17:31:49.697111+08:00","level":"info","line":"server/requestHandler.go:120","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"nothing","ToCompleteBy":"2021-06-30T20:31:00+08:00","FulfilAt":"nil"},"time":"2021-06-25T17:31:49+08:00"}
+{"createdBy":"userFN userLN","createdDT":"2021-06-25T17:33:29.034957+08:00","level":"info","line":"server/requestHandler.go:120","msg":"Request successfully added","repID":1,"reqDetails":{"RequestDescription":"should be 8","ToCompleteBy":"2021-06-25T18:33:00+08:00","FulfilAt":"nil"},"time":"2021-06-25T17:33:29+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T18:21:06+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:280","msg":"[admin] user logout successfully","time":"2021-06-25T18:21:21+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T18:21:46+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T20:34:38+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T20:35:27+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T20:36:26+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:23:21+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:34:57+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:36:17+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:37:43+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:38:09+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:41:06+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:55:20+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:56:12+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T21:57:41+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:03:32+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:05:09+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:07:16+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:11:16+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:13:07+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:13:30+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:14:17+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:280","msg":"[admin] user logout successfully","time":"2021-06-25T22:14:26+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:85","msg":"[user1] user account created successfully","time":"2021-06-25T22:15:07+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:32:34+08:00","userName":"admin"}
+{"deleteDT":"2021-06-25T22:32:45.26421+08:00","description":"","level":"info","line":"server/requestHandler.go:207","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:32:45+08:00"}
+{"deleteDT":"2021-06-25T22:32:45.273528+08:00","description":"","level":"info","line":"server/requestHandler.go:207","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:32:45+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:42:01+08:00","userName":"admin"}
+{"deleteDT":"2021-06-25T22:42:08.924876+08:00","description":"","level":"info","line":"server/requestHandler.go:209","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:42:08+08:00"}
+{"deleteDT":"2021-06-25T22:42:37.860686+08:00","description":"","level":"info","line":"server/requestHandler.go:209","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:42:37+08:00"}
+{"deleteDT":"2021-06-25T22:42:37.866726+08:00","description":"","level":"info","line":"server/requestHandler.go:209","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:42:37+08:00"}
+{"deleteDT":"2021-06-25T22:42:37.875405+08:00","description":"","level":"info","line":"server/requestHandler.go:209","msg":"Request successfully deleted","recipient":"","repID":5221,"requestID":0,"time":"2021-06-25T22:42:37+08:00"}
+{"level":"info","line":"server/handler.go:60","msg":"[admin] user login successfully","time":"2021-06-25T22:45:41+08:00","userName":"admin"}
+{"deleteDT":"2021-06-25T22:45:48.458914+08:00","description":"do nothing","level":"info","line":"server/requestHandler.go:206","msg":"Request successfully deleted","recipient":"Fletcher","repID":5221,"requestID":5,"time":"2021-06-25T22:45:48+08:00"}
+{"deleteDT":"2021-06-25T22:45:48.476926+08:00","description":"get chocolate ","level":"info","line":"server/requestHandler.go:206","msg":"Request successfully deleted","recipient":"Fletcher","repID":5221,"requestID":1,"time":"2021-06-25T22:45:48+08:00"}
 {"level":"info","line":"server/handler.go:62","msg":"[admin] user login successfully","time":"2021-06-25T00:43:04+08:00","userName":"admin"}
 {"level":"info","line":"server/handler.go:62","msg":"[admin] user login successfully","time":"2021-06-25T00:44:16+08:00","userName":"admin"}
 {"level":"info","line":"server/handler.go:62","msg":"[admin] user login successfully","time":"2021-06-25T00:55:42+08:00","userName":"admin"}
