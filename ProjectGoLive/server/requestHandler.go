@@ -20,7 +20,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	currentUser := getUser(res, req)
+	currentUser, _ := getUser(res, req)
 
 	// Initialize request information
 	// Decide whether to add admin entry in Representative table
@@ -152,7 +152,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	currentUser := getUser(res, req)
+	currentUser, _ := getUser(res, req)
 
 	repID := 0
 	clientMsg := "" // To display message to the user on the client
