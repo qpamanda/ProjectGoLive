@@ -1,12 +1,15 @@
 package server
 
 import (
+	"ProjectGoLive/authenticate"
+	"ProjectGoLive/database"
+	"crypto/rand"
 	"errors"
-	"fmt"
+	"io"
 	"net/http"
-	"regexp"
+	"strconv"
+	"strings"
 	"time"
-	"unicode"
 
 	"github.com/gofrs/uuid"
 	"github.com/kennygrant/sanitize"
@@ -14,23 +17,30 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var nums = []byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
+
 // signup is a handler func to create a new user account.
 // Validates user information and creates a new user account.
+// Author: Amanda
 func signup(res http.ResponseWriter, req *http.Request) {
 	if alreadyLoggedIn(req) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
 
-	var myUser user
+	var (
+		clientMsg    string // To display message to the user on the client
+		username     string
+		password     string
+		cmfpassword  string
+		firstname    string
+		lastname     string
+		email        string
+		contactno    string
+		organisation string
+	)
 
-	clientMsg := "" // To display message to the user on the client
-	username := ""
-	password := ""
-	cmfpassword := ""
-	firstname := ""
-	lastname := ""
-	email := ""
+	membertype, _ := database.GetRepMemberType(0)
 
 	// Process form submission
 	if req.Method == http.MethodPost {
@@ -41,14 +51,34 @@ func signup(res http.ResponseWriter, req *http.Request) {
 		firstname = sanitize.Accents(req.FormValue("firstname"))
 		lastname = sanitize.Accents(req.FormValue("lastname"))
 		email = sanitize.Accents(req.FormValue("email"))
+		contactno = sanitize.Accents(req.FormValue("contactno"))
+		organisation = sanitize.Accents(req.FormValue("organisation"))
+
+		for k, v := range membertype {
+			membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+			checked := ""
+			disabled := ""
+			if membertypeid != "" {
+				checked = "checked"
+			}
+			if strings.ToUpper(v.MemberType) == "ADMIN" {
+				disabled = "disabled"
+			}
+			membertype[k] = authenticate.MemberTypeInfo{
+				MemberType: v.MemberType,
+				Checked:    checked,
+				Disabled:   disabled}
+		}
 
 		// Validates the input fields from the user
-		if err := validateUserInput(username, password, cmfpassword, firstname, lastname, email); err != nil {
+		if err := authenticate.ValidateUserInput(true, username, password, cmfpassword,
+			firstname, lastname, email, contactno, organisation); err != nil {
+
 			clientMsg = "ERROR: " + err.Error()
 			log.Error(err)
 		} else {
 			// Check if username exist i.e. exist means it is already taken
-			if _, ok := mapUsers[username]; ok {
+			if database.UserNameExist(username) {
 				clientMsg = "ERROR: " + "username already taken"
 				log.Error("[" + username + "] username already taken")
 			} else {
@@ -69,58 +99,89 @@ func signup(res http.ResponseWriter, req *http.Request) {
 				http.SetCookie(res, sessionToken)
 
 				// Store the session token in a map on the server
-				mapSessions[sessionToken.Value] = username
+				authenticate.MapSessions[sessionToken.Value] = username
 
 				// Hashed the password from user input before saving
 				bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+
 				if err != nil {
 					clientMsg = "WARNING: " + "internal server error"
 					log.Warn("internal server error")
 				} else {
-					myUser = user{username, bPassword, firstname, lastname, email, false, time.Now(), time.Now(), time.Now(), time.Now()}
-					mapUsers[username] = myUser
+					repid, err := GetRepID()
 
-					log.WithFields(logrus.Fields{
-						"userName": username,
-					}).Infof("[%s] user account created successfully", username)
+					if err != nil {
+						clientMsg = "ERROR: " + "unable to add user"
+						log.Error("[" + username + "] unable to add user")
+					} else {
+						// Insert user into the database
+						err = database.AddUser(repid, username, string(bPassword),
+							firstname, lastname, email, contactno, organisation)
 
-					// Redirect to the main index page
-					http.Redirect(res, req, "/", http.StatusSeeOther)
-					return
+						for k := range membertype {
+							membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+							if membertypeid != "" {
+								id, _ := strconv.Atoi(membertypeid)
+								// Add member type information by repid into the database
+								database.AddRepMemberType(repid, id, username)
+							}
+						}
+
+						if err != nil {
+							log.WithFields(logrus.Fields{
+								"repId":    repid,
+								"userName": username,
+							}).Errorf("[%s] error creating user account ", username)
+						} else {
+							log.WithFields(logrus.Fields{
+								"repId":    repid,
+								"userName": username,
+							}).Infof("[%s] user account created successfully", username)
+						}
+						// Redirect to the main index page
+						http.Redirect(res, req, "/", http.StatusSeeOther)
+						return
+					}
 				}
 			}
 		}
 	}
 
 	data := struct {
-		User        user
-		UserName    string
-		Password    string
-		CmfPassword string
-		FirstName   string
-		LastName    string
-		Email       string
-		ClientMsg   string
+		UserName     string
+		Password     string
+		CmfPassword  string
+		FirstName    string
+		LastName     string
+		Email        string
+		ContactNo    string
+		Organisation string
+		MemberType   map[int]authenticate.MemberTypeInfo
+		ClientMsg    string
 	}{
-		myUser,
 		username,
 		password,
 		cmfpassword,
 		firstname,
 		lastname,
 		email,
+		contactno,
+		organisation,
+		membertype,
 		clientMsg,
 	}
 
 	tpl.ExecuteTemplate(res, "signup.gohtml", data)
 }
 
-/*
 // edituser is a handler func to edit user account information.
 // Redirects to index page if user has not login.
 // Validates user input and updates the information.
+// Author: Amanda
 func edituser(res http.ResponseWriter, req *http.Request) {
-	myUser := getUser(res, req)
+	myUser, validSession := getUser(res, req)
+
 	if !alreadyLoggedIn(req) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
@@ -129,46 +190,76 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 	clientMsg := "" // To display message to the user on the client
 
 	// Set current user information to be display on the form upon first form load
+	repid := myUser.RepID
 	username := myUser.UserName
-	password := ""
-	cmfpassword := ""
+	password := myUser.Password
+	cmfpassword := myUser.Password
 	firstname := myUser.FirstName
 	lastname := myUser.LastName
 	email := myUser.Email
-	isAdmin := myUser.IsAdmin
-	createdDT := myUser.CreatedDT
-	currentLoginDT := myUser.CurrentLoginDT
-	lastLoginDT := myUser.LastLoginDT
+	contactno := myUser.ContactNo
+	organisation := myUser.Organisation
+
+	membertype, _ := database.GetRepMemberType(repid)
 
 	// Process the form submission
 	if req.Method == http.MethodPost {
 		// Get form values and sanitize the strings
 		username = sanitize.Accents(req.FormValue("username"))
-		password = sanitize.Accents(req.FormValue("password"))
-		cmfpassword = sanitize.Accents(req.FormValue("cmfpassword"))
 		firstname = sanitize.Accents(req.FormValue("firstname"))
 		lastname = sanitize.Accents(req.FormValue("lastname"))
 		email = sanitize.Accents(req.FormValue("email"))
+		contactno = sanitize.Accents(req.FormValue("contactno"))
+		organisation = sanitize.Accents(req.FormValue("organisation"))
+
+		for k, v := range membertype {
+			membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+			checked := ""
+			disabled := ""
+			if membertypeid != "" {
+				checked = "checked"
+			}
+
+			if strings.ToUpper(v.MemberType) == "ADMIN" {
+				checked = "checked"
+				disabled = "disabled"
+			}
+
+			membertype[k] = authenticate.MemberTypeInfo{
+				MemberType: v.MemberType,
+				Checked:    checked,
+				Disabled:   disabled}
+		}
 
 		// Validates the input fields from the user
-		if err := validateUserInput(username, password, cmfpassword, firstname, lastname, email); err != nil {
+		if err := authenticate.ValidateUserInput(false, username, password, cmfpassword, firstname, lastname,
+			email, contactno, organisation); err != nil {
 			clientMsg = "ERROR: " + err.Error()
 			log.Error(err)
 		} else {
-			// Hashed the password from user input before saving
-			bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+
+			// Update user information into the database
+			err = database.UpdateUser(repid, username, firstname, lastname, email, contactno, organisation)
+
+			// Delete member type information from the database
+			database.DeleteRepMemberType(repid)
+
+			for k := range membertype {
+				membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+				if membertypeid != "" {
+					id, _ := strconv.Atoi(membertypeid)
+					// Add member type information by repid into the database
+					database.AddRepMemberType(repid, id, username)
+				}
+			}
+
 			if err != nil {
-				clientMsg = "WARNING: " + "internal server error"
 				log.WithFields(logrus.Fields{
-					"userName": myUser.UserName,
-				}).Warn("internal server error")
-
+					"userName": username,
+				}).Errorf("[%s] error updating user account", username)
 			} else {
-				// Update user info in a new struct and set LastModifiedDT to current date/time
-				myUser = user{username, bPassword, firstname, lastname, email, isAdmin, createdDT, time.Now(), currentLoginDT, lastLoginDT}
-				// Update map user struct to new user struct
-				mapUsers[username] = myUser
-
 				log.WithFields(logrus.Fields{
 					"userName": username,
 				}).Infof("[%s] user account updated successfully", username)
@@ -181,14 +272,18 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 	}
 
 	data := struct {
-		User        user
-		UserName    string
-		Password    string
-		CmfPassword string
-		FirstName   string
-		LastName    string
-		Email       string
-		ClientMsg   string
+		User         authenticate.User
+		UserName     string
+		Password     string
+		CmfPassword  string
+		FirstName    string
+		LastName     string
+		Email        string
+		ContactNo    string
+		Organisation string
+		MemberType   map[int]authenticate.MemberTypeInfo
+		ClientMsg    string
+		ValidSession bool
 	}{
 		myUser,
 		username,
@@ -197,61 +292,115 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 		firstname,
 		lastname,
 		email,
+		contactno,
+		organisation,
+		membertype,
 		clientMsg,
+		validSession,
 	}
 	tpl.ExecuteTemplate(res, "edituser.gohtml", data)
 }
 
-// deleteuser is a handler func to delete user account. Redirects to index page if user has not login.
-// Only admin user has access to delete users and admin is not allowed to delete oneself.
-func deleteuser(res http.ResponseWriter, req *http.Request) {
-	myUser := getUser(res, req)
+// changepwd is a handler func to change user password
+// Redirects to index page if user has not login.
+// Validates user input and updates the information.
+// Author: Amanda
+func changepwd(res http.ResponseWriter, req *http.Request) {
+	myUser, validSession := getUser(res, req)
+
 	if !alreadyLoggedIn(req) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
 
-	clientMsg := ""
+	clientMsg := "" // To display message to the user on the client
 
+	// Set current user information to be display on the form upon first form load
+	repid := myUser.RepID
+	username := myUser.UserName
+	hashpassword := myUser.Password
+
+	password := ""
+	newpassword := ""
+	cmfpassword := ""
+
+	// Process the form submission
 	if req.Method == http.MethodPost {
-		// Username is retrieved from dropdownlist box thus there is no need to validate for valid username
-		username := req.FormValue("username")
+		// Get form values and sanitize the strings
+		password = sanitize.Accents(req.FormValue("password"))
+		newpassword = sanitize.Accents(req.FormValue("newpassword"))
+		cmfpassword = sanitize.Accents(req.FormValue("cmfpassword"))
 
-		// Check if current user is admin. If so, prompt that account cannot be deleted
-		if myUser.UserName == username && myUser.IsAdmin {
-			clientMsg = "WARNING: " + "admin account cannot be deleted"
-
-			log.WithFields(logrus.Fields{
-				"userName": myUser.UserName,
-			}).Warn("admin account cannot be deleted")
-
+		if password == "" {
+			err := errors.New("current password cannot be blank")
+			clientMsg = "ERROR: " + err.Error()
+			log.Error(err)
 		} else {
-			// Delete user from server map
-			delete(mapUsers, username)
+			// Validates the input fields from the user
+			if err := authenticate.ValidatePassword(newpassword, cmfpassword); err != nil {
+				clientMsg = "ERROR: " + err.Error()
+				log.Error(err)
+			} else {
+				// Matching of password entered
+				err := bcrypt.CompareHashAndPassword([]byte(hashpassword), []byte(password))
 
-			clientMsg = "[" + username + "] user account deleted successfully. "
+				if err != nil {
+					clientMsg = "ERROR: " + "password is incorrect"
+					log.Error("password is incorrect")
+				} else {
 
-			log.WithFields(logrus.Fields{
-				"userName": myUser.UserName,
-			}).Infof("[%s] user account deleted successfully", username)
+					// Hashed the password from user input before saving
+					bPassword, err := bcrypt.GenerateFromPassword([]byte(newpassword), bcrypt.MinCost)
+
+					if err != nil {
+						clientMsg = "WARNING: " + "internal server error"
+						log.Warn("internal server error")
+					} else {
+
+						// Update password information into the database
+						err = database.UpdatePassword(repid, username, string(bPassword))
+
+						if err != nil {
+							clientMsg = "ERROR: " + "error updating password"
+							log.WithFields(logrus.Fields{
+								"userName": username,
+							}).Errorf("[%s] error updating password", username)
+						} else {
+							clientMsg = "Password updated successfully"
+							log.WithFields(logrus.Fields{
+								"userName": username,
+							}).Infof("[%s] password updated successfully", username)
+
+							password = ""
+							newpassword = ""
+							cmfpassword = ""
+							// Redirect to the main index page
+							//http.Redirect(res, req, "/", http.StatusSeeOther)
+							//return
+						}
+					}
+				}
+			}
 		}
 	}
 
 	data := struct {
-		User      user
-		MapUsers  map[string]user
-		CntUsers  int
-		ClientMsg string
+		User         authenticate.User
+		Password     string
+		NewPassword  string
+		CmfPassword  string
+		ClientMsg    string
+		ValidSession bool
 	}{
 		myUser,
-		mapUsers,
-		len(mapUsers),
+		password,
+		newpassword,
+		cmfpassword,
 		clientMsg,
+		validSession,
 	}
-
-	tpl.ExecuteTemplate(res, "deleteuser.gohtml", data)
+	tpl.ExecuteTemplate(res, "changepwd.gohtml", data)
 }
-*/
 
 // logout func is a handler to logout the current user. Redirects to index page if user has not login.
 // Otherwise, delete session token from server and client, then redirects to index page.
@@ -263,10 +412,10 @@ func logout(res http.ResponseWriter, req *http.Request) {
 	sessionToken, _ := req.Cookie("sessionToken")
 
 	// Get username before session is deleted
-	username := mapSessions[sessionToken.Value]
+	username := authenticate.MapSessions[sessionToken.Value]
 
 	// Delete the session token from the server
-	delete(mapSessions, sessionToken.Value)
+	delete(authenticate.MapSessions, sessionToken.Value)
 	// Remove the cookie from the client
 	sessionToken = &http.Cookie{
 		Name:   "sessionToken",
@@ -282,10 +431,11 @@ func logout(res http.ResponseWriter, req *http.Request) {
 	http.Redirect(res, req, "/", http.StatusSeeOther)
 }
 
-// getUser func gets the current user. Checks for valid session token.
+// getUser func checks for valid session token.
 // Add a new session token cookie to the client if one is not found.
-// Return user struct if found.
-func getUser(res http.ResponseWriter, req *http.Request) user {
+// Return user and true if session is set
+// Author: Amanda
+func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, bool) {
 	// Get current session cookie
 	sessionToken, err := req.Cookie("sessionToken")
 	// No session token found
@@ -306,108 +456,55 @@ func getUser(res http.ResponseWriter, req *http.Request) user {
 	http.SetCookie(res, sessionToken)
 
 	// If the user exists already, get user
-	var myUser user
-	if username, ok := mapSessions[sessionToken.Value]; ok {
-		myUser = mapUsers[username]
-	}
+	var myUser authenticate.User
 
-	return myUser
+	if _, ok := authenticate.MapSessions[sessionToken.Value]; ok {
+		username := authenticate.MapSessions[sessionToken.Value]
+		myUser, err = database.GetUser(username) // Get user from database
+		if err != nil {
+			return myUser, false
+		}
+		return myUser, ok
+	}
+	return myUser, false
 }
 
 // alreadyLoggedIn func checks if a user has already logged in. Checks for valid session token.
 // Returns true if already logged in, false otherwise.
+// Author: Amanda
 func alreadyLoggedIn(req *http.Request) bool {
 	sessionToken, err := req.Cookie("sessionToken")
 	if err != nil {
 		return false
 	}
+
 	// Get username from session map
-	username := mapSessions[sessionToken.Value]
-	_, ok := mapUsers[username]
-	return ok
+	username := authenticate.MapSessions[sessionToken.Value]
+	return database.UserNameExist(username)
 }
 
-// validateUserInput func checks if a user has already logged in. Checks for valid session token.
-func validateUserInput(userName string, password string, cmfPassword string, firstName string, lastName string, email string) error {
-	// Validate username
-	if userName == "" {
-		return errors.New("username cannot be blank")
-	} else if len(userName) < minUserName || len(userName) > maxUserName {
-		return fmt.Errorf("username must be between %d - %d characters", minUserName, maxUserName)
-	}
+func GetRepID() (int, error) {
+	x := 4 // change this value for the number of digits to generate for the random no
+	randomNo := GenerateRandomNo(x)
 
-	// Validate password
-	if password == "" {
-		return errors.New("password cannot be blank")
-	} else if len(password) < minPassword || len(password) > maxPassword {
-		return fmt.Errorf("password must be between %d - %d characters", minPassword, maxPassword)
-	} else if err := validatePassword(password); err != nil {
-		return err
-	}
-
-	// Validate confirm password
-	if cmfPassword == "" {
-		return errors.New("confirm password cannot be blank")
-	} else if cmfPassword != password {
-		return errors.New("confirm password must be the same as password")
-	}
-
-	// Validate first name
-	if firstName == "" {
-		return errors.New("first name cannot be blank")
-	}
-
-	// Validate last name
-	if lastName == "" {
-		return errors.New("last name cannot be blank")
-	}
-
-	// Validate email (email is not mandatory)
-	if email != "" && !isValidEmail(email) {
-		return errors.New("invalid email")
-	}
-
-	return nil
+	return strconv.Atoi(randomNo)
 }
 
-// validatePassword validates that the input user password must contain as least
-// one upper case, lower case, numeric and special characters.
-func validatePassword(password string) error {
+func GenerateRandomNo(x int) string {
+	buffer := make([]byte, x)
+	n, err := io.ReadAtLeast(rand.Reader, buffer, x)
 
-next:
-	for name, classes := range map[string][]*unicode.RangeTable{
-		"upper case": {unicode.Upper, unicode.Title},
-		"lower case": {unicode.Lower},
-		"numeric":    {unicode.Number, unicode.Digit},
-		"special":    {unicode.Space, unicode.Symbol, unicode.Punct, unicode.Mark},
-	} {
-		for _, r := range password {
-			if unicode.IsOneOf(classes, r) {
-				continue next
-			}
-		}
-		return fmt.Errorf("password must have at least one %s character", name)
+	if err != nil || n != x {
+		return GenerateRandomNo(x)
 	}
 
-	return nil
-}
-
-// isValidEmail validates if the string parameter is a valid email using regexp
-func isValidEmail(e string) bool {
-	emailRegex := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-
-	if len(e) < 3 && len(e) > 254 {
-		return false
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = nums[int(buffer[i])%len(nums)]
 	}
-	return emailRegex.MatchString(e)
-}
 
-// updateLoginDate updates the LastLoginDT to previous CurrentLoginDT.
-// Then updates the CurrentLoginDt to time.Now(). No changes to all other information.
-func updateLoginDate(myUser user) {
-	// Update user info in a new struct
-	myUser = user{myUser.UserName, myUser.Password, myUser.FirstName, myUser.LastName, myUser.Email, myUser.IsAdmin, myUser.CreatedDT, myUser.LastModifiedDT, time.Now(), myUser.CurrentLoginDT}
+	if database.RepIDExist(string(buffer)) {
+		return GenerateRandomNo(x)
+	}
 
-	// Update map user struct to new user struct
-	mapUsers[myUser.UserName] = myUser
+	return string(buffer)
 }

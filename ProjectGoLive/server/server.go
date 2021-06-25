@@ -7,11 +7,11 @@ It is separated into x .go files to segregate the functionalities of the applica
 	on the designated port.
 
 	handler.go: Implements the handler functions for displaying the web pages of the server
-
 */
 package server
 
 import (
+	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
 	"fmt"
 	"html/template"
@@ -24,41 +24,18 @@ import (
 	"github.com/joho/godotenv"
 	filename "github.com/keepeye/logrus-filename"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (
-	tpl         *template.Template
-	mapUsers    = map[string]user{}
-	mapSessions = map[string]string{}
-
-	log = logrus.New()
-
+	tpl  *template.Template
+	log  = logrus.New()
 	file *os.File
 
-	bFirst = true
-
-	minUserName int // Set the min length for new Username
-	maxUserName int // Set the max length for new Username
-	minPassword int // Set the min length for new Password
-	maxPassword int // Set the max length for new Password
+	//bFirst = true
 )
 
-// user struct for storing user account information
-type user struct {
-	UserName       string
-	Password       []byte
-	FirstName      string
-	LastName       string
-	Email          string
-	IsAdmin        bool
-	CreatedDT      time.Time
-	LastModifiedDT time.Time
-	CurrentLoginDT time.Time
-	LastLoginDT    time.Time
-}
-
-// InitServer initialises the templates for displaying the web pages at the server
+// InitServer initialises the templates for displaying the web pages at the server.
+// It also creates and opens the log file for events logging.
 func InitServer() {
 	// Parse templates
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -68,7 +45,7 @@ func InitServer() {
 	logFileName := "log/" + date + "_events.log"
 
 	// Create a new log file for append
-	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal("FATAL: OpenFile - ", err)
 	}
@@ -94,9 +71,6 @@ func StartServer() {
 
 	initFieldsLen()
 
-	// THIS WILL BE REPLACE BY GETTING ADMIN USER FROM DATABASE
-	initAdminUser()
-
 	router := mux.NewRouter()
 
 	// Initialise the handlers
@@ -105,22 +79,27 @@ func StartServer() {
 	// Set the listen port
 	fmt.Println("Listening at port 5221")
 	err := http.ListenAndServeTLS(":5221", "certs//cert.pem", "certs//key.pem", router)
+	//err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Fatal("FATAL: ListenAndServeTLS - ", err)
 	}
+
+	// Defer file closure to the end
+	defer file.Close()
 }
 
 // initaliseHandlers initialises the handlers for the server.
 func initaliseHandlers(router *mux.Router) {
+
 	router.HandleFunc("/", index)
 
 	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
-	//router.HandleFunc("/addcourse", addcourse)
-	//router.HandleFunc("/updcourse", updcourse)
+	router.HandleFunc("/edituser", edituser)
+	router.HandleFunc("/changepwd", changepwd)
 	//router.HandleFunc("/delcourse", delcourse)
-
+	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }
 
@@ -177,27 +156,6 @@ func getDBConfig() database.Config {
 	return config
 }
 
-func initAdminUser() {
-	// Load setup.env file from same directory
-	err := godotenv.Load("setup.env")
-	if err != nil {
-		log.Fatal("FATAL: Error loading .env file")
-	}
-
-	// Get env variables for admin user (ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_FIRSTNAME, ADMIN_LASTNAME)
-	adminUserName := os.Getenv("ADMIN_USERNAME")
-	adminPassword := os.Getenv("ADMIN_PASSWORD")
-	adminFName := os.Getenv("ADMIN_FIRSTNAME")
-	adminLName := os.Getenv("ADMIN_LASTNAME")
-	adminEmail := os.Getenv("ADMIN_EMAIL")
-
-	// Encrypt the admin password
-	bPassword, _ := bcrypt.GenerateFromPassword([]byte(adminPassword), bcrypt.MinCost)
-
-	// Add the admin user into a map
-	mapUsers["admin"] = user{adminUserName, bPassword, adminFName, adminLName, adminEmail, true, time.Now(), time.Now(), time.Now(), time.Now()}
-}
-
 func initFieldsLen() {
 	// Load setup.env file from same directory
 	err := godotenv.Load("setup.env")
@@ -206,14 +164,14 @@ func initFieldsLen() {
 	}
 
 	// Set the min characters for username
-	minUserName, _ = strconv.Atoi(os.Getenv("MIN_USERNAME"))
+	authenticate.MinUserName, _ = strconv.Atoi(os.Getenv("MIN_USERNAME"))
 
 	// Set the max characters for username
-	maxUserName, _ = strconv.Atoi(os.Getenv("MAX_USERNAME"))
+	authenticate.MaxUserName, _ = strconv.Atoi(os.Getenv("MAX_USERNAME"))
 
 	// Set the min characters for password
-	minPassword, _ = strconv.Atoi(os.Getenv("MIN_PASSWORD"))
+	authenticate.MinPassword, _ = strconv.Atoi(os.Getenv("MIN_PASSWORD"))
 
 	// Set the max characters for password
-	maxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
+	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
 }
