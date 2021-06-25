@@ -30,7 +30,6 @@ type newRequest struct {
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
-	Recipient         string
 	/*
 		RequestStatus
 		0 (pending/waiting to be matched to a helper)
@@ -56,6 +55,7 @@ type viewRequest struct {
 	CategoryID    int
 	RecipientName string
 	Description   string
+	ToCompleteBy  time.Time
 }
 
 // Connector variable used for DB operations
@@ -75,7 +75,7 @@ func Connect(connectionString string) error {
 
 // GetConnectionString formats the database connection string and returns it.
 func GetConnectionString(config Config) string {
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", config.User, config.Password, config.ServerName, config.DB)
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", config.User, config.Password, config.ServerName, config.DB)
 	return connectionString
 }
 
@@ -146,7 +146,7 @@ func GetRecipientDetails(RepresentativeId int) map[int][]string {
 
 // Author: Tan Jun Jie
 // AddRequest inserts a new request into the database.
-func AddRequest(repID, categoryID, recipientID int, recipient string, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (e error) {
+func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (e error) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(">> Panic:", err)
@@ -165,7 +165,6 @@ func AddRequest(repID, categoryID, recipientID int, recipient string, reqStatus 
 		repID,
 		categoryID,
 		recipientID,
-		recipient,
 		reqStatus,
 		requestDetails{reqDesc, toCompleteBy, address},
 		createdBy,
@@ -179,7 +178,6 @@ func AddRequest(repID, categoryID, recipientID int, recipient string, reqStatus 
 		(RepID_FK,
 		CategoryID,
 		RecipientID_FK,
-		Recipient,
 		RequestStatusCode,
 		RequestDescription,
 		ToCompleteBy,
@@ -188,7 +186,7 @@ func AddRequest(repID, categoryID, recipientID int, recipient string, reqStatus 
 		CreatedDT,
 		LastModifiedBy,
 		LastModifiedDT)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+		VALUES (?,?,?,?,?,?,?,?,?,?,?)`
 
 	stmt, err := DB.Prepare(query)
 	if err != nil {
@@ -216,13 +214,24 @@ func GetRequest(repID int, isAdmin bool) map[int]viewRequest {
 
 	var requestID int
 	var categoryID int
+	var toCompleteBy time.Time
 	var name string
 	var desc string
 
 	// Instantiate requests
 	var requests = make(map[int]viewRequest)
 	if isAdmin {
-		query := "SELECT RequestID, CategoryID, Recipient, RequestDescription FROM Requests"
+
+		query := `
+				SELECT Requests.RequestID, 
+				Requests.CategoryID,
+				Recipients.Name,
+				Requests.RequestDescription,
+				Requests.ToCompleteBy
+				FROM Requests
+				INNER JOIN Recipients
+				ON Requests.RecipientID_FK = Recipients.RecipientID;
+				`
 
 		results, err := DB.Query(query)
 
@@ -230,27 +239,37 @@ func GetRequest(repID int, isAdmin bool) map[int]viewRequest {
 			panic("error executing sql select: " + err.Error())
 		} else {
 			for results.Next() {
-				err := results.Scan(&requestID, &categoryID, &name, &desc)
+				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy)
 				if err != nil {
-					panic("error getting results from sql select")
+					panic("error getting results from sql select: " + err.Error())
 				}
-				requests[requestID] = viewRequest{categoryID, name, desc}
+				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy}
 			}
 		}
 	} else {
-		query := "SELECT RequestID, RequestID, CategoryID, Recipient, RequestDescription FROM Requests WHERE RepID_FK=?"
-
+		//query := "SELECT RequestID, RequestID, CategoryID, Recipient, RequestDescription FROM Requests WHERE RepID_FK=?"
+		query := `
+				SELECT Requests.RequestID, 
+				Requests.CategoryID,
+				Recipients.Name,
+				Requests.RequestDescription,
+				Requests.ToCompleteBy
+				FROM Requests
+				INNER JOIN Recipients
+				ON Requests.RecipientID_FK = Recipients.RecipientID
+				WHERE Requests.RepID_FK=?;
+				`
 		results, err := DB.Query(query, repID)
 
 		if err != nil {
 			panic("error executing sql select: " + err.Error())
 		} else {
 			for results.Next() {
-				err := results.Scan(&requestID, &categoryID, &name, &desc)
+				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy)
 				if err != nil {
-					panic("error getting results from sql select")
+					panic("error getting results from sql select: " + err.Error())
 				}
-				requests[requestID] = viewRequest{categoryID, name, desc}
+				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy}
 			}
 		}
 	}
@@ -286,11 +305,10 @@ func DeleteRequest(reqID int) (e error) {
 	return nil
 }
 
-func unpackRequest(request newRequest) (repID, categoryID, recipientID int, recipient string, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
+func unpackRequest(request newRequest) (repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
 	return request.RepresentativeId,
 		request.RequestCategoryId,
 		request.RecipientId,
-		request.Recipient,
 		request.RequestStatus,
 		request.RequestDetails.RequestDescription,
 		request.RequestDetails.ToCompleteBy,

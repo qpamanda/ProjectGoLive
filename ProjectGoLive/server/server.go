@@ -69,7 +69,6 @@ type newRequest struct {
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
-	Recipient         string
 	/*
 		RequestStatus
 		0 (pending/waiting to be matched to a helper)
@@ -98,9 +97,10 @@ type viewRecipient struct {
 
 type viewRequest struct {
 	RequestID     int
-	CategoryID    int
+	Category      string
 	RecipientName string
 	Description   string
+	ToCompleteBy  string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server

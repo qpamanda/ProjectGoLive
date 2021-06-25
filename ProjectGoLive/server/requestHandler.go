@@ -29,7 +29,6 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	repID := 0
 	categoryID := 0
 	recipientID := 0
-	recipient := ""
 	reqStatus := 0
 	reqDesc := ""
 	address := ""
@@ -70,14 +69,12 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		toCompleteBy, _ = time.Parse(time.RFC3339, tmpTime)
 
 		recipientID, _ = strconv.Atoi(req.FormValue("recipientid"))
-		recipient = recipients[recipientID][0]
 		address = sanitize.Accents(req.FormValue("address"))
 
 		request := newRequest{
 			repID,
 			categoryID,
 			recipientID,
-			recipient,
 			reqStatus,
 			requestDetails{reqDesc, toCompleteBy, address},
 			createdBy,
@@ -94,7 +91,6 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 				repID,
 				categoryID,
 				recipientID,
-				recipient,
 				reqStatus,
 				reqDesc,
 				toCompleteBy,
@@ -111,7 +107,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 					"repID":     repID,
 					"createdBy": createdBy,
 					"createdDT": createdDT,
-				}).Info(clientMsg)
+				}).Warn(clientMsg)
 			}
 
 			clientMsg = "Request successfully added"
@@ -130,7 +126,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 				"repID":     repID,
 				"createdBy": createdBy,
 				"createdDT": createdDT,
-			}).Info(clientMsg)
+			}).Error(clientMsg)
 		}
 	}
 
@@ -159,14 +155,13 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	currentUser := getUser(res, req)
 
 	repID := 0
-	requestID := 0
 	clientMsg := "" // To display message to the user on the client
 	var isAdmin bool
 
 	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
 
 	// Only 1 key-value pair in repDetails
-	for k, _ := range repDetails {
+	for k := range repDetails {
 		repID = k
 	}
 
@@ -184,44 +179,53 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	requests := database.GetRequest(repID, isAdmin)
 
 	// Parse recipients into viewRecipient format
+	// Consider writing a function to sort viewRequestSlice
 	for k, v := range requests {
-		viewR := viewRequest{k, v.CategoryID, v.RecipientName, v.Description}
+		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
-	//fmt.Fprintln(res, viewRequestsSlice)
+	//fmt.Fprintln(res, viewRequestSlice)
 
 	// Process the form submission
 	if req.Method == http.MethodPost {
-		requestID, _ = strconv.Atoi(req.FormValue("requestid"))
+		for _, v := range viewRequestSlice {
+			selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
 
-		if err := database.DeleteRequest(requestID); err == nil {
+			if selectedRequest != "" {
+				if err := database.DeleteRequest(v.RequestID); err == nil {
 
-			clientMsg = "Request successfully deleted"
+					clientMsg = "Request successfully deleted"
 
-			log.WithFields(logrus.Fields{
-				"repID":       repID,
-				"requestID":   requestID,
-				"recipient":   requests[requestID].RecipientName,
-				"description": requests[requestID].Description,
-				"deleteDT":    time.Now(),
-			}).Info(clientMsg)
+					log.WithFields(logrus.Fields{
+						"repID":       repID,
+						"requestID":   v.RequestID,
+						"recipient":   v.RecipientName,
+						"description": v.Description,
+						"deleteDT":    time.Now(),
+					}).Info(clientMsg)
 
-		} else {
-			clientMsg = "No request deleted"
+				} else {
+					clientMsg = "No request deleted"
 
-			log.WithFields(logrus.Fields{
-				"repID": repID,
-				"time":  time.Now(),
-			}).Info(clientMsg)
+					log.WithFields(logrus.Fields{
+						"repID": repID,
+						"time":  time.Now(),
+					}).Info(clientMsg)
+				}
+			}
 		}
+
 	}
 
 	data := struct {
-		RequestSlice []viewRequest
-		ClientMsg    string
+		RequestSlice    []viewRequest
+		CntCurrentItems int
+		ClientMsg       string
 	}{
 		viewRequestSlice,
+		len(viewRequestSlice),
 		clientMsg,
 	}
 
@@ -235,7 +239,6 @@ func isValidRequest(req newRequest) bool {
 	// skip RequestCategoryId, RecipientId check
 	// as there is a default option in the dropdown of the form
 	if req.RepresentativeId == 0 ||
-		req.Recipient == "" ||
 		req.RequestDetails.RequestDescription == "" ||
 		req.RequestDetails.FulfilAt == "" ||
 		req.CreatedBy == "" ||
@@ -243,4 +246,19 @@ func isValidRequest(req newRequest) bool {
 		return false
 	}
 	return true
+}
+
+// Author: Tan Jun Jie
+// convertCategoryID returns the string description of a category id
+func convertCategoryID(id int) string {
+	switch id {
+	case 1:
+		return "Monetary Donation"
+	case 2:
+		return "Item Donation"
+	case 3:
+		return "Errands"
+	default:
+		return "Invalid Category"
+	}
 }

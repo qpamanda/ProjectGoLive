@@ -2,34 +2,45 @@
 
 <h2>Delete an Existing Request</h2>
 
+{{if eq .CntCurrentItems 0}}
+    <p style="color:red;">No requests have been made.</p>
+{{else}}
 <p style="color:red;">{{.ClientMsg}} </p> 
 
-<p>Select an existing request to delete.</p>
-
 <form method="post" autocomplete="off">
-    <table border="0">
+    <table id="view">
+    <tr><th colspan="4">Delete requests</th></tr>
+
     <tr>
-        <td><label for ="requestid">Pick request to delete</label></td>
-        <td>:</td>
-        <td>
-            <select name="requestid">
-                {{range .RequestSlice}}
-                    <p>Recipient: {{.RecipientName}}</p>
-                    <p>Request Type: {{.CategoryID}}</p>
-                    <option value="{{.RequestID}}">{{.Description}}</option>
-                {{end}}
-            </select>
-        </td>
+        <td><b>Category</b></td>
+        <td align="center"><b>Description</b></td>
+        <td align="center"><b>Recipient</b></td>
+        <td align="center"><b>Deadline</b></td>
     </tr>
 
-    <tr><td colspan="3">&nbsp;</td></tr>
+    {{range .RequestSlice}}
+        <tr>
+            <td>
+                <input type="checkbox" name="{{.RequestID}}" value="{{.RequestID}}">&nbsp;
+                 {{.Category}}
+            </td>
+            <td align="center">{{.Description}}</td>
+            <td align="center">{{.RecipientName}}</td>
+            <td align="center">{{.ToCompleteBy}}</td>
+        </tr>
+    {{end}}
 
+    </table>
+    <br>
+    <table>
     <tr> 
-        <td colspan="3">
-            <input type="submit">&nbsp;
-        </td>
-    </tr>     
+        <td align="left"><input type="submit"></td>                    
+    </tr> 
+    </table>  
 </form>
 
+{{template "footer"}}
+
+{{end}}
 </body>
 </html>
