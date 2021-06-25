@@ -1,3 +1,5 @@
+## PLEASE RUN THE FOLLOWING SCRIPTS IN dbProject DATABASE BEFORE TESTING ON THE APPLICATION **
+
 ---------------------
 -- Create Database --
 ---------------------
@@ -45,6 +47,18 @@ CREATE TABLE `RepMemberType` (
 );
 
 
+CREATE TABLE `MemberType` (
+  `MemberTypeID` int NOT NULL,
+  `MemberType` varchar(25) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`MemberTypeID`)
+);
+
+
+
 CREATE TABLE `Recipients` (
   `RecipientID` INT NOT NULL AUTO_INCREMENT,
   `RepID_FK` INT NOT NULL,
@@ -63,6 +77,38 @@ CREATE TABLE `Recipients` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     );
+
+
+
+------------------------
+-- Insert Into Tables --
+------------------------
+INSERT INTO `dbProject`.`Representatives`
+(`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
+`ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
+VALUES (5000, 'admin', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
+'Admin', 'Admin', 'admin@givinggrace.com', '98765432', 'Giving Grace Portal',
+now(), now(), 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`MemberType` (`MemberTypeID`, `MemberType`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('1', 'Admin', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`MemberType` (`MemberTypeID`, `MemberType`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('2', 'Requester', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`MemberType` (`MemberTypeID`, `MemberType`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('3', 'Helper', 'admin', now(), 'admin', now());
+
+INSERT INTO RepMemberType VALUES (5000, 1, 'admin', now(), 'admin', now());
+
+INSERT INTO RepMemberType VALUES (5000, 2, 'admin', now(), 'admin', now());
+
+INSERT INTO RepMemberType VALUES (5000, 3, 'admin', now(), 'admin', now());
+
 
 
 -----------
