@@ -12,8 +12,3 @@ o	Create Database
 		CREATE DATABASE dbProject;
 o	Use Database
 		USE dbProject;
-
-•	Create an user account in MySQLWorkBench for accessing the database
-		Log in to DB -> Navigate to Administration-Users and Privileges -> Add Account
-		Use 'user' and 'password' for login and password fields respectively
-		and grant all rights under Schema Privileges
