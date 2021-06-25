@@ -58,6 +58,51 @@ type user struct {
 	LastLoginDT    time.Time
 }
 
+// req struct for storing request information
+type newRequest struct {
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	Recipient         string
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
+}
+
+type viewRecipient struct {
+	RecipientID int
+	Name        string
+}
+
+type viewRequest struct {
+	RequestID     int
+	CategoryID    int
+	RecipientName string
+	Description   string
+}
+
 // InitServer initialises the templates for displaying the web pages at the server
 func InitServer() {
 	// Parse templates
@@ -68,7 +113,7 @@ func InitServer() {
 	logFileName := "log/" + date + "_events.log"
 
 	// Create a new log file for append
-	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile(logFileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal("FATAL: OpenFile - ", err)
 	}
@@ -117,6 +162,8 @@ func initaliseHandlers(router *mux.Router) {
 	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
+	router.HandleFunc("/addrequest", addrequest)
+	router.HandleFunc("/deleterequest", deleterequest)
 	//router.HandleFunc("/addcourse", addcourse)
 	//router.HandleFunc("/updcourse", updcourse)
 	//router.HandleFunc("/delcourse", delcourse)

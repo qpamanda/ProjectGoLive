@@ -1,0 +1,35 @@
+{{template "header"}}
+
+<h2>Delete an Existing Request</h2>
+
+<p style="color:red;">{{.ClientMsg}} </p> 
+
+<p>Select an existing request to delete.</p>
+
+<form method="post" autocomplete="off">
+    <table border="0">
+    <tr>
+        <td><label for ="requestid">Pick request to delete</label></td>
+        <td>:</td>
+        <td>
+            <select name="requestid">
+                {{range .RequestSlice}}
+                    <p>Recipient: {{.RecipientName}}</p>
+                    <p>Request Type: {{.CategoryID}}</p>
+                    <option value="{{.RequestID}}">{{.Description}}</option>
+                {{end}}
+            </select>
+        </td>
+    </tr>
+
+    <tr><td colspan="3">&nbsp;</td></tr>
+
+    <tr> 
+        <td colspan="3">
+            <input type="submit">&nbsp;
+        </td>
+    </tr>     
+</form>
+
+</body>
+</html>
