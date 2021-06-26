@@ -34,6 +34,65 @@ var (
 	//bFirst = true
 )
 
+// user struct for storing user account information
+type user struct {
+	UserName       string
+	Password       []byte
+	FirstName      string
+	LastName       string
+	Email          string
+	IsAdmin        bool
+	CreatedDT      time.Time
+	LastModifiedDT time.Time
+	CurrentLoginDT time.Time
+	LastLoginDT    time.Time
+}
+
+// req struct for storing request information
+type newRequest struct {
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
+}
+
+type viewRecipient struct {
+	RecipientID int
+	Name        string
+}
+
+type viewRequest struct {
+	RequestID     int
+	Category      string
+	RecipientName string
+	Description   string
+	ToCompleteBy  string
+}
+
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {

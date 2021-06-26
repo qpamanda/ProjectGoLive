@@ -1,7 +1,0 @@
-{"level":"error","line":"server/handler.go:45","msg":"username and/or password do not match","time":"2021-06-21T12:24:06+08:00"}
-{"level":"error","line":"server/handler.go:45","msg":"username and/or password do not match","time":"2021-06-21T12:24:12+08:00"}
-{"level":"error","line":"server/handler.go:45","msg":"username and/or password do not match","time":"2021-06-21T12:25:43+08:00"}
-{"level":"error","line":"server/handler.go:45","msg":"username and/or password do not match","time":"2021-06-21T12:30:28+08:00"}
-{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-21T16:20:04+08:00","userName":"admin"}
-{"level":"info","line":"server/userHandler.go:322","msg":"[admin] user logout successfully","time":"2021-06-21T16:22:36+08:00","userName":"admin"}
-{"level":"error","line":"server/handler.go:39","msg":"username and/or password do not match","time":"2021-06-21T16:22:41+08:00"}
