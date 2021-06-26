@@ -123,7 +123,7 @@ INSERT INTO `dbProject`.`Representatives`
 (`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
 `ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
-VALUES (2001, 'user1', '$2a$04$4yArqmyF5J4',
+VALUES (2001, 'user1', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
 'user', 'one', 'user1@givinggrace.com', '98765435', 'Giving Grace',
 now(), now(), 'admin', now(), 'admin', now());
 
@@ -132,7 +132,7 @@ INSERT INTO `dbProject`.`Representatives`
 (`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
 `ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
-VALUES (2002, 'user2', '$2a$04$4yArqm',
+VALUES (2002, 'user2', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
 'user', 'two', 'user2@givinggrace.com', '98765445', 'Giving Grace',
 now(), now(), 'admin', now(), 'admin', now());
 
@@ -140,7 +140,7 @@ INSERT INTO `dbProject`.`Representatives`
 (`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
 `ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
-VALUES (2003, 'user3', '$2a$04$4yArqmyF5J4',
+VALUES (2003, 'user3', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
 'user', 'three', 'user3@givinggrace.com', '98785435', 'Giving Grace',
 now(), now(), 'admin', now(), 'admin', now());
 
@@ -149,7 +149,7 @@ INSERT INTO `dbProject`.`Representatives`
 (`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
 `ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
-VALUES (2004, 'user4', '$2a$04$4yArqmyF5',
+VALUES (2004, 'user4', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
 'user', 'four', 'user4@givinggrace.com', '94765435', 'Giving Grace',
 now(), now(), 'admin', now(), 'admin', now());
 
