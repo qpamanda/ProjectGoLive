@@ -1,0 +1,26 @@
+{{template "header"}}
+
+<h2>Edit an Existing Request</h2>
+
+{{if eq .CntCurrentItems 0}}
+    <p style="color:red;">No requests have been made.</p>
+{{else}}
+<p style="color:red;">{{.ClientMsg}} </p> 
+
+{{ if eq .Status "select"}}
+    {{template "editreq-select" .}}
+{{end}}
+
+{{ if eq .Status "edit"}}
+    {{template "editreq-edit" .}}
+{{end}}
+
+{{ if eq .Status "complete"}}
+   {{template "editreq-complete" .}}
+{{end}}
+
+{{template "footer"}}
+
+{{end}}
+</body>
+</html>

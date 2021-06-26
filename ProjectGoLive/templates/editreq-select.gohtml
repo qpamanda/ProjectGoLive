@@ -1,0 +1,37 @@
+{{define "editreq-select"}}
+
+<form method="post" autocomplete="off">
+    <table id="view">
+        <tr><th colspan="5">Edit requests</th></tr>
+        <tr>
+            <td></td>
+            <td align="center"><b>Category</b></td>
+            <td align="center"><b>Description</b></td>
+            <td align="center"><b>Recipient</b></td>
+            <td align="center"><b>Deadline</b></td>
+        </tr>
+
+        {{range .RequestSlice}}
+            <tr>
+                <td>
+                    <input type="radio" name="{{.RequestID}}" value="{{.RequestID}}">&nbsp;
+                </td>
+                <td align="center">{{.Category}}</td>
+                <td align="center">{{.Description}}</td>
+                <td align="center">{{.RecipientName}}</td>
+                <td align="center">{{.ToCompleteBy}}</td>
+            </tr>
+        {{end}}
+    </table>
+    
+    <br>
+
+    <table>
+    <tr> 
+        <td align="left"><input type="submit"></td>                    
+    </tr> 
+    </table>
+</form>
+
+
+{{end}}

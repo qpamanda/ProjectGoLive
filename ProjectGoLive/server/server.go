@@ -91,6 +91,7 @@ type viewRequest struct {
 	RecipientName string
 	Description   string
 	ToCompleteBy  string
+	FulfillAt     string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server.
@@ -159,6 +160,7 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/changepwd", changepwd)
 	router.HandleFunc("/addrequest", addrequest)
 	router.HandleFunc("/deleterequest", deleterequest)
+	router.HandleFunc("/editrequest", editrequest)
 	//router.HandleFunc("/delcourse", delcourse)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
