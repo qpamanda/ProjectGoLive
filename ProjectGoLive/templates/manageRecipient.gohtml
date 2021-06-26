@@ -1,0 +1,24 @@
+{{template "header" .User}}
+
+{{template "mainmenu"}}
+
+{{if eq .IsAdmin true}}
+    {{template "adminmenu"}}
+{{end}}
+    [<a href="/logout">Log Out</a>]
+    </br></br>
+<body>
+    <h1>My Recipient's</h1>
+    <h2><a href="/addrecipient">Add new recipient</a></h2>
+    <h2> {{.ClientMsg2}}
+    <h2> {{.ClientMsg}}
+    <table border="1">
+    {{ range .Recipients }}
+        <tr>
+        <td><h3>{{.Name}}</h3></td>
+        <td><a href="/getrecipient?recipientID={{.RecipientID}}">View more..</a></td>
+        <td><a href="/updaterecipient?recipientID={{.RecipientID}}">Update</a></td>
+        <td><a href="/deleterecipient?recipientID={{.RecipientID}}">Delete</a></td>
+        </tr>
+    {{end}} 
+</body>
