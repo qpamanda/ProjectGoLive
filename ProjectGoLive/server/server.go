@@ -157,6 +157,8 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
+	router.HandleFunc("/addrequest", addrequest)
+	router.HandleFunc("deleterequest", deleterequest)
 	//router.HandleFunc("/delcourse", delcourse)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
