@@ -78,6 +78,34 @@ CREATE TABLE `Recipients` (
     ON UPDATE NO ACTION
     );
 
+CREATE TABLE `Requests` (
+  `RequestID` INT NOT NULL AUTO_INCREMENT,
+  `RepID_FK` INT NOT NULL,
+  `CategoryID` TINYINT NOT NULL,
+  `RecipientID_FK` INT NOT NULL,
+  `RequestStatusCode` TINYINT NOT NULL,
+  `RequestDescription` MEDIUMTEXT NOT NULL,
+  `ToCompleteBy` DATETIME NOT NULL,
+  `FulfillAt` TEXT NOT NULL,
+  `CreatedBy` TEXT NOT NULL,
+  `CreatedDT` DATETIME NOT NULL,
+  `LastModifiedBy` TEXT NOT NULL,
+  `LastModifiedDT` DATETIME NOT NULL,
+  PRIMARY KEY (`RequestID`),
+  UNIQUE INDEX `RequestID_UNIQUE` (`RequestID` ASC) VISIBLE,
+  INDEX `RepID_idx` (`RepID_FK` ASC) VISIBLE,
+  INDEX `RecipientID_idx` (`RecipientID_FK` ASC) VISIBLE,
+  CONSTRAINT `Requests_Representatives_RepID`
+    FOREIGN KEY (`RepID_FK`)
+    REFERENCES `dbProject`.`Representatives` (`RepID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Requests_Recipients_RecipientID`
+    FOREIGN KEY (`RecipientID_FK`)
+    REFERENCES `dbProject`.`Recipients` (`RecipientID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
 
 
 ------------------------
@@ -89,6 +117,40 @@ INSERT INTO `dbProject`.`Representatives`
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
 VALUES (5000, 'admin', '$2a$04$4yArqmyF5J4z9NpvlJqgqOsqZN6Ik7XYNIuR2jMb6AYn9LaNpxzU2',
 'Admin', 'Admin', 'admin@givinggrace.com', '98765432', 'Giving Grace Portal',
+now(), now(), 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`Representatives`
+(`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
+`ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
+VALUES (2001, 'user1', '$2a$04$4yArqmyF5J4',
+'user', 'one', 'user1@givinggrace.com', '98765435', 'Giving Grace',
+now(), now(), 'admin', now(), 'admin', now());
+
+
+INSERT INTO `dbProject`.`Representatives`
+(`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
+`ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
+VALUES (2002, 'user2', '$2a$04$4yArqm',
+'user', 'two', 'user2@givinggrace.com', '98765445', 'Giving Grace',
+now(), now(), 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`Representatives`
+(`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
+`ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
+VALUES (2003, 'user3', '$2a$04$4yArqmyF5J4',
+'user', 'three', 'user3@givinggrace.com', '98785435', 'Giving Grace',
+now(), now(), 'admin', now(), 'admin', now());
+
+
+INSERT INTO `dbProject`.`Representatives`
+(`RepID`, `UserName`, `Password`, `FirstName`, `LastName`, `Email`,
+`ContactNo`, `Organisation`, `CurrentLogin_dt`, `LastLogin_dt`,
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`)
+VALUES (2004, 'user4', '$2a$04$4yArqmyF5',
+'user', 'four', 'user4@givinggrace.com', '94765435', 'Giving Grace',
 now(), now(), 'admin', now(), 'admin', now());
 
 INSERT INTO `dbProject`.`MemberType` (`MemberTypeID`, `MemberType`, 
@@ -109,7 +171,34 @@ INSERT INTO RepMemberType VALUES (5000, 2, 'admin', now(), 'admin', now());
 
 INSERT INTO RepMemberType VALUES (5000, 3, 'admin', now(), 'admin', now());
 
+INSERT INTO RepMemberType VALUES (2001, 2, 'admin', now(), 'admin', now());
 
+INSERT INTO RepMemberType VALUES (2002, 2, 'admin', now(), 'admin', now());
+
+INSERT INTO RepMemberType VALUES (2003, 2, 'admin', now(), 'admin', now());
+
+INSERT INTO RepMemberType VALUES (2004, 2, 'admin', now(), 'admin', now());
+
+INSERT INTO Recipients VALUES (3001, 2001, 'recipient1', 0, "i am a recipient", 99910011, now(), now());
+
+INSERT INTO Recipients VALUES (3002, 2001, 'recipient2', 0, "i am a recipient", 99910012, now(), now());
+
+INSERT INTO Recipients VALUES (3003, 2001, 'recipient3', 0, "i am a recipient", 99910013, now(), now());
+
+INSERT INTO Recipients VALUES (3004, 2002, 'recipient4', 0, "i am a recipient", 99910014, now(), now());
+
+INSERT INTO Recipients VALUES (3005, 2002, 'recipient5', 0, "i am a recipient", 99910015, now(), now());
+
+INSERT INTO Recipients VALUES (3006, 2002, 'recipient6', 0, "i am a recipient", 99910016, now(), now());
+
+
+INSERT INTO Recipients VALUES (3007, 2003, 'recipient7', 0, "i am a recipient", 99910017, now(), now());
+
+INSERT INTO Recipients VALUES (3008, 2003, 'recipient8', 0, "i am a recipient", 99910018, now(), now());
+
+INSERT INTO Recipients VALUES (3009, 2004, 'recipient9', 0, "i am a recipient", 99910019, now(), now());
+
+INSERT INTO Requests VALUES ();
 
 -----------
 -- Adhoc --
