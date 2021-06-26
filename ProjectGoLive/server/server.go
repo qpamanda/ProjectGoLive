@@ -13,6 +13,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"ProjectGoLive/smtpserver"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -33,65 +34,6 @@ var (
 
 	//bFirst = true
 )
-
-// user struct for storing user account information
-type user struct {
-	UserName       string
-	Password       []byte
-	FirstName      string
-	LastName       string
-	Email          string
-	IsAdmin        bool
-	CreatedDT      time.Time
-	LastModifiedDT time.Time
-	CurrentLoginDT time.Time
-	LastLoginDT    time.Time
-}
-
-// req struct for storing request information
-type newRequest struct {
-	RepresentativeId int // id of the coordinator/representative
-	/*
-		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
-	*/
-	RequestCategoryId int
-	RecipientId       int // id of recipient who receives the aid
-	/*
-		RequestStatus
-		0 (pending/waiting to be matched to a helper)
-		1 (being handled)
-		2 (completed)
-	*/
-	RequestStatus  int
-	RequestDetails requestDetails
-	CreatedBy      string
-	CreatedDT      time.Time
-	LastModifiedBy string
-	LastModifiedDT time.Time
-}
-
-//requestDetails struct for storing request detail information
-type requestDetails struct {
-	RequestDescription string
-	ToCompleteBy       time.Time
-	FulfilAt           string
-}
-
-type viewRecipient struct {
-	RecipientID int
-	Name        string
-}
-
-type viewRequest struct {
-	RequestID     int
-	Category      string
-	RecipientName string
-	Description   string
-	ToCompleteBy  string
-}
 
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
@@ -138,7 +80,6 @@ func StartServer() {
 	// Set the listen port
 	fmt.Println("Listening at port 5221")
 	err := http.ListenAndServeTLS(":5221", "certs//cert.pem", "certs//key.pem", router)
-	//err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Fatal("FATAL: ListenAndServeTLS - ", err)
 	}
@@ -157,8 +98,8 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
-	router.HandleFunc("/addrequest", addrequest)
-	router.HandleFunc("/deleterequest", deleterequest)
+	router.HandleFunc("/resetpwd", resetpwd)
+	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	//router.HandleFunc("/delcourse", delcourse)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
@@ -235,4 +176,11 @@ func initFieldsLen() {
 
 	// Set the max characters for password
 	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
+
+	// Setup fields for email sending feature
+	smtpserver.HostPath = os.Getenv("HOST_PATH")
+	smtpserver.SMTPHost = os.Getenv("SMTP_HOST")
+	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
+	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
+	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
 }
