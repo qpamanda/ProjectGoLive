@@ -198,7 +198,17 @@ INSERT INTO Recipients VALUES (3008, 2003, 'recipient8', 0, "i am a recipient", 
 
 INSERT INTO Recipients VALUES (3009, 2004, 'recipient9', 0, "i am a recipient", 99910019, now(), now());
 
-INSERT INTO Requests VALUES ();
+INSERT INTO Requests VALUES (6001, 2001, 3, 3001, 0, "buy lunch for mr kim", now(), "7 Flora Rd.", "user one", now(), "user one", now());
+
+INSERT INTO Requests VALUES (6002, 2001, 3, 3001, 0, "buy dinner for mr kim", now(), "7 Flora Rd.", "user one", now(), "user one", now());
+
+INSERT INTO Requests VALUES (6003, 2002, 3, 3002, 0, "buy dinner for ms choo", now(), "7 Changi Rd.", "user two", now(), "user two", now());
+
+INSERT INTO Requests VALUES (6004, 2002, 3, 3002, 0, "buy lunch for ms choo", now(), "7 Changi Rd.", "user two", now(), "user two", now());
+
+INSERT INTO Requests VALUES (6005, 2003, 1, 3005, 0, "donate $50", now(), "7 Long Rd.", "user three", now(), "user three", now());
+
+INSERT INTO Requests VALUES (6006, 2004, 2, 3009, 0, "Need walking stick", now(), "7 Noh Rd.", "user four", now(), "user four", now());
 
 -----------
 -- Adhoc --
