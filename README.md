@@ -56,7 +56,7 @@ The following is the discussion and jobs delegations for our group thus far:
     - RecipientID INT (Primary key)
     - RepID
     - Name
-    - Category (boolean - true for individual , false for organisation)
+    - Category (boolean - 1 (true) for individual , 0 (false) for organisation)
     - Profile
     - ContactNo
     - Email?
