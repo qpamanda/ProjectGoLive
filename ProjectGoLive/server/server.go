@@ -31,9 +31,9 @@ var (
 	tpl  *template.Template
 	log  = logrus.New()
 	file *os.File
-
-	//bFirst = true
 )
+
+const cookieName = "sessionToken"
 
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
@@ -92,15 +92,14 @@ func StartServer() {
 func initaliseHandlers(router *mux.Router) {
 
 	router.HandleFunc("/", index)
-
-	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
 	router.HandleFunc("/resetpwd", resetpwd)
 	router.HandleFunc("/resetpwdreq", resetpwdreq)
-	//router.HandleFunc("/delcourse", delcourse)
+	router.HandleFunc("/addrequest", addrequest)
+	router.HandleFunc("/deleterequest", deleterequest)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }

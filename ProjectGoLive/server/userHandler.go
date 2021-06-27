@@ -10,9 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
-	"github.com/gofrs/uuid"
 	"github.com/kennygrant/sanitize"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -88,21 +86,8 @@ func signup(res http.ResponseWriter, req *http.Request) {
 					clientMsg = "ERROR: " + "email already taken. Please use another email"
 					log.Error("[" + username + "] email already taken")
 				} else {
-					// Create a new session token
-					id, _ := uuid.NewV4()
-
-					// Set an expiry time of 120 seconds for the cookie, the same as the cache
-					sessionToken := &http.Cookie{
-						Name:     "sessionToken",
-						Value:    id.String(),
-						Expires:  time.Now().Add(120 * time.Second),
-						HttpOnly: true,
-						Path:     "/",
-						Domain:   "localhost",
-						Secure:   true,
-					}
-					// Set the session token as a cookie on the client
-					http.SetCookie(res, sessionToken)
+					// Call createCookie func to set the cookie
+					sessionToken := createCookie(res, req)
 
 					// Store the session token in a map on the server
 					authenticate.MapSessions[sessionToken.Value] = username
@@ -495,26 +480,12 @@ func resetpwd(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// This is an intended empty struct to get pass header.gohtml checks
-	myUser := struct {
-		UserName    string
-		LastLoginDT time.Time
-	}{
-		"",
-		time.Now(),
-	}
-
 	data := struct {
-		User struct {
-			UserName    string
-			LastLoginDT time.Time
-		}
 		UserName    string
 		NewPassword string
 		CmfPassword string
 		ClientMsg   string
 	}{
-		myUser,
 		username,
 		newpassword,
 		cmfpassword,
@@ -560,24 +531,10 @@ func resetpwdreq(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// This is an intended empty struct to get pass header.gohtml checks
-	myUser := struct {
-		UserName    string
-		LastLoginDT time.Time
-	}{
-		"",
-		time.Now(),
-	}
-
 	data := struct {
-		User struct {
-			UserName    string
-			LastLoginDT time.Time
-		}
 		Email     string
 		ClientMsg string
 	}{
-		myUser,
 		email,
 		clientMsg,
 	}
@@ -591,7 +548,7 @@ func logout(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
-	sessionToken, _ := req.Cookie("sessionToken")
+	sessionToken, _ := req.Cookie(cookieName)
 
 	// Get username before session is deleted
 	username := authenticate.MapSessions[sessionToken.Value]
@@ -600,7 +557,7 @@ func logout(res http.ResponseWriter, req *http.Request) {
 	delete(authenticate.MapSessions, sessionToken.Value)
 	// Remove the cookie from the client
 	sessionToken = &http.Cookie{
-		Name:   "sessionToken",
+		Name:   cookieName,
 		Value:  "",
 		MaxAge: -1,
 	}
@@ -619,29 +576,17 @@ func logout(res http.ResponseWriter, req *http.Request) {
 // Author: Amanda
 func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, bool) {
 	// Get current session cookie
-	sessionToken, err := req.Cookie("sessionToken")
+	sessionToken, err := req.Cookie(cookieName)
 	// No session token found
 	if err != nil {
-		// Add new session token cookie
-		id, _ := uuid.NewV4()
-		// Set an expiry time of 120 seconds for the cookie, the same as the cache
-		sessionToken = &http.Cookie{
-			Name:     "sessionToken",
-			Value:    id.String(),
-			Expires:  time.Now().Add(120 * time.Second),
-			HttpOnly: true,
-			Path:     "/",
-			Domain:   "localhost",
-			Secure:   true,
-		}
+		// Call createCookie func to set the cookie
+		sessionToken = createCookie(res, req)
 	}
-	http.SetCookie(res, sessionToken)
 
 	// If the user exists already, get user
 	var myUser authenticate.User
 
-	if _, ok := authenticate.MapSessions[sessionToken.Value]; ok {
-		username := authenticate.MapSessions[sessionToken.Value]
+	if username, ok := authenticate.MapSessions[sessionToken.Value]; ok {
 		myUser, err = database.GetUser(username) // Get user from database
 		if err != nil {
 			return myUser, false
@@ -655,7 +600,7 @@ func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, boo
 // Returns true if already logged in, false otherwise.
 // Author: Amanda
 func alreadyLoggedIn(req *http.Request) bool {
-	sessionToken, err := req.Cookie("sessionToken")
+	sessionToken, err := req.Cookie(cookieName)
 	if err != nil {
 		return false
 	}

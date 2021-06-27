@@ -10,6 +10,51 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// req struct for storing request information
+type newRequest struct {
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
+}
+
+type viewRecipient struct {
+	RecipientID int
+	Name        string
+}
+
+type viewRequest struct {
+	RequestID     int
+	Category      string
+	RecipientName string
+	Description   string
+	ToCompleteBy  string
+}
+
 // Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
 // It creates a new request and adds in to the database.

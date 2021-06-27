@@ -28,7 +28,7 @@ func GetUser(username string) (authenticate.User, error) {
 		email        string
 		contactno    string
 		organisation string
-		lastlogin_dt string
+		lastloginDT  time.Time
 	)
 	query := "SELECT RepID, Password, " +
 		"FirstName, LastName, Email, " +
@@ -41,7 +41,7 @@ func GetUser(username string) (authenticate.User, error) {
 	} else {
 		if results.Next() {
 			err := results.Scan(&repid, &password, &firstname, &lastname,
-				&email, &contactno, &organisation, &lastlogin_dt)
+				&email, &contactno, &organisation, &lastloginDT)
 
 			if err != nil {
 				panic("error getting results from sql select")
@@ -50,18 +50,17 @@ func GetUser(username string) (authenticate.User, error) {
 			return user, errors.New("user not found")
 		}
 
-		user.RepID = repid
-		user.UserName = username
-		user.Password = password
-		user.FirstName = firstname
-		user.LastName = lastname
-		user.Email = email
-		user.ContactNo = contactno
-		user.Organisation = organisation
-
-		const layout = "2006-01-02 15:04:05"
-		user.LastLoginDT, _ = time.Parse(layout, lastlogin_dt)
-
+		user = authenticate.User{
+			RepID:        repid,
+			UserName:     username,
+			Password:     password,
+			FirstName:    firstname,
+			LastName:     lastname,
+			Email:        email,
+			ContactNo:    contactno,
+			Organisation: organisation,
+			LastLoginDT:  lastloginDT,
+		}
 		return user, nil
 	}
 }
@@ -86,7 +85,6 @@ func GetAllUsers() ([]authenticate.User, error) {
 		email        string
 		contactno    string
 		organisation string
-		lastlogin_dt string
 		lastloginDT  time.Time
 	)
 	users := make([]authenticate.User, 0)
@@ -100,17 +98,13 @@ func GetAllUsers() ([]authenticate.User, error) {
 	if err != nil {
 		panic("error executing sql select")
 	} else {
-		const layout = "2006-01-02 15:04:05"
-
 		for results.Next() {
 			err := results.Scan(&repid, &username, &password, &firstname, &lastname,
-				&email, &contactno, &organisation, &lastlogin_dt)
+				&email, &contactno, &organisation, &lastloginDT)
 
 			if err != nil {
 				panic("error getting results from sql select")
 			}
-
-			lastloginDT, _ = time.Parse(layout, lastlogin_dt)
 
 			user = authenticate.User{
 				RepID:        repid,
