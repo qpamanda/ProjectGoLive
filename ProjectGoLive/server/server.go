@@ -40,9 +40,8 @@ type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
+		1 (item donation)
+		2 (errands)
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
@@ -80,7 +79,6 @@ type viewRequest struct {
 	ToCompleteBy  string
 	FulfillAt     string
 }
-
 
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
@@ -152,12 +150,9 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	router.HandleFunc("/addrequest", addrequest)
 	router.HandleFunc("/deleterequest", deleterequest)
-<<<<<<< HEAD
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
 	//router.HandleFunc("/delcourse", delcourse)
-=======
->>>>>>> origin/main
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }
