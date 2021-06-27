@@ -10,50 +10,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// req struct for storing request information
-type newRequest struct {
-	RepresentativeId int // id of the coordinator/representative
-	/*
-		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
-	*/
-	RequestCategoryId int
-	RecipientId       int // id of recipient who receives the aid
-	/*
-		RequestStatus
-		0 (pending/waiting to be matched to a helper)
-		1 (being handled)
-		2 (completed)
-	*/
-	RequestStatus  int
-	RequestDetails requestDetails
-	CreatedBy      string
-	CreatedDT      time.Time
-	LastModifiedBy string
-	LastModifiedDT time.Time
-}
-
-//requestDetails struct for storing request detail information
-type requestDetails struct {
-	RequestDescription string
-	ToCompleteBy       time.Time
-	FulfilAt           string
-}
-
-type viewRecipient struct {
-	RecipientID int
-	Name        string
-}
-
-type viewRequest struct {
-	RequestID     int
-	Category      string
-	RecipientName string
-	Description   string
-	ToCompleteBy  string
-}
+var (
+	// selecteditrequest passes these to editrequest
+	rid         int
+	hasSelected bool
+	adminID     = 5000
+)
 
 // Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
@@ -146,16 +108,16 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 				lastModifiedDT)
 
 			if err != nil {
-				clientMsg = "Could not add request"
+				clientMsg = "Could not add request: "
 
 				log.WithFields(logrus.Fields{
 					"repID":     repID,
 					"createdBy": createdBy,
 					"createdDT": createdDT,
-				}).Warn(clientMsg)
+				}).Warn(clientMsg + err.Error())
 			}
 
-			clientMsg = "Request successfully added"
+			clientMsg = "Request successfully added."
 
 			log.WithFields(logrus.Fields{
 				"repID":      repID,
@@ -165,7 +127,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 			}).Info(clientMsg)
 
 		} else {
-			clientMsg = "No request added"
+			clientMsg = "One and/or more fields are empty. No request added."
 
 			log.WithFields(logrus.Fields{
 				"repID":     repID,
@@ -214,20 +176,21 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 		isAdmin = true
 		// Decide whether to add admin entry in Representative table
 		// or to add an arbitary non-zero value for admin repID
-		repID = 5221
+		repID = adminID
 	} else {
 		isAdmin = false
 	}
 
 	viewRequestSlice := make([]viewRequest, 0)
 
-	requests := database.GetRequest(repID, isAdmin)
+	requests := database.GetRequestByRep(repID, isAdmin)
 
 	// Parse recipients into viewRecipient format
 	// Consider writing a function to sort viewRequestSlice
 	for k, v := range requests {
 		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime}
+		// do not display address
+		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, ""}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
@@ -235,13 +198,15 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 
 	// Process the form submission
 	if req.Method == http.MethodPost {
+		selectedCnt := 0
 		for _, v := range viewRequestSlice {
 			selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
 
 			if selectedRequest != "" {
+				selectedCnt += 1
 				if err := database.DeleteRequest(v.RequestID); err == nil {
 
-					clientMsg = "Request successfully deleted"
+					clientMsg = "Request successfully deleted."
 
 					log.WithFields(logrus.Fields{
 						"repID":       repID,
@@ -252,14 +217,22 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 					}).Info(clientMsg)
 
 				} else {
-					clientMsg = "No request deleted"
+					clientMsg = "Could not delete request."
 
 					log.WithFields(logrus.Fields{
 						"repID": repID,
 						"time":  time.Now(),
-					}).Info(clientMsg)
+					}).Error(clientMsg)
 				}
 			}
+		}
+		if selectedCnt == 0 {
+			clientMsg = "No option selected. No requests deleted."
+
+			log.WithFields(logrus.Fields{
+				"repID": repID,
+				"time":  time.Now(),
+			}).Info(clientMsg)
 		}
 
 	}
@@ -275,6 +248,213 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	}
 
 	tpl.ExecuteTemplate(res, "deleterequest.gohtml", data)
+}
+
+// Author: Tan Jun Jie
+// selecteditrequest is a handler func to select an existing request to edit.
+func selecteditrequest(res http.ResponseWriter, req *http.Request) {
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	// resets hasSelected so that users are unable to navigate to /editrequest
+	// without going through /selecteditrequest
+	hasSelected = false
+	// resets rid because user has not selected the request to edit
+	rid = 0
+
+	currentUser, _ := getUser(res, req)
+
+	repID := 0
+	clientMsg := "" // To display message to the user on the client
+	var isAdmin bool
+
+	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
+
+	var createdBy string
+	// Only 1 key-value pair in repDetails
+	for k := range repDetails {
+		repID = k
+		createdBy = repDetails[repID][0] + " " + repDetails[repID][1]
+	}
+
+	if currentUser.UserName == "admin" {
+		isAdmin = true
+		// Decide whether to add admin entry in Representative table
+		// or to add an arbitary non-zero value for admin repID
+		repID = adminID
+	} else {
+		isAdmin = false
+	}
+
+	viewRequestSlice := make([]viewRequest, 0)
+
+	requests := database.GetRequestByRep(repID, isAdmin)
+
+	for requestid, v := range requests {
+		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt}
+		viewRequestSlice = append(viewRequestSlice, viewR)
+	}
+
+	if req.Method == http.MethodPost {
+		var requestID int
+
+		for _, v := range viewRequestSlice {
+			selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
+			if selectedRequest != "" {
+				requestID = v.RequestID
+			}
+		}
+
+		if requestID != 0 {
+			/*
+				clientMsg = fmt.Sprintf("Request %s has been selected.", strconv.Itoa(requestID))
+				newRequestItem := requests[requestID]
+				tmpTime := newRequestItem.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+				newViewRequest := viewRequest{requestID, convertCategoryID(newRequestItem.CategoryID), newRequestItem.RecipientName, newRequestItem.Description, tmpTime, newRequestItem.FulfillAt}
+				viewRequestSlice = []viewRequest{newViewRequest}
+			*/
+			rid = requestID
+			hasSelected = true
+			http.Redirect(res, req, "/editrequest", http.StatusSeeOther)
+		} else {
+			clientMsg = "No selection made. Please try again."
+
+			log.WithFields(logrus.Fields{
+				"repID": repID,
+				//name of representative
+				"createdBy": createdBy,
+				"createdDT": time.Now(),
+			}).Warn(clientMsg)
+		}
+
+	}
+
+	data := struct {
+		RequestSlice    []viewRequest
+		CntCurrentItems int
+		ClientMsg       string
+	}{
+		viewRequestSlice,
+		len(viewRequestSlice),
+		clientMsg,
+	}
+
+	tpl.ExecuteTemplate(res, "selecteditrequest.gohtml", data)
+
+}
+
+// Author: Tan Jun Jie
+// editrequest is a handler func to edit an existing request.
+func editrequest(res http.ResponseWriter, req *http.Request) {
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	// redirects users if they have not selected a request to edit
+	if !hasSelected {
+		http.Redirect(res, req, "/selecteditrequest", http.StatusSeeOther)
+	}
+
+	currentUser, _ := getUser(res, req)
+	repID := 0
+	reqID := rid
+	clientMsg := "" // To display message to the user on the client
+
+	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
+
+	var createdBy string
+	var submitted bool
+	// Only 1 key-value pair in repDetails
+	for k := range repDetails {
+		repID = k
+		createdBy = repDetails[repID][0] + " " + repDetails[repID][1]
+	}
+
+	if currentUser.UserName == "admin" {
+		// Decide whether to add admin entry in Representative table
+		// or to add an arbitary non-zero value for admin repID
+		repID = adminID
+	}
+
+	viewRequestSlice := make([]viewRequest, 0)
+
+	// get request details
+	r := database.GetRequest(reqID)
+
+	tmpTime := r.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+	viewR := viewRequest{reqID, convertCategoryID(r.CategoryID), r.RecipientName, r.Description, tmpTime, r.FulfillAt}
+	viewRequestSlice = append(viewRequestSlice, viewR)
+
+	if req.Method == http.MethodPost {
+
+		categoryID, _ := strconv.Atoi(req.FormValue("requestcategory"))
+		reqDesc := sanitize.Accents(req.FormValue("description"))
+
+		// Convert UTC timestamp to time.Time object set to GMT +8.
+		timezoneSuffix := ":00+08:00"
+		newTime := req.FormValue("tocompletebyDT")
+		tmpTime := newTime + timezoneSuffix
+		toCompleteBy, _ := time.Parse(time.RFC3339, tmpTime)
+
+		address := sanitize.Accents(req.FormValue("address"))
+
+		// replace empty fields with existing fields
+		if reqDesc == "" {
+			reqDesc = viewRequestSlice[0].Description
+		}
+		if address == "" {
+			address = viewRequestSlice[0].FulfillAt
+		}
+		if newTime == "" {
+			toCompleteBy = r.ToCompleteBy
+		}
+
+		if err := database.EditRequest(reqID, categoryID, reqDesc, toCompleteBy, address); err != nil {
+			clientMsg = "Could not edit request: "
+
+			log.WithFields(logrus.Fields{
+				"repID":     repID,
+				"createdBy": createdBy,
+				"requestID": reqID,
+			}).Error(clientMsg + err.Error())
+		} else {
+			clientMsg = "Successfully edited request."
+
+			rid = 0
+			hasSelected = false
+			submitted = true
+
+			tmpTime := toCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+			viewR := viewRequest{reqID, convertCategoryID(categoryID), r.RecipientName, reqDesc, tmpTime, address}
+			viewRequestSlice = []viewRequest{viewR}
+
+			log.WithFields(logrus.Fields{
+				"repID":     repID,
+				"createdBy": createdBy,
+				"requestID": reqID,
+			}).Info(clientMsg)
+		}
+
+	}
+	data := struct {
+		RequestSlice    []viewRequest
+		CntCurrentItems int
+		ClientMsg       string
+		FormSubmitted   bool
+	}{
+		viewRequestSlice,
+		len(viewRequestSlice),
+		clientMsg,
+		submitted,
+	}
+
+	tpl.ExecuteTemplate(res, "editrequest.gohtml", data)
 }
 
 // Author: Tan Jun Jie
