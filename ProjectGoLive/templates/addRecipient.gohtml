@@ -1,0 +1,44 @@
+{{template "header" .User}}
+
+{{template "mainmenu"}}
+
+{{if eq .IsAdmin true}}
+    {{template "adminmenu"}}
+{{end}}
+    [<a href="/logout">Log Out</a>]
+    </br></br>
+<body>
+    <h2>{{.ClientMsg}}</h2>
+    <p>New recipient details</p>
+    <form method="post">
+        <table border="0">
+            <tr>
+            <td><label for="name">Recipient Name:</label></td>
+            <td><input type="text" name="name" placeholder="name"></td>
+            </tr>
+
+            <tr>
+            <td><label for="category">Choose a category</label></td>
+                <td><select id="category" name="category">
+                    <option value="Individual">Individual</option>
+                    <option value="Organisation">Organisation</option>
+                </select></td>
+            </tr>
+
+            <tr>
+            <td><label for="contact">Recipient Contact No:</label></td>
+            <td><input type="text" name="contact" placeholder="contact number"></td>
+            </tr>
+
+            <tr>
+            <td><label for="profile">Recipient Profile:</label></td>
+            <td><textarea name="profile" id="profile" cols="25" rows="10"></textarea></td>
+            </tr>
+
+            <tr>
+            <td></td>
+            <td><input type="submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>

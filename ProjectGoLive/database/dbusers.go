@@ -2,6 +2,7 @@ package database
 
 import (
 	"ProjectGoLive/authenticate"
+	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
@@ -27,7 +28,7 @@ func GetUser(username string) (authenticate.User, error) {
 		email        string
 		contactno    string
 		organisation string
-		lastlogin_dt string
+		lastloginDT  time.Time
 	)
 	query := "SELECT RepID, Password, " +
 		"FirstName, LastName, Email, " +
@@ -40,7 +41,7 @@ func GetUser(username string) (authenticate.User, error) {
 	} else {
 		if results.Next() {
 			err := results.Scan(&repid, &password, &firstname, &lastname,
-				&email, &contactno, &organisation, &lastlogin_dt)
+				&email, &contactno, &organisation, &lastloginDT)
 
 			if err != nil {
 				panic("error getting results from sql select")
@@ -49,19 +50,76 @@ func GetUser(username string) (authenticate.User, error) {
 			return user, errors.New("user not found")
 		}
 
-		user.RepID = repid
-		user.UserName = username
-		user.Password = password
-		user.FirstName = firstname
-		user.LastName = lastname
-		user.Email = email
-		user.ContactNo = contactno
-		user.Organisation = organisation
-
-		const layout = "2006-01-02 15:04:05"
-		user.LastLoginDT, _ = time.Parse(layout, lastlogin_dt)
-
+		user = authenticate.User{
+			RepID:        repid,
+			UserName:     username,
+			Password:     password,
+			FirstName:    firstname,
+			LastName:     lastname,
+			Email:        email,
+			ContactNo:    contactno,
+			Organisation: organisation,
+			LastLoginDT:  lastloginDT,
+		}
 		return user, nil
+	}
+}
+
+// GetAllUsers implements the sql operations to retrieve all users.
+// Author: Amanda
+func GetAllUsers() ([]authenticate.User, error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	// Instantiate user
+	var (
+		user         authenticate.User
+		repid        int
+		username     string
+		password     string
+		firstname    string
+		lastname     string
+		email        string
+		contactno    string
+		organisation string
+		lastloginDT  time.Time
+	)
+	users := make([]authenticate.User, 0)
+
+	query := "SELECT RepID, UserName, Password, " +
+		"FirstName, LastName, Email, " +
+		"ContactNo, Organisation, LastLogin_dt " +
+		"FROM Representatives"
+
+	results, err := DB.Query(query)
+	if err != nil {
+		panic("error executing sql select")
+	} else {
+		for results.Next() {
+			err := results.Scan(&repid, &username, &password, &firstname, &lastname,
+				&email, &contactno, &organisation, &lastloginDT)
+
+			if err != nil {
+				panic("error getting results from sql select")
+			}
+
+			user = authenticate.User{
+				RepID:        repid,
+				UserName:     username,
+				Password:     password,
+				FirstName:    firstname,
+				LastName:     lastname,
+				Email:        email,
+				ContactNo:    contactno,
+				Organisation: organisation,
+				LastLoginDT:  lastloginDT,
+			}
+			users = append(users, user)
+		}
+		return users, nil
 	}
 }
 
@@ -243,6 +301,43 @@ func UserNameExist(username string) bool {
 	return false
 }
 
+// EmailExist checks if email exists in the database table
+// Author: Amanda
+func EmailExist(email string, username string) bool {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	var (
+		query   string
+		results *sql.Rows
+		err     error
+	)
+	if username != "" {
+		query := "SELECT Email " +
+			"FROM Representatives WHERE UPPER(Email)=UPPER(?) " +
+			"AND UserName <> ?"
+
+		results, err = DB.Query(query, email, username)
+	} else {
+		query = "SELECT Email " +
+			"FROM Representatives WHERE UPPER(Email)=UPPER(?)"
+
+		results, err = DB.Query(query, email)
+	}
+
+	if err != nil {
+		panic("error executing sql select")
+	} else {
+		if results.Next() {
+			return true
+		}
+	}
+	return false
+}
+
 // RepIDExist checks if RepID exists in the database table
 // Author: Amanda
 func RepIDExist(repid string) bool {
@@ -308,8 +403,6 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 	)
 	query := "SELECT MemberTypeID, MemberType " +
 		"FROM MemberType "
-		//+
-		//"WHERE UPPER(MemberType) NOT IN ('ADMIN') "
 
 	results, err := DB.Query(query)
 	if err != nil {

@@ -13,6 +13,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"ProjectGoLive/smtpserver"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -30,23 +31,9 @@ var (
 	tpl  *template.Template
 	log  = logrus.New()
 	file *os.File
-
-	//bFirst = true
 )
 
-// user struct for storing user account information
-type user struct {
-	UserName       string
-	Password       []byte
-	FirstName      string
-	LastName       string
-	Email          string
-	IsAdmin        bool
-	CreatedDT      time.Time
-	LastModifiedDT time.Time
-	CurrentLoginDT time.Time
-	LastLoginDT    time.Time
-}
+const cookieName = "sessionToken"
 
 // req struct for storing request information
 type newRequest struct {
@@ -94,6 +81,7 @@ type viewRequest struct {
 	FulfillAt     string
 }
 
+
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
@@ -139,7 +127,6 @@ func StartServer() {
 	// Set the listen port
 	fmt.Println("Listening at port 5221")
 	err := http.ListenAndServeTLS(":5221", "certs//cert.pem", "certs//key.pem", router)
-	//err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Fatal("FATAL: ListenAndServeTLS - ", err)
 	}
@@ -152,17 +139,25 @@ func StartServer() {
 func initaliseHandlers(router *mux.Router) {
 
 	router.HandleFunc("/", index)
-
-	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
+	router.HandleFunc("/managerecipient", manageRecipient)
+	router.HandleFunc("/addrecipient", addRecipient)
+	router.HandleFunc("/getrecipient", getRecipient)
+	router.HandleFunc("/updaterecipient", updateRecipient)
+	router.HandleFunc("/deleterecipient", deleteRecipient)
+	router.HandleFunc("/resetpwd", resetpwd)
+	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	router.HandleFunc("/addrequest", addrequest)
 	router.HandleFunc("/deleterequest", deleterequest)
+<<<<<<< HEAD
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
 	//router.HandleFunc("/delcourse", delcourse)
+=======
+>>>>>>> origin/main
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }
@@ -238,4 +233,11 @@ func initFieldsLen() {
 
 	// Set the max characters for password
 	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
+
+	// Setup fields for email sending feature
+	smtpserver.HostPath = os.Getenv("HOST_PATH")
+	smtpserver.SMTPHost = os.Getenv("SMTP_HOST")
+	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
+	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
+	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
 }
