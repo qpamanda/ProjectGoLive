@@ -465,11 +465,7 @@ func validateContactNo(contactNo string) (bool, error) {
 			var result Result
 			json.Unmarshal(body, &result)
 			fmt.Println(result)
-			if result.Valid {
-				return true, nil
-			} else {
-				return false, nil
-			}
+			return result.Valid, nil
 		} else {
 			return false, err
 		}
