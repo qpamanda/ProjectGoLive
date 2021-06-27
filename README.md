@@ -122,7 +122,7 @@ The following is the discussion and jobs delegations for our group thus far:
     - LastModified_dt
 
 
-    - StatusCode/RequestStatus: P - Pending, H - Being Handled, C - Completed
+    - StatusCode/RequestStatus: 0 - Pending/To be Assigned, 1 - Being Handled/Assigned, 2 - Completed
     
     **RequestStatus Table**
     - StatusCode
