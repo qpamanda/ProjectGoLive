@@ -20,6 +20,6 @@
     <table border="1">
         <tr>
         <td><h4><a href="/updaterecipient?recipientID={{.Recipient.RecipientID}}">Update</a></h4></td>
-        <td><h4><a href="/deleterecipient?recipientID={{.Recipient.RecipientID}}">Delete</a></h4></td>
+        <td><h4><a href="/deleterecipient?recipientID={{.Recipient.RecipientID}}" onclick="return confirm('Are you sure?')">Delete</a></h4></td>
         </tr>
 </body>
