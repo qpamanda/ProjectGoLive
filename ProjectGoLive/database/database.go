@@ -156,7 +156,7 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 			case error:
 				e = x
 			default:
-				e = errors.New("Unknown panic")
+				e = errors.New("unknown panic")
 			}
 		}
 	}()
@@ -288,7 +288,7 @@ func DeleteRequest(reqID int) (e error) {
 			case error:
 				e = x
 			default:
-				e = errors.New("Unknown panic")
+				e = errors.New("unknown panic")
 			}
 		}
 	}()
