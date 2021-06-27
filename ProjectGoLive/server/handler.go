@@ -3,8 +3,11 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"net"
 	"net/http"
+	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -42,25 +45,25 @@ func index(res http.ResponseWriter, req *http.Request) {
 						clientMsg = "ERROR: " + "username and/or password do not match"
 						log.Error("username and/or password do not match")
 					} else {
-						sessionToken, err := req.Cookie("sessionToken")
-						if err != nil {
-							clientMsg = "ERROR: " + "session cookie not found"
-							log.Error("session cookie not found")
-						} else {
-							http.SetCookie(res, sessionToken)
-							// Set user to session token cookie
-							authenticate.MapSessions[sessionToken.Value] = username
+						// Call createCookie func to set the cookie
+						sessionToken := createCookie(res, req)
 
-							// Checks if user is an admin
-							authenticate.IsAdmin = database.IsAdmin(username)
+						authenticate.MapSessions[sessionToken.Value] = username
 
-							// Update LastLogin datetime in database
-							database.UpdateLoginDate(username)
+						// Checks if user is an admin
+						authenticate.IsAdmin = database.IsAdmin(username)
 
-							log.WithFields(logrus.Fields{
-								"userName": username,
-							}).Infof("[%s] user login successfully", username)
-						}
+						// Update LastLogin datetime in database
+						database.UpdateLoginDate(username)
+
+						log.WithFields(logrus.Fields{
+							"userName": username,
+						}).Infof("[%s] user login successfully", username)
+
+						// Redirect to the main index page
+						http.Redirect(res, req, "/", http.StatusSeeOther)
+						return
+						//}
 					}
 				}
 			}
@@ -80,6 +83,28 @@ func index(res http.ResponseWriter, req *http.Request) {
 		authenticate.IsAdmin,
 		clientMsg,
 	}
-
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
+}
+
+// createCookie func creates sets the struct for a cookie
+// Author: Amanda
+func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
+	domain := req.Host                      // the domain can be localhost:5221 or //127.0.0.1:5221
+	host, _, _ := net.SplitHostPort(domain) // get the host either localhost or 127.0.0.1
+
+	// Add new session token cookie
+	id, _ := uuid.NewV4()
+	// Set an expiry time of 120 seconds for the cookie, the same as the cache
+	cookie := &http.Cookie{
+		Name:     cookieName,
+		Value:    id.String(),
+		Expires:  time.Now().Add(120 * time.Second),
+		HttpOnly: true,
+		Path:     "/",
+		Domain:   host, // set cookie with the host
+		Secure:   true,
+	}
+	// Set the session token as a cookie on the client
+	http.SetCookie(res, cookie)
+	return cookie
 }

@@ -1,6 +1,6 @@
 {{template "header" .User}}
 
-{{if .ValidSession}}
+{{if .User.UserName}}
 <h2>Edit User Account</h2>
 
 <p style="color:red;">{{.ClientMsg}} </p> 
