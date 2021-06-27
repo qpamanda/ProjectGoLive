@@ -78,3 +78,11 @@
 {"level":"error","line":"server/userHandler.go:452","msg":"password must have at least one special character","time":"2021-06-27T11:00:16+08:00"}
 {"level":"info","line":"server/userHandler.go:474","msg":"[tester1] password reset successfully","time":"2021-06-27T11:00:26+08:00","userName":"tester1"}
 {"level":"info","line":"server/handler.go:61","msg":"[tester1] user login successfully","time":"2021-06-27T11:00:35+08:00","userName":"tester1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T17:00:22+08:00","userName":"admin"}
+{"email":"run4grp2@gmail.com","level":"info","line":"server/userHandler.go:527","msg":"Reset password email sent","time":"2021-06-27T17:02:54+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T17:03:13+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T17:04:15.645403+08:00","level":"info","line":"server/requestHandler.go:127","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"test222","ToCompleteBy":"2021-06-27T05:04:00+08:00","FulfilAt":"test"},"time":"2021-06-27T17:04:15+08:00"}
+{"deleteDT":"2021-06-27T17:04:32.901731+08:00","description":"test222","level":"info","line":"server/requestHandler.go:217","msg":"Request successfully deleted.","recipient":"recipient2","repID":2001,"requestID":6019,"time":"2021-06-27T17:04:32+08:00"}
+{"fields.time":"2021-06-27T17:04:36.586592+08:00","level":"info","line":"server/requestHandler.go:235","msg":"No option selected. No requests deleted.","repID":2001,"time":"2021-06-27T17:04:36+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T17:05:20+08:00","userName":"user1"}
+{"createdBy":"user one","level":"info","line":"server/requestHandler.go:441","msg":"Successfully edited request.","repID":2001,"requestID":6018,"time":"2021-06-27T17:05:38+08:00"}
