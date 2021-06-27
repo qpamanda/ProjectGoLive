@@ -81,7 +81,6 @@ type viewRequest struct {
 	FulfillAt     string
 }
 
-
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
@@ -152,12 +151,8 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	router.HandleFunc("/addrequest", addrequest)
 	router.HandleFunc("/deleterequest", deleterequest)
-<<<<<<< HEAD
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
-	//router.HandleFunc("/delcourse", delcourse)
-=======
->>>>>>> origin/main
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }
