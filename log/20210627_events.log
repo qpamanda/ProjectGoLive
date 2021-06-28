@@ -1,0 +1,188 @@
+{"level":"info","line":"server/handler.go:72","msg":"[user1] user login successfully","time":"2021-06-27T00:07:50+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:08:26+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:09:51+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:12:33+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:12:45+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:30:59+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:72","msg":"[admin] user login successfully","time":"2021-06-27T00:42:38+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:74","msg":"[admin] user login successfully","time":"2021-06-27T01:04:03+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:74","msg":"[admin] user login successfully","time":"2021-06-27T01:04:48+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:593","msg":"[admin] user logout successfully","time":"2021-06-27T01:05:08+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-27T01:28:47+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-27T01:38:39+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[user1] user login successfully","time":"2021-06-27T01:46:17+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:80","msg":"[user1] user login successfully","time":"2021-06-27T01:52:31+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:80","msg":"[admin] user login successfully","time":"2021-06-27T02:09:41+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:80","msg":"[admin] user login successfully","time":"2021-06-27T02:29:55+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:80","msg":"[admin] user login successfully","time":"2021-06-27T02:31:49+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:80","msg":"[admin] user login successfully","time":"2021-06-27T02:32:20+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:80","msg":"[user1] user login successfully","time":"2021-06-27T02:35:06+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:80","msg":"[admin] user login successfully","time":"2021-06-27T02:38:30+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:62","msg":"[admin] user login successfully","time":"2021-06-27T02:52:26+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:62","msg":"[admin] user login successfully","time":"2021-06-27T02:59:07+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:66","msg":"[admin] user login successfully","time":"2021-06-27T03:08:21+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:612","msg":"[admin] user logout successfully","time":"2021-06-27T03:08:31+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:66","msg":"[admin] user login successfully","time":"2021-06-27T03:08:50+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:69","msg":"[admin] user login successfully","time":"2021-06-27T03:11:12+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:69","msg":"[user1] user login successfully","time":"2021-06-27T03:13:52+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:68","msg":"[user1] user login successfully","time":"2021-06-27T03:23:23+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T03:26:35+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:613","msg":"[admin] user logout successfully","time":"2021-06-27T03:26:46+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[user1] user login successfully","time":"2021-06-27T03:27:29+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:613","msg":"[user1] user logout successfully","time":"2021-06-27T03:27:52+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:148","msg":"[tester1] user account created successfully","repId":886,"time":"2021-06-27T03:28:41+08:00","userName":"tester1"}
+{"level":"info","line":"server/handler.go:74","msg":"[admin] user login successfully","time":"2021-06-27T03:33:34+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:74","msg":"[admin] user login successfully","time":"2021-06-27T03:34:20+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:69","msg":"[admin] user login successfully","time":"2021-06-27T03:36:18+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:612","msg":"[admin] user logout successfully","time":"2021-06-27T03:36:44+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:69","msg":"[tester1] user login successfully","time":"2021-06-27T03:37:00+08:00","userName":"tester1"}
+{"level":"info","line":"server/handler.go:70","msg":"[admin] user login successfully","time":"2021-06-27T03:39:25+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T03:40:51+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:278","msg":"[admin] user account updated successfully","time":"2021-06-27T03:41:32+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:612","msg":"[admin] user logout successfully","time":"2021-06-27T03:41:36+08:00","userName":"admin"}
+{"email":"qpamanda@gmail.com","level":"info","line":"server/userHandler.go:557","msg":"Reset password email sent","time":"2021-06-27T03:42:29+08:00"}
+{"level":"info","line":"server/userHandler.go:490","msg":"[admin] password reset successfully","time":"2021-06-27T03:43:21+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T03:43:28+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:612","msg":"[admin] user logout successfully","time":"2021-06-27T03:44:06+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T03:44:11+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T03:45:15+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:612","msg":"[admin] user logout successfully","time":"2021-06-27T03:45:31+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[user1] user login successfully","time":"2021-06-27T03:45:52+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:68","msg":"[admin] user login successfully","time":"2021-06-27T09:26:06+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[admin] user logout successfully","time":"2021-06-27T09:27:37+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:68","msg":"[user1] user login successfully","time":"2021-06-27T09:27:44+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[user1] user logout successfully","time":"2021-06-27T09:27:56+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:135","msg":"[tester2] user account created successfully","repId":4905,"time":"2021-06-27T09:28:33+08:00","userName":"tester2"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[tester2] user logout successfully","time":"2021-06-27T09:28:50+08:00","userName":"tester2"}
+{"level":"info","line":"server/handler.go:69","msg":"[admin] user login successfully","time":"2021-06-27T09:31:40+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[admin] user logout successfully","time":"2021-06-27T09:31:53+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:69","msg":"[tester2] user login successfully","time":"2021-06-27T09:32:26+08:00","userName":"tester2"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[tester2] user logout successfully","time":"2021-06-27T09:32:36+08:00","userName":"tester2"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-27T09:32:54+08:00"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-27T09:33:10+08:00"}
+{"level":"info","line":"server/handler.go:69","msg":"[tester2] user login successfully","time":"2021-06-27T09:33:24+08:00","userName":"tester2"}
+{"level":"info","line":"server/userHandler.go:600","msg":"[tester2] user logout successfully","time":"2021-06-27T09:33:39+08:00","userName":"tester2"}
+{"level":"info","line":"server/userHandler.go:135","msg":"[tester3] user account created successfully","repId":2541,"time":"2021-06-27T09:34:28+08:00","userName":"tester3"}
+{"level":"info","line":"server/handler.go:61","msg":"[tester2] user login successfully","time":"2021-06-27T09:41:26+08:00","userName":"tester2"}
+{"createdBy":"Tester 2","createdDT":"2021-06-27T09:41:29.5309223+08:00","level":"error","line":"server/requestHandler.go:174","msg":"No request added","repID":4905,"time":"2021-06-27T09:41:29+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[tester1] user login successfully","time":"2021-06-27T09:42:19+08:00","userName":"tester1"}
+{"level":"error","line":"server/userHandler.go:453","msg":"password must be between 8 - 25 characters","time":"2021-06-27T09:45:14+08:00"}
+{"level":"info","line":"server/userHandler.go:475","msg":"[admin] password reset successfully","time":"2021-06-27T09:45:27+08:00","userName":"admin"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-27T09:45:39+08:00"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-27T09:45:45+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T09:45:53+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:475","msg":"[admin] password reset successfully","time":"2021-06-27T09:49:05+08:00","userName":"admin"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-27T09:49:11+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T09:49:17+08:00","userName":"admin"}
+{"email":"qpapple@yahoo.com","level":"info","line":"server/userHandler.go:544","msg":"Reset password email sent","time":"2021-06-27T10:57:28+08:00"}
+{"level":"error","line":"server/userHandler.go:452","msg":"password must have at least one special character","time":"2021-06-27T11:00:16+08:00"}
+{"level":"info","line":"server/userHandler.go:474","msg":"[tester1] password reset successfully","time":"2021-06-27T11:00:26+08:00","userName":"tester1"}
+{"level":"info","line":"server/handler.go:61","msg":"[tester1] user login successfully","time":"2021-06-27T11:00:35+08:00","userName":"tester1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T11:30:53+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T11:36:36+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[admin] user logout successfully","time":"2021-06-27T11:36:38+08:00","userName":"admin"}
+{"email":"qpapple@yahoo.com","level":"info","line":"server/userHandler.go:527","msg":"Reset password email sent","time":"2021-06-27T11:36:50+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T13:55:37+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T15:19:32+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T15:24:47+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T18:15:09+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T18:17:08+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T22:20:30+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T23:58:37+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T23:59:39+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T17:00:22+08:00","userName":"admin"}
+{"email":"run4grp2@gmail.com","level":"info","line":"server/userHandler.go:527","msg":"Reset password email sent","time":"2021-06-27T17:02:54+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T17:03:13+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T17:04:15.645403+08:00","level":"info","line":"server/requestHandler.go:127","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"test222","ToCompleteBy":"2021-06-27T05:04:00+08:00","FulfilAt":"test"},"time":"2021-06-27T17:04:15+08:00"}
+{"deleteDT":"2021-06-27T17:04:32.901731+08:00","description":"test222","level":"info","line":"server/requestHandler.go:217","msg":"Request successfully deleted.","recipient":"recipient2","repID":2001,"requestID":6019,"time":"2021-06-27T17:04:32+08:00"}
+{"fields.time":"2021-06-27T17:04:36.586592+08:00","level":"info","line":"server/requestHandler.go:235","msg":"No option selected. No requests deleted.","repID":2001,"time":"2021-06-27T17:04:36+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T17:05:20+08:00","userName":"user1"}
+{"createdBy":"user one","level":"info","line":"server/requestHandler.go:441","msg":"Successfully edited request.","repID":2001,"requestID":6018,"time":"2021-06-27T17:05:38+08:00"}
+{"level":"fatal","line":"server/server.go:130","msg":"FATAL: ListenAndServeTLS - listen tcp :5221: bind: address already in use","time":"2021-06-27T20:39:28+08:00"}
+{"level":"fatal","line":"server/server.go:130","msg":"FATAL: ListenAndServeTLS - listen tcp :5221: bind: address already in use","time":"2021-06-27T20:45:57+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T20:48:03+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T20:48:41.762316+08:00","level":"info","line":"server/requestHandler.go:133","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"testing","ToCompleteBy":"2021-06-27T20:50:00+08:00","FulfilAt":"Flora Rd"},"time":"2021-06-27T20:48:41+08:00"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-27T20:48:54+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T20:48:58+08:00","userName":"admin"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T20:49:32.858585+08:00","level":"info","line":"server/requestHandler.go:133","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"clap hands 5 times","ToCompleteBy":"2021-06-27T08:50:00+08:00","FulfilAt":"nil"},"time":"2021-06-27T20:49:32+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T20:49:48.262104+08:00","level":"error","line":"server/requestHandler.go:142","msg":"One and/or more fields are empty. No request added.","repID":5000,"time":"2021-06-27T20:49:48+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T20:49:54.665344+08:00","level":"error","line":"server/requestHandler.go:142","msg":"One and/or more fields are empty. No request added.","repID":5000,"time":"2021-06-27T20:49:54+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T20:59:58+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:00:39+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:01:00.773796+08:00","level":"info","line":"server/requestHandler.go:135","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"testtest","ToCompleteBy":"2021-06-29T21:00:00+08:00","FulfilAt":"nil"},"time":"2021-06-27T21:01:00+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:01:58+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:02:17.829299+08:00","level":"info","line":"server/requestHandler.go:135","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"testest","ToCompleteBy":"2021-06-27T21:02:00+08:00","FulfilAt":"tell"},"time":"2021-06-27T21:02:17+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:02:22.263585+08:00","level":"error","line":"server/requestHandler.go:144","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:02:22+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:14:49+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:15:06.609903+08:00","level":"error","line":"server/requestHandler.go:144","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:15:06+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:19:52+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:20:10.753386+08:00","level":"error","line":"server/requestHandler.go:146","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:20:10+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:20:32.499832+08:00","level":"info","line":"server/requestHandler.go:137","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"test4","ToCompleteBy":"2021-06-13T21:20:00+08:00","FulfilAt":"test"},"time":"2021-06-27T21:20:32+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:22:47+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:22:49.55744+08:00","level":"error","line":"server/requestHandler.go:144","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:22:49+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:22:58.058233+08:00","level":"info","line":"server/requestHandler.go:135","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"test5","ToCompleteBy":"2021-06-30T21:22:00+08:00","FulfilAt":"tt"},"time":"2021-06-27T21:22:58+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:23:11.236728+08:00","level":"error","line":"server/requestHandler.go:144","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:23:11+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:24:49+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:24:52.249131+08:00","level":"error","line":"server/requestHandler.go:147","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T21:24:52+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:24:54.908609+08:00","level":"error","line":"server/requestHandler.go:147","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T21:24:54+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:24:58.035452+08:00","level":"error","line":"server/requestHandler.go:147","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T21:24:58+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:25:39+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:25:43.783433+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:25:43+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:25:50.044654+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:25:50+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:25:53.634476+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:25:53+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:26:45.752651+08:00","level":"info","line":"server/requestHandler.go:135","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"test","ToCompleteBy":"2021-06-28T21:26:00+08:00","FulfilAt":"test"},"time":"2021-06-27T21:26:45+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:26:57.737499+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:26:57+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:27:13.474413+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:27:13+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:29:57+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:30:00.204803+08:00","level":"error","line":"server/requestHandler.go:147","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:30:00+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:30:12.161948+08:00","level":"error","line":"server/requestHandler.go:147","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T21:30:12+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:30:20.11987+08:00","level":"info","line":"server/requestHandler.go:135","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"ttt","ToCompleteBy":"2021-06-30T21:30:00+08:00","FulfilAt":"tt"},"time":"2021-06-27T21:30:20+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:43:19+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:50:13+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:50:28.545009+08:00","level":"info","line":"server/requestHandler.go:139","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"do nothing test","ToCompleteBy":"2021-06-29T09:50:00+08:00","FulfilAt":"nil"},"time":"2021-06-27T21:50:28+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T21:54:32+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:54:34.709431+08:00","level":"error","line":"server/requestHandler.go:151","msg":"One and/or more fields are empty. No request added.","repID":2001,"time":"2021-06-27T21:54:34+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:54:40.366266+08:00","level":"error","line":"server/requestHandler.go:151","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T21:54:40+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T21:54:47.89338+08:00","level":"info","line":"server/requestHandler.go:139","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"tt","ToCompleteBy":"2021-06-30T21:54:00+08:00","FulfilAt":"ee"},"time":"2021-06-27T21:54:47+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T22:04:44+08:00","userName":"user1"}
+{"deleteDT":"2021-06-27T22:04:50.918993+08:00","description":"nil","level":"info","line":"server/requestHandler.go:238","msg":"Request successfully deleted.","recipient":"recipient2","repID":2001,"requestID":6018,"time":"2021-06-27T22:04:50+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:22:33+08:00","userName":"admin"}
+{"deleteDT":"2021-06-27T22:22:57.935612+08:00","description":"Call Starhub to cancel mobile phone plan","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient8","repID":5000,"requestID":6007,"time":"2021-06-27T22:22:57+08:00"}
+{"deleteDT":"2021-06-27T22:22:57.964509+08:00","description":"test5","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient1","repID":5000,"requestID":6025,"time":"2021-06-27T22:22:57+08:00"}
+{"deleteDT":"2021-06-27T22:22:57.980235+08:00","description":"clap hands 5 times","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient7","repID":5000,"requestID":6021,"time":"2021-06-27T22:22:57+08:00"}
+{"deleteDT":"2021-06-27T22:22:57.993564+08:00","description":"buy dinner for ms choo","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient2","repID":5000,"requestID":6003,"time":"2021-06-27T22:22:57+08:00"}
+{"deleteDT":"2021-06-27T22:22:58.010693+08:00","description":"test help","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient7","repID":5000,"requestID":6011,"time":"2021-06-27T22:22:58+08:00"}
+{"deleteDT":"2021-06-27T22:23:26.959598+08:00","description":"ttt","level":"info","line":"server/requestHandler.go:250","msg":"Request successfully deleted.","recipient":"recipient2","repID":5000,"requestID":6027,"time":"2021-06-27T22:23:26+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T22:26:06+08:00","userName":"user1"}
+{"deleteDT":"2021-06-27T22:26:13.034129+08:00","description":"testtest","level":"info","line":"server/requestHandler.go:243","msg":"Request successfully deleted.","recipient":"recipient2","repID":2001,"requestID":6022,"time":"2021-06-27T22:26:13+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T22:28:34+08:00","userName":"user1"}
+{"deleteDT":"2021-06-27T22:28:43.562527+08:00","description":"do nothing test","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient1","repID":2001,"requestID":6029,"time":"2021-06-27T22:28:43+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:29:22+08:00","userName":"admin"}
+{"deleteDT":"2021-06-27T22:29:26.884356+08:00","description":"tt","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient3","repID":5000,"requestID":6030,"time":"2021-06-27T22:29:26+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:30:26+08:00","userName":"admin"}
+{"deleteDT":"2021-06-27T22:30:30.729689+08:00","description":"test4","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient3","repID":5000,"requestID":6024,"time":"2021-06-27T22:30:30+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user2] user login successfully","time":"2021-06-27T22:32:29+08:00","userName":"user2"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user2] user logout successfully","time":"2021-06-27T22:32:32+08:00","userName":"user2"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:32:35+08:00","userName":"admin"}
+{"deleteDT":"2021-06-27T22:32:43.380545+08:00","description":"testing","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient2","repID":5000,"requestID":6020,"time":"2021-06-27T22:32:43+08:00"}
+{"deleteDT":"2021-06-27T22:32:43.401027+08:00","description":"testest","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient3","repID":5000,"requestID":6023,"time":"2021-06-27T22:32:43+08:00"}
+{"deleteDT":"2021-06-27T22:32:43.418041+08:00","description":"test","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient2","repID":5000,"requestID":6026,"time":"2021-06-27T22:32:43+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-27T22:34:04+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-27T22:34:11.651336+08:00","level":"info","line":"server/requestHandler.go:140","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"testtestet","ToCompleteBy":"2021-07-02T22:34:00+08:00","FulfilAt":"testset"},"time":"2021-06-27T22:34:11+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T22:34:20.358436+08:00","level":"error","line":"server/requestHandler.go:152","msg":"Time indicated has already passed. No request added.","repID":2001,"time":"2021-06-27T22:34:20+08:00"}
+{"createdBy":"user one","createdDT":"2021-06-27T22:34:27.612546+08:00","level":"info","line":"server/requestHandler.go:140","msg":"Request successfully added.","repID":2001,"reqDetails":{"RequestDescription":"tet","ToCompleteBy":"2021-07-08T22:34:00+08:00","FulfilAt":"atat"},"time":"2021-06-27T22:34:27+08:00"}
+{"deleteDT":"2021-06-27T22:34:33.248954+08:00","description":"testtestet","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient1","repID":2001,"requestID":6031,"time":"2021-06-27T22:34:33+08:00"}
+{"deleteDT":"2021-06-27T22:34:33.261323+08:00","description":"tet","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient1","repID":2001,"requestID":6032,"time":"2021-06-27T22:34:33+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:37:16+08:00","userName":"admin"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:37:25.360564+08:00","level":"info","line":"server/requestHandler.go:140","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"mimi","ToCompleteBy":"2021-07-07T22:37:00+08:00","FulfilAt":"mm"},"time":"2021-06-27T22:37:25+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:37:34.882362+08:00","level":"info","line":"server/requestHandler.go:140","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"gg","ToCompleteBy":"2021-07-05T22:37:00+08:00","FulfilAt":"g"},"time":"2021-06-27T22:37:34+08:00"}
+{"deleteDT":"2021-06-27T22:37:40.355338+08:00","description":"mimi","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient1","repID":5000,"requestID":6033,"time":"2021-06-27T22:37:40+08:00"}
+{"deleteDT":"2021-06-27T22:37:40.368789+08:00","description":"gg","level":"info","line":"server/requestHandler.go:244","msg":"Request successfully deleted.","recipient":"recipient3","repID":5000,"requestID":6034,"time":"2021-06-27T22:37:40+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-27T22:38:35+08:00","userName":"admin"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:38:43.638716+08:00","level":"info","line":"server/requestHandler.go:139","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"gg","ToCompleteBy":"2021-07-07T22:38:00+08:00","FulfilAt":"gg"},"time":"2021-06-27T22:38:43+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:38:56.303042+08:00","level":"error","line":"server/requestHandler.go:151","msg":"Time indicated has already passed. No request added.","repID":5000,"time":"2021-06-27T22:38:56+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:39:06.362262+08:00","level":"info","line":"server/requestHandler.go:139","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"reraer","ToCompleteBy":"2021-07-06T22:38:00+08:00","FulfilAt":"oo"},"time":"2021-06-27T22:39:06+08:00"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-27T22:39:18.430948+08:00","level":"info","line":"server/requestHandler.go:139","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"rroo","ToCompleteBy":"2021-07-03T22:43:00+08:00","FulfilAt":"roro"},"time":"2021-06-27T22:39:18+08:00"}
+{"deleteDT":"2021-06-27T22:39:25.472267+08:00","description":"gg","level":"info","line":"server/requestHandler.go:243","msg":"Request successfully deleted.","recipient":"recipient9","repID":5000,"requestID":6035,"time":"2021-06-27T22:39:25+08:00"}
+{"deleteDT":"2021-06-27T22:39:25.485705+08:00","description":"reraer","level":"info","line":"server/requestHandler.go:243","msg":"Request successfully deleted.","recipient":"recipient2","repID":5000,"requestID":6036,"time":"2021-06-27T22:39:25+08:00"}
+{"deleteDT":"2021-06-27T22:39:25.503839+08:00","description":"rroo","level":"info","line":"server/requestHandler.go:243","msg":"Request successfully deleted.","recipient":"recipient7","repID":5000,"requestID":6037,"time":"2021-06-27T22:39:25+08:00"}

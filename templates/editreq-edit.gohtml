@@ -1,0 +1,53 @@
+{{define "editreq-edit"}}
+
+<form method="post" autocomplete="off">
+    <table id="view">
+        {{ $repName := ""}}
+        {{ $status := ""}}
+        <tr><th colspan="6">Details of selected request</th></tr>
+        <tr>
+            <td align="center"><b>Category</b></td>
+            <td align="center"><b>Description</b></td>
+            <td align="center"><b>Status</b></td>
+            <td align="center"><b>Location</b></td>
+            <td align="center"><b>Recipient</b></td>
+            <td align="center"><b>Deadline</b></td>
+        </tr>
+
+        {{range .RequestSlice}}
+            <tr>
+                <td align="center">{{.Category}}</td>
+                <td align="center">{{.Description}}</td>
+                <td align="center">{{.Status}}{{ $status = .Status}}</td>
+                <td align="center">{{.FulfillAt}}</td>
+                <td align="center">{{.RecipientName}}{{ $repName = .RecipientName}}</td>
+                <td align="center">{{.ToCompleteBy}}</td>
+            </tr>
+        {{end}}
+
+        <tr><th colspan="6">Edit details (Empty fields will be left unchanged)</th></tr>
+        <tr>
+            <td align="center">
+                <select name="requestcategory">
+                    <option value="1">Item Donation</option>
+                    <option value="2">Errand</option>
+                </select>
+            </td>
+            <td align="center"><input type="text" name="description" placeholder="Get lunch for Mr. Kim" autocomplete="off"></td>
+            <td align="center">{{$status}}</td>
+            <td align="center"><input type="text" name="address" placeholder="7 Flora Rd." autocomplete="off"></td>
+            <td align="center">{{$repName}}</td>
+            <td align="center"><input type="datetime-local" name="tocompletebyDT" placeholder="25/07/2021-13:00" autocomplete="off"></td>
+        </tr>
+    </table>
+    
+    <br>
+
+    <table>
+    <tr> 
+        <td align="left"><input type="submit"></td>                    
+    </tr> 
+    </table>
+</form>
+
+{{end}}
