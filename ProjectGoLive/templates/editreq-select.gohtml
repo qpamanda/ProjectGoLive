@@ -2,11 +2,12 @@
 
 <form method="post" autocomplete="off">
     <table id="view">
-        <tr><th colspan="5">Edit requests</th></tr>
+        <tr><th colspan="6">Edit requests</th></tr>
         <tr>
             <td></td>
             <td align="center"><b>Category</b></td>
             <td align="center"><b>Description</b></td>
+            <td align="center"><b>Status</b></td>
             <td align="center"><b>Recipient</b></td>
             <td align="center"><b>Deadline</b></td>
         </tr>
@@ -18,6 +19,7 @@
                 </td>
                 <td align="center">{{.Category}}</td>
                 <td align="center">{{.Description}}</td>
+                <td align="center">{{.Status}}</td>
                 <td align="center">{{.RecipientName}}</td>
                 <td align="center">{{.ToCompleteBy}}</td>
             </tr>

@@ -56,6 +56,7 @@ type viewRequest struct {
 	Description   string
 	ToCompleteBy  time.Time
 	FulfillAt     string
+	Status        int
 }
 
 // Connector variable used for DB operations

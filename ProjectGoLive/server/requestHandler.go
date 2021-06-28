@@ -130,7 +130,8 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 
 			submitted = true
 			name := recipients[recipientID][0]
-			viewR := viewRequest{0, convertCategoryID(categoryID), name, reqDesc, toCompleteBy.Format("Mon, 02 Jan 2006, 15:04"), address}
+			// requestid and status not displayed in view
+			viewR := viewRequest{0, convertCategoryID(categoryID), name, reqDesc, toCompleteBy.Format("Mon, 02 Jan 2006, 15:04"), address, "Pending"}
 			viewRequestSlice = append(viewRequestSlice, viewR)
 
 			log.WithFields(logrus.Fields{
@@ -217,7 +218,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	for k, v := range requests {
 		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
 		// do not display address
-		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, ""}
+		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, "", convertStatusID(v.Status)}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
@@ -272,7 +273,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 
 			tmpTime := info.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
 			// do not display address
-			viewR := viewRequest{id, convertCategoryID(info.CategoryID), info.RecipientName, info.Description, tmpTime, ""}
+			viewR := viewRequest{id, convertCategoryID(info.CategoryID), info.RecipientName, info.Description, tmpTime, "", convertStatusID(info.Status)}
 			viewDeletedRequestSlice = append(viewDeletedRequestSlice, viewR)
 		}
 
@@ -331,7 +332,7 @@ func viewrequest(res http.ResponseWriter, req *http.Request) {
 
 	for requestid, v := range requests {
 		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt}
+		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt, convertStatusID(v.Status)}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
@@ -396,7 +397,7 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
 	for requestid, v := range requests {
 		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt}
+		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt, convertStatusID(v.Status)}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
@@ -478,7 +479,7 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 	r := database.GetRequest(reqID)
 
 	tmpTime := r.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-	viewR := viewRequest{reqID, convertCategoryID(r.CategoryID), r.RecipientName, r.Description, tmpTime, r.FulfillAt}
+	viewR := viewRequest{reqID, convertCategoryID(r.CategoryID), r.RecipientName, r.Description, tmpTime, r.FulfillAt, convertStatusID(r.Status)}
 	viewRequestSlice = append(viewRequestSlice, viewR)
 
 	if req.Method == http.MethodPost {
@@ -532,7 +533,7 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 				submitted = true
 
 				tmpTime := toCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-				viewR := viewRequest{reqID, convertCategoryID(categoryID), r.RecipientName, reqDesc, tmpTime, address}
+				viewR := viewRequest{reqID, convertCategoryID(categoryID), r.RecipientName, reqDesc, tmpTime, address, convertStatusID(r.Status)}
 				viewRequestSlice = []viewRequest{viewR}
 
 				log.WithFields(logrus.Fields{
@@ -593,5 +594,20 @@ func convertCategoryID(id int) string {
 		return "Errands"
 	default:
 		return "Invalid Category"
+	}
+}
+
+// Author: Tan Jun Jie
+// convertStatusID returns the string description of a status
+func convertStatusID(id int) string {
+	switch id {
+	case 0:
+		return "Pending"
+	case 1:
+		return "Being Handled"
+	case 2:
+		return "Completed"
+	default:
+		return "Invalid Status"
 	}
 }

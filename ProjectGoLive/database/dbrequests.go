@@ -163,6 +163,7 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 	var name string
 	var desc string
 	var addr string
+	var status int
 
 	// Instantiate requests
 	var requests = make(map[int]viewRequest)
@@ -174,7 +175,8 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 				Recipients.Name,
 				Requests.RequestDescription,
 				Requests.ToCompleteBy,
-				Requests.FulfillAt
+				Requests.FulfillAt,
+				Requests.RequestStatusCode
 				FROM Requests
 				INNER JOIN Recipients
 				ON Requests.RecipientID_FK = Recipients.RecipientID;
@@ -186,11 +188,11 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 			panic("error executing sql select: " + err.Error())
 		} else {
 			for results.Next() {
-				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy, &addr)
+				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy, &addr, &status)
 				if err != nil {
 					panic("error getting results from sql select: " + err.Error())
 				}
-				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr}
+				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 			}
 		}
 	} else {
@@ -201,7 +203,8 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 				Recipients.Name,
 				Requests.RequestDescription,
 				Requests.ToCompleteBy,
-				Requests.FulfillAt
+				Requests.FulfillAt,
+				Requests.RequestStatusCode
 				FROM Requests
 				INNER JOIN Recipients
 				ON Requests.RecipientID_FK = Recipients.RecipientID
@@ -213,11 +216,11 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 			panic("error executing sql select: " + err.Error())
 		} else {
 			for results.Next() {
-				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy, &addr)
+				err := results.Scan(&requestID, &categoryID, &name, &desc, &toCompleteBy, &addr, &status)
 				if err != nil {
 					panic("error getting results from sql select: " + err.Error())
 				}
-				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr}
+				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 			}
 		}
 	}
@@ -238,6 +241,7 @@ func GetRequest(reqID int) viewRequest {
 	var name string
 	var desc string
 	var addr string
+	var status int
 
 	// Instantiate request
 	var request = viewRequest{}
@@ -246,7 +250,8 @@ func GetRequest(reqID int) viewRequest {
 				Recipients.Name,
 				Requests.RequestDescription,
 				Requests.ToCompleteBy,
-				Requests.FulfillAt
+				Requests.FulfillAt,
+				Requests.RequestStatusCode
 				FROM Requests
 				INNER JOIN Recipients
 				ON Requests.RecipientID_FK = Recipients.RecipientID
@@ -258,11 +263,11 @@ func GetRequest(reqID int) viewRequest {
 		panic("error executing sql select: " + err.Error())
 	} else {
 		for results.Next() {
-			err := results.Scan(&categoryID, &name, &desc, &toCompleteBy, &addr)
+			err := results.Scan(&categoryID, &name, &desc, &toCompleteBy, &addr, &status)
 			if err != nil {
 				panic("error getting results from sql select: " + err.Error())
 			}
-			request = viewRequest{categoryID, name, desc, toCompleteBy, addr}
+			request = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 		}
 	}
 	return request

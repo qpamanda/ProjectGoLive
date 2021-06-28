@@ -169,3 +169,14 @@
 {"level":"info","line":"server/recipientHandler.go:431","msg":"[admin] deleted recipientID: [%!s(int64=3012)]","time":"2021-06-28T21:03:28+08:00","userName":"admin"}
 {"level":"info","line":"server/recipientHandler.go:431","msg":"[admin] deleted recipientID: [%!s(int64=3011)]","time":"2021-06-28T21:03:36+08:00","userName":"admin"}
 {"createdBy":"Admin Admin","createdDT":"2021-06-28T21:03:50.482957+08:00","level":"error","line":"server/requestHandler.go:156","msg":"One and/or more fields are empty. No request added.","repID":5000,"time":"2021-06-28T21:03:50+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T21:50:10+08:00","userName":"admin"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-28T21:50:18.594534+08:00","level":"info","line":"server/requestHandler.go:142","msg":"Request successfully added.","repID":5000,"reqDetails":{"RequestDescription":"nil","ToCompleteBy":"2021-07-01T21:50:00+08:00","FulfilAt":"nil"},"time":"2021-06-28T21:50:18+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T21:52:26+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T21:53:27+08:00","userName":"admin"}
+{"createdBy":"Admin Admin","createdDT":"2021-06-28T21:53:33.569249+08:00","level":"warning","line":"server/requestHandler.go:424","msg":"No selection made. Please try again.","repID":5000,"time":"2021-06-28T21:53:33+08:00"}
+{"createdBy":"Admin Admin","level":"info","line":"server/requestHandler.go:543","msg":"Successfully edited request.","repID":5000,"requestID":6010,"time":"2021-06-28T21:53:57+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T21:59:06+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T21:59:06+08:00","userName":"admin"}
+{"deleteDT":"2021-06-28T21:59:12.513471+08:00","description":"donate $50","level":"info","line":"server/requestHandler.go:249","msg":"Request successfully deleted.","recipient":"recipient5","repID":5000,"requestID":6005,"time":"2021-06-28T21:59:12+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T22:00:28+08:00","userName":"admin"}
+{"deleteDT":"2021-06-28T22:00:33.786382+08:00","description":"do nothing","level":"info","line":"server/requestHandler.go:249","msg":"Request successfully deleted.","recipient":"recipient6","repID":5000,"requestID":6010,"time":"2021-06-28T22:00:33+08:00"}
