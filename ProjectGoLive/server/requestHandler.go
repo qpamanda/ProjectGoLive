@@ -294,6 +294,62 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 }
 
 // Author: Tan Jun Jie
+// viewrequest is a handler func to view existing requests.
+func viewrequest(res http.ResponseWriter, req *http.Request) {
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	currentUser, _ := getUser(res, req)
+	repID := 0
+	clientMsg := "" // To display message to the user on the client
+	var isAdmin bool
+
+	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
+
+	// Only 1 key-value pair in repDetails
+	for k := range repDetails {
+		repID = k
+	}
+
+	if currentUser.UserName == "admin" {
+		isAdmin = true
+		// Decide whether to add admin entry in Representative table
+		// or to add an arbitary non-zero value for admin repID
+		repID = adminID
+	} else {
+		isAdmin = false
+	}
+
+	viewRequestSlice := make([]viewRequest, 0)
+
+	requests := database.GetRequestByRep(repID, isAdmin)
+
+	for requestid, v := range requests {
+		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+		viewR := viewRequest{requestid, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, v.FulfillAt}
+		viewRequestSlice = append(viewRequestSlice, viewR)
+	}
+
+	if len(viewRequestSlice) == 0 {
+		clientMsg = "No requests have been made."
+	}
+
+	data := struct {
+		RequestSlice []viewRequest
+		ClientMsg    string
+	}{
+		viewRequestSlice,
+		clientMsg,
+	}
+
+	tpl.ExecuteTemplate(res, "viewrequest.gohtml", data)
+
+}
+
+// Author: Tan Jun Jie
 // selecteditrequest is a handler func to select an existing request to edit.
 func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
