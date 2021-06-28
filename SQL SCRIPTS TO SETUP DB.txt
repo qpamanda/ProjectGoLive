@@ -108,6 +108,50 @@ CREATE TABLE `Requests` (
 );
 
 
+CREATE TABLE `Category` (
+  `CategoryID` int NOT NULL,
+  `Category` varchar(25) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`CategoryID`)
+);
+
+
+CREATE TABLE `RequestStatus` (
+  `StatusCode` TINYINT NOT NULL,
+  `Status` varchar(25) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`StatusCode`)
+);
+
+
+CREATE TABLE `RecipientCategory` (
+  `Category` TINYINT NOT NULL,
+  `CategoryDesc` varchar(25) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`Category`)
+);
+
+
+CREATE TABLE `Helpers` (
+  `RepID` int NOT NULL,
+  `RequestID` int NOT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`,`RequestID`)
+);
+
+
 ------------------------
 -- Insert Into Tables --
 ------------------------
@@ -209,6 +253,37 @@ INSERT INTO Requests VALUES (6004, 2002, 3, 3002, 0, "buy lunch for ms choo", no
 INSERT INTO Requests VALUES (6005, 2003, 1, 3005, 0, "donate $50", now(), "7 Long Rd.", "user three", now(), "user three", now());
 
 INSERT INTO Requests VALUES (6006, 2004, 2, 3009, 0, "Need walking stick", now(), "7 Noh Rd.", "user four", now(), "user four", now());
+
+
+INSERT INTO `dbProject`.`Category` (`CategoryID`, `Category`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('2', 'Item Donation', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`Category` (`CategoryID`, `Category`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('3', 'Errand', 'admin', now(), 'admin', now());
+
+
+INSERT INTO `dbProject`.`RequestStatus` (`StatusCode`, `Status`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('0', 'Pending', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`RequestStatus` (`StatusCode`, `Status`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('1', 'Being Handled', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`RequestStatus` (`StatusCode`, `Status`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('2', 'Completed', 'admin', now(), 'admin', now());
+
+
+INSERT INTO `dbProject`.`RecipientCategory` (`Category`, `CategoryDesc`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('0', 'Organisation', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`RecipientCategory` (`Category`, `CategoryDesc`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('1', 'Individual', 'admin', now(), 'admin', now());
 
 -----------
 -- Adhoc --

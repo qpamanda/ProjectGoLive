@@ -35,6 +35,51 @@ var (
 
 const cookieName = "sessionToken"
 
+// req struct for storing request information
+type newRequest struct {
+	RepresentativeId int // id of the coordinator/representative
+	/*
+		RequestCategoryId
+		1 (item donation)
+		2 (errands)
+	*/
+	RequestCategoryId int
+	RecipientId       int // id of recipient who receives the aid
+	/*
+		RequestStatus
+		0 (pending/waiting to be matched to a helper)
+		1 (being handled)
+		2 (completed)
+	*/
+	RequestStatus  int
+	RequestDetails requestDetails
+	CreatedBy      string
+	CreatedDT      time.Time
+	LastModifiedBy string
+	LastModifiedDT time.Time
+}
+
+//requestDetails struct for storing request detail information
+type requestDetails struct {
+	RequestDescription string
+	ToCompleteBy       time.Time
+	FulfilAt           string
+}
+
+type viewRecipient struct {
+	RecipientID int
+	Name        string
+}
+
+type viewRequest struct {
+	RequestID     int
+	Category      string
+	RecipientName string
+	Description   string
+	ToCompleteBy  string
+	FulfillAt     string
+}
+
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
@@ -96,6 +141,11 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
+	router.HandleFunc("/managerecipient", manageRecipient)
+	router.HandleFunc("/addrecipient", addRecipient)
+	router.HandleFunc("/getrecipient", getRecipient)
+	router.HandleFunc("/updaterecipient", updateRecipient)
+	router.HandleFunc("/deleterecipient", deleteRecipient)
 	router.HandleFunc("/resetpwd", resetpwd)
 	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	router.HandleFunc("/addrequest", addrequest)
@@ -103,6 +153,9 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/selectrequest", selectrequest)
 	router.HandleFunc("/fulfilrequest", fulfilrequest)
 	router.HandleFunc("/requestcompleted", requestcompleted)
+	router.HandleFunc("/selecteditrequest", selecteditrequest)
+	router.HandleFunc("/editrequest", editrequest)
+	router.HandleFunc("/viewrequest", viewrequest)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }
