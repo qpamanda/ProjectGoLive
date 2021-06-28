@@ -13,6 +13,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"ProjectGoLive/smtpserver"
 	"ProjectGoLive/testing"
 	"fmt"
 	"html/template"
@@ -246,7 +247,7 @@ func initFieldsLen() {
 
 	// Set the max characters for password
 	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
-	
+
 	// Setup fields for email sending feature
 	smtpserver.HostPath = os.Getenv("HOST_PATH")
 	smtpserver.SMTPHost = os.Getenv("SMTP_HOST")
