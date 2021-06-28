@@ -40,9 +40,8 @@ type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
+		1 (item donation)
+		2 (errands)
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
@@ -153,6 +152,7 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/deleterequest", deleterequest)
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
+	router.HandleFunc("/viewrequest", viewrequest)
 	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 }

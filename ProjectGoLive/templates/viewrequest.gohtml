@@ -1,10 +1,10 @@
-{{define "editreq-select"}}
+{{template "header"}}
 
-<form method="post" autocomplete="off">
+<h2>View Request</h2>
+<p style="color:red;">{{.ClientMsg}} </p> 
     <table id="view">
-        <tr><th colspan="5">Edit requests</th></tr>
+        <tr><th colspan="5">View requests</th></tr>
         <tr>
-            <td></td>
             <td align="center"><b>Category</b></td>
             <td align="center"><b>Description</b></td>
             <td align="center"><b>Recipient</b></td>
@@ -13,9 +13,6 @@
 
         {{range .RequestSlice}}
             <tr>
-                <td>
-                    <input type="radio" name="selection" value="{{.RequestID}}">&nbsp;
-                </td>
                 <td align="center">{{.Category}}</td>
                 <td align="center">{{.Description}}</td>
                 <td align="center">{{.RecipientName}}</td>
@@ -23,15 +20,9 @@
             </tr>
         {{end}}
     </table>
-    
+
     <br>
 
-    <table>
-    <tr> 
-        <td align="left"><input type="submit"></td>                    
-    </tr> 
-    </table>
-</form>
-
-
-{{end}}
+{{template "footer"}}
+</body>
+</html>

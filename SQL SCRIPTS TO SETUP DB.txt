@@ -130,6 +130,27 @@ CREATE TABLE `RequestStatus` (
 );
 
 
+CREATE TABLE `RecipientCategory` (
+  `Category` TINYINT NOT NULL,
+  `CategoryDesc` varchar(25) DEFAULT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`Category`)
+);
+
+
+CREATE TABLE `Helpers` (
+  `RepID` int NOT NULL,
+  `RequestID` int NOT NULL,
+  `CreatedBy` varchar(25) DEFAULT NULL,
+  `Created_dt` datetime DEFAULT NULL,
+  `LastModifiedBy` varchar(25) DEFAULT NULL,
+  `LastModified_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`RepID`,`RequestID`)
+);
+
 
 ------------------------
 -- Insert Into Tables --
@@ -254,6 +275,15 @@ VALUES ('1', 'Being Handled', 'admin', now(), 'admin', now());
 INSERT INTO `dbProject`.`RequestStatus` (`StatusCode`, `Status`, 
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
 VALUES ('2', 'Completed', 'admin', now(), 'admin', now());
+
+
+INSERT INTO `dbProject`.`RecipientCategory` (`Category`, `CategoryDesc`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('0', 'Organisation', 'admin', now(), 'admin', now());
+
+INSERT INTO `dbProject`.`RecipientCategory` (`Category`, `CategoryDesc`, 
+`CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
+VALUES ('1', 'Individual', 'admin', now(), 'admin', now());
 
 -----------
 -- Adhoc --
