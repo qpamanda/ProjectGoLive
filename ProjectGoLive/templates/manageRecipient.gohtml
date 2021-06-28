@@ -1,18 +1,28 @@
 {{template "header" .User}}
-    <h1>My Recipient's</h1>
+
     <h2><a href="/addrecipient">Add new recipient</a></h2>
-    <h2> {{.ClientMsg2}}
-    <h2> {{.ClientMsg}}
-    <table border="1">
-    {{ range .Recipients }}
+    <p style="color:red;">{{.ClientMsg2}} </p> 
+    <p style="color:red;">{{.ClientMsg}} </p> 
+    <table id="view">
+        <tr><th colspan="4">My Recipients</th></tr>
+
         <tr>
-        <td><h3>{{.Name}}</h3></td>
-        <td><a href="/getrecipient?recipientID={{.RecipientID}}">View more..</a></td>
-        <td><a href="/updaterecipient?recipientID={{.RecipientID}}">Update</a></td>
-        <td><a href="/deleterecipient?recipientID={{.RecipientID}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+            <td align="center"><b>Name</b></td>
+            <td align="center"><b>View more</b></td>
+            <td align="center"><b>Update</b></td>
+            <td align="center"><b>Delete</b></td>
         </tr>
-    {{end}}
+
+        {{ range .Recipients }}
+        <tr>
+            <td align="center"><h3>{{.Name}}</h3></td>
+            <td align="center"><a href="/getrecipient?recipientID={{.RecipientID}}">View more..</a></td>
+            <td align="center"><a href="/updaterecipient?recipientID={{.RecipientID}}">Update</a></td>
+            <td align="center"><a href="/deleterecipient?recipientID={{.RecipientID}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+        </tr>
+        {{end}}
     </table>
+
 {{template "footer"}}
 </body>
 </html>
