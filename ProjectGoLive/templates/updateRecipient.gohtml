@@ -1,29 +1,22 @@
-{{template "header" .User}}
+{{template "header"}}
 
-{{template "mainmenu"}}
-
-{{if eq .IsAdmin true}}
-    {{template "adminmenu"}}
-{{end}}
-    [<a href="/logout">Log Out</a>]
-    </br></br>
-<body>
-    <h2>{{.ClientMsg}}</h2>
+    <p style="color:red;">{{.ClientMsg}} </p>
     <p>Updating {{.Recipient.Name}} details</p>
     <form method="post">
         <table border="0">
             <tr>
-            <td><label for="name">Recipient Name:</label></td>
-            <td><input type="text" name="name" placeholder="name" value="{{.Recipient.Name}}"></td>
+                <td><label for="name">Recipient Name:</label></td>
+                <td><input type="text" name="name" placeholder="name" value="{{.Recipient.Name}}"></td>
             </tr>
 
             {{if eq .Recipient.Category true}}
             <tr>
-            <td><label for="category">Choose a category</label></td>
+                <td><label for="category">Choose a category</label></td>
                 <td><select id="category" name="category">
                     <option value="Individual">Individual</option>
                     <option value="Organisation">Organisation</option>
-                </select></td>
+                    </select>
+                </td>
             </tr>
             {{else}}
             <tr>
@@ -36,19 +29,22 @@
             {{end}}
 
             <tr>
-            <td><label for="contact">Recipient Contact No:</label></td>
-            <td><input type="text" name="contact" placeholder="contact number" value="{{.Recipient.ContactNo}}"></td>
+                <td><label for="contact">Recipient Contact No:</label></td>
+                <td><input type="text" name="contact" placeholder="contact number" value="{{.Recipient.ContactNo}}"></td>
             </tr>
 
             <tr>
-            <td><label for="profile">Recipient Profile:</label></td>
-            <td><textarea name="profile" id="profile" cols="25" rows="10">{{.Recipient.Profile}}</textarea></td>
+                <td><label for="profile">Recipient Profile:</label></td>
+                <td><textarea name="profile" id="profile" cols="25" rows="10">{{.Recipient.Profile}}</textarea></td>
             </tr>
 
-            <tr>
-            <td></td>
-            <td><input type="submit"></td>
-            </tr>
+            <tr> 
+                <td colspan="3">
+                    <input type="submit">&nbsp;
+                </td>
+            </tr>  
         </table>
     </form>
+{{template "footer"}}
 </body>
+</html>

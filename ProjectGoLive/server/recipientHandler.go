@@ -1,6 +1,6 @@
 /*
 Author: Huang Yanping
-Last Updated: 26-Jun-2021
+Last Updated: 28-Jun-2021
 */
 package server
 
@@ -8,7 +8,6 @@ import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"sort"
@@ -18,6 +17,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// struct for storing JSON file from numverify API
 type Result struct {
 	Valid                bool
 	Number               string
@@ -31,6 +31,7 @@ type Result struct {
 	Line_type            string
 }
 
+// struct for storing recipient details
 type Recipient struct {
 	RecipientID    int
 	RepID          int
@@ -42,16 +43,20 @@ type Recipient struct {
 	LastModifiedDT time.Time
 }
 
+// manageRecipient a handler func which will get all recipients under the user account
+// from the database.
 func manageRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+	// client msg to be displayed to the user indicating the result of the function
 	clientMsg := ""
 	clientMsg2 := ""
 
 	// get the user information using session cookie
 	myUser, _ := getUser(w, r)
+	// check if the user is a admin
 	authenticate.IsAdmin = database.IsAdmin(myUser.UserName)
 
 	// Get all recipients from the database under this representative in a form of slice
@@ -86,7 +91,7 @@ func manageRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "manageRecipient.gohtml", data)
 }
 
-// Add recipient to the database
+// addRecipient is a handler func which add recipient to the database
 func addRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -104,7 +109,7 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 		profile := r.FormValue("profile")
 		contactNo := r.FormValue("contact")
 
-		// check if there is any empty field
+		// check if there is any empty field , return a clientMsg if there is any empty field
 		if name == "" || profile == "" || contactNo == "" {
 			clientMsg = "Field cannot empty"
 			log.Error("Empty Field in creating recipient")
@@ -121,8 +126,10 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// validating the contact number
 		validContact, err := validateContactNo(contactNo)
 
+		// return clientMsg if there is any error in using the external API
 		if err != nil {
 			log.Error(err)
 			log.Error("Problem with numverify API")
@@ -140,6 +147,7 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// return clientMsg if it is a invalid contact number
 		if !validContact {
 			log.Error("Invalid contact number at creating recipient")
 			clientMsg = "Invalid contact number, please only enter the 8-digit numbers"
@@ -154,14 +162,17 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 			}
 			tpl.ExecuteTemplate(w, "addRecipient.gohtml", data)
 			return
-		} else {
+
+		} else { // executing adding of recipient once all field is validated
 
 			var categoryBool bool
 
+			// check for category input and converting it from string to bool
 			if category == "Individual" {
 				categoryBool = true
 			}
 
+			// call database package and add the recipient into the database
 			err := database.AddRecipient(myUser.RepID, name, categoryBool, profile, contactNo)
 
 			if err != nil {
@@ -186,6 +197,9 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 	}
 	tpl.ExecuteTemplate(w, "addRecipient.gohtml", data)
 }
+
+// getRecipient is a handler func that gets the recipient details
+// from the database using the recipientID.
 func getRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -235,6 +249,8 @@ func getRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "getRecipient.gohtml", data)
 }
 
+// updateRecipient is a handler func that update the recipient details
+// in the database using the recipientID.
 func updateRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -244,29 +260,24 @@ func updateRecipient(w http.ResponseWriter, r *http.Request) {
 	clientMsg := ""
 	myUser, _ := getUser(w, r)
 	authenticate.IsAdmin = database.IsAdmin(myUser.UserName)
-	// get the user input from URL query
+
 	inputs := r.URL.Query()["recipientID"]
 
-	// get the recipientID from the URL query
 	recipientID := inputs[0]
 
-	// convert the recipientID from string to int64
 	recipientIDInt, err := strconv.ParseInt(recipientID, 10, 0)
 
-	// checking for error when converting the string to int64
 	if err != nil {
 		log.Error(err)
 		clientMsg = "Internal server error, update unsuccessful"
 	}
 
 	if r.Method == http.MethodPost {
-		// Process form
 		name := r.FormValue("name")
 		category := r.FormValue("category")
 		profile := r.FormValue("profile")
 		contactNo := r.FormValue("contact")
 
-		// check if there is any empty field
 		if name == "" || profile == "" || contactNo == "" {
 			log.Error("Empty Field in updating recipient")
 			clientMsg = "Field cannot empty"
@@ -365,10 +376,8 @@ func updateRecipient(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// query the database and get the recipient information
 	recipient, err := database.GetRecipient(myUser.RepID, recipientIDInt)
 
-	// checking for error at the database query
 	if err != nil {
 		log.Error(err)
 		clientMsg = "Internal server error at database"
@@ -388,6 +397,8 @@ func updateRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "updateRecipient.gohtml", data)
 }
 
+// deleteRecipient is a handler func that delete the recipient
+// in the database using the recipientID.
 func deleteRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -398,25 +409,19 @@ func deleteRecipient(w http.ResponseWriter, r *http.Request) {
 	myUser, _ := getUser(w, r)
 	authenticate.IsAdmin = database.IsAdmin(myUser.UserName)
 
-	// get the user input from URL query
 	inputs := r.URL.Query()["recipientID"]
 
-	// get the recipientID from the URL query
 	recipientID := inputs[0]
 
-	// convert the recipientID from string to int64
 	recipientIDInt, err := strconv.ParseInt(recipientID, 10, 0)
 
-	// checking for error when converting the string to int64
 	if err != nil {
 		log.Error(err)
 		clientMsg2 = "Internal server error, delete unsuccessful."
 	}
 
-	// query the database and get the recipient information
 	err2 := database.DeleteRecipient(myUser.RepID, recipientIDInt)
 
-	// checking for error at the database query
 	if err2 != nil {
 		log.Error(err2)
 		clientMsg2 = "Internal server error at database, delete unsuccessful."
@@ -436,7 +441,6 @@ func deleteRecipient(w http.ResponseWriter, r *http.Request) {
 	if len(recipients) == 0 {
 		clientMsg = "You currently have no recipients"
 	} else {
-		// sort the slice from database in alphabetical order according to the recipient name
 		sort.SliceStable(recipients, func(i, j int) bool { return recipients[i].Name < recipients[j].Name })
 	}
 
@@ -456,20 +460,26 @@ func deleteRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "manageRecipient.gohtml", data)
 }
 
+// validateContactNo is a func that accepts a string input
+// and validate the string input whether it is a valid
+// contact number from Singapore using a external API from numverify.
+// return true if it is a valid contact number or
+// false if it is invalid and any error using the API.
 func validateContactNo(contactNo string) (bool, error) {
+	// access key from the API website
 	accessKey := "ce2db76b60065070752e50aab06b23a5"
+
+	// url for the API
 	url := "http://apilayer.net/api/validate?access_key=" + accessKey + "&number=" + contactNo + "&country_code=SG&format=1"
+
+	// connecting to the API
 	if resp, err := http.Get(url); err == nil {
 		defer resp.Body.Close()
+		// reading the result
 		if body, err := ioutil.ReadAll(resp.Body); err == nil {
 			var result Result
 			json.Unmarshal(body, &result)
-			fmt.Println(result)
-			if result.Valid {
-				return true, nil
-			} else {
-				return false, nil
-			}
+			return result.Valid, nil
 		} else {
 			return false, err
 		}
