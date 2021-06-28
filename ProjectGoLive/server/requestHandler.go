@@ -14,8 +14,10 @@ var (
 	// selecteditrequest passes these to editrequest
 	rid         int
 	hasSelected bool
-	adminID     = 5000
 )
+
+// representative ID of admin user
+const adminID = 5000
 
 // Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
@@ -401,27 +403,12 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		var requestID int
 
-		/*
-			for _, v := range viewRequestSlice {
-				selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
-				if selectedRequest != "" {
-					requestID = v.RequestID
-				}
-			}
-		*/
 		selectedRequest := req.FormValue("selection")
 		if selectedRequest != "" {
 			requestID, _ = strconv.Atoi(selectedRequest)
 		}
 
 		if requestID != 0 {
-			/*
-				clientMsg = fmt.Sprintf("Request %s has been selected.", strconv.Itoa(requestID))
-				newRequestItem := requests[requestID]
-				tmpTime := newRequestItem.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-				newViewRequest := viewRequest{requestID, convertCategoryID(newRequestItem.CategoryID), newRequestItem.RecipientName, newRequestItem.Description, tmpTime, newRequestItem.FulfillAt}
-				viewRequestSlice = []viewRequest{newViewRequest}
-			*/
 			rid = requestID
 			hasSelected = true
 			http.Redirect(res, req, "/editrequest", http.StatusSeeOther)
@@ -482,8 +469,6 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if currentUser.UserName == "admin" {
-		// Decide whether to add admin entry in Representative table
-		// or to add an arbitary non-zero value for admin repID
 		repID = adminID
 	}
 
