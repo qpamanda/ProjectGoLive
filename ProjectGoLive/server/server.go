@@ -35,6 +35,8 @@ var (
 	//bFirst = true
 )
 
+const cookieName = "sessionToken"
+
 // user struct for storing user account information
 type user struct {
 	UserName       string
@@ -92,6 +94,7 @@ type viewRequest struct {
 	RecipientName string
 	Description   string
 	ToCompleteBy  string
+	FulfillAt     string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server.

@@ -10,7 +10,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-
 var (
 	// selecteditrequest passes these to editrequest
 	rid         int
@@ -48,8 +47,10 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	lastModifiedDT := time.Now()
 	clientMsg := "" // To display message to the user on the client
 	var toCompleteBy time.Time
+	var isAdmin, submitted bool
 
 	viewRecipientSlice := make([]viewRecipient, 0)
+	viewRequestSlice := make([]viewRequest, 0)
 
 	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
 
@@ -60,7 +61,12 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		createdBy = tmpName
 		lastModifiedBy = tmpName
 	}
-	recipients := database.GetRecipientDetails(repID)
+
+	if currentUser.UserName == "admin" {
+		isAdmin = true
+		repID = adminID
+	}
+	recipients := database.GetRecipientDetails(repID, isAdmin)
 
 	// Parse recipients into viewRecipient format
 	for k, v := range recipients {
@@ -95,7 +101,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 
 		//fmt.Fprintln(res, isValidRequest(request))
 
-		if isValidRequest(request) {
+		if isFilled, timeinFuture := isValidRequest(request); isFilled && timeinFuture {
 
 			err := database.AddRequest(
 				repID,
@@ -111,16 +117,21 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 				lastModifiedDT)
 
 			if err != nil {
-				clientMsg = "Could not add request"
+				clientMsg = "Could not add request: "
 
 				log.WithFields(logrus.Fields{
 					"repID":     repID,
 					"createdBy": createdBy,
 					"createdDT": createdDT,
-				}).Warn(clientMsg)
+				}).Warn(clientMsg + err.Error())
 			}
 
-			clientMsg = "Request successfully added"
+			clientMsg = "Request successfully added."
+
+			submitted = true
+			name := recipients[recipientID][0]
+			viewR := viewRequest{0, convertCategoryID(categoryID), name, reqDesc, toCompleteBy.Format("Mon, 02 Jan 2006, 15:04"), address}
+			viewRequestSlice = append(viewRequestSlice, viewR)
 
 			log.WithFields(logrus.Fields{
 				"repID":      repID,
@@ -130,8 +141,14 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 			}).Info(clientMsg)
 
 		} else {
-			clientMsg = "No request added"
-
+			if !isFilled {
+				clientMsg = "One and/or more fields are empty. No request added."
+			} else if toCompleteBy.Equal(time.Time{}) {
+				// checks if time fill is not entered
+				clientMsg = "Please enter a valid time."
+			} else {
+				clientMsg = "Time indicated has already passed. No request added."
+			}
 			log.WithFields(logrus.Fields{
 				"repID":     repID,
 				"createdBy": createdBy,
@@ -142,10 +159,14 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 
 	data := struct {
 		RecipientSlice []viewRecipient
+		RequestSlice   []viewRequest
 		ClientMsg      string
+		FormSubmitted  bool
 	}{
 		viewRecipientSlice,
+		viewRequestSlice,
 		clientMsg,
+		submitted,
 	}
 
 	tpl.ExecuteTemplate(res, "addrequest.gohtml", data)
@@ -166,7 +187,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 
 	repID := 0
 	clientMsg := "" // To display message to the user on the client
-	var isAdmin bool
+	var isAdmin, submitted bool
 
 	repDetails := database.GetRepresentativeDetails(currentUser.UserName)
 
@@ -179,20 +200,24 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 		isAdmin = true
 		// Decide whether to add admin entry in Representative table
 		// or to add an arbitary non-zero value for admin repID
-		repID = 5221
+		repID = adminID
 	} else {
 		isAdmin = false
 	}
 
 	viewRequestSlice := make([]viewRequest, 0)
+	viewDeletedRequestSlice := make([]viewRequest, 0)
+	// tracks request id of deleted requests
+	idSlice := make([]int, 0)
 
-	requests := database.GetRequest(repID, isAdmin)
+	requests := database.GetRequestByRep(repID, isAdmin)
 
 	// Parse recipients into viewRecipient format
 	// Consider writing a function to sort viewRequestSlice
 	for k, v := range requests {
 		tmpTime := v.ToCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime}
+		// do not display address
+		viewR := viewRequest{k, convertCategoryID(v.CategoryID), v.RecipientName, v.Description, tmpTime, ""}
 		viewRequestSlice = append(viewRequestSlice, viewR)
 	}
 
@@ -200,13 +225,19 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 
 	// Process the form submission
 	if req.Method == http.MethodPost {
+		selectedCnt := 0
 		for _, v := range viewRequestSlice {
 			selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
 
 			if selectedRequest != "" {
+				selectedCnt += 1
+				idSlice = append(idSlice, v.RequestID)
+
 				if err := database.DeleteRequest(v.RequestID); err == nil {
 
-					clientMsg = "Request successfully deleted"
+					clientMsg = "Request successfully deleted."
+
+					submitted = true
 
 					log.WithFields(logrus.Fields{
 						"repID":       repID,
@@ -217,7 +248,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 					}).Info(clientMsg)
 
 				} else {
-					clientMsg = "No request deleted"
+					clientMsg = "Could not delete request."
 
 					log.WithFields(logrus.Fields{
 						"repID": repID,
@@ -390,7 +421,8 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 				"createdBy": createdBy,
 				"createdDT": time.Now(),
 			}).Warn(clientMsg)
-				}
+		}
+
 	}
 
 	data := struct {
@@ -402,7 +434,6 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 		len(viewRequestSlice),
 		clientMsg,
 	}
-
 
 	tpl.ExecuteTemplate(res, "selecteditrequest.gohtml", data)
 
@@ -526,12 +557,14 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 	}
 
 	tpl.ExecuteTemplate(res, "editrequest.gohtml", data)
-	
 }
 
 // Author: Tan Jun Jie
-// isValidRequest checks that a request has non-empty fields
-func isValidRequest(req newRequest) bool {
+// isValidRequest checks whether a request has non-empty fields
+// and if the requested time is not in the past
+func isValidRequest(req newRequest) (isFilled, timeInFuture bool) {
+	isFilled = true
+	timeInFuture = true
 
 	// skip RequestCategoryId, RecipientId check
 	// as there is a default option in the dropdown of the form
@@ -540,9 +573,14 @@ func isValidRequest(req newRequest) bool {
 		req.RequestDetails.FulfilAt == "" ||
 		req.CreatedBy == "" ||
 		req.LastModifiedBy == "" {
-		return false
+		isFilled = false
 	}
-	return true
+
+	if req.RequestDetails.ToCompleteBy.Before(time.Now()) {
+		timeInFuture = false
+	}
+
+	return
 }
 
 // Author: Tan Jun Jie
@@ -550,10 +588,8 @@ func isValidRequest(req newRequest) bool {
 func convertCategoryID(id int) string {
 	switch id {
 	case 1:
-		return "Monetary Donation"
-	case 2:
 		return "Item Donation"
-	case 3:
+	case 2:
 		return "Errands"
 	default:
 		return "Invalid Category"

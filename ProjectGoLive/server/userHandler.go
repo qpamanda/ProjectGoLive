@@ -3,6 +3,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"ProjectGoLive/smtpserver"
 	"crypto/rand"
 	"errors"
 	"io"
@@ -400,6 +401,150 @@ func changepwd(res http.ResponseWriter, req *http.Request) {
 		validSession,
 	}
 	tpl.ExecuteTemplate(res, "changepwd.gohtml", data)
+}
+
+// resetpwd is a handler func to reset user password without login
+// Validates user input and updates the information.
+// Author: Amanda
+func resetpwd(res http.ResponseWriter, req *http.Request) {
+	clientMsg := "" // To display message to the user on the client
+	repid := 0
+	username := ""
+
+	v := req.URL.Query()
+	if key, ok := v["key"]; ok {
+		hashemail := sanitize.Accents(key[0]) // Sanitise the url param string
+
+		users, err := database.GetAllUsers()
+
+		if err != nil {
+			clientMsg = "ERROR: " + "unable to reset password"
+			log.WithFields(logrus.Fields{
+				"hashemail": hashemail,
+			}).Errorf("unable to reset password")
+		} else {
+			for _, v := range users {
+				// Matching of password entered
+				err := bcrypt.CompareHashAndPassword([]byte(hashemail), []byte(v.Email))
+
+				if err == nil {
+					repid = v.RepID
+					username = v.UserName
+					break
+				}
+			}
+		}
+
+		if username == "" {
+			clientMsg = "ERROR: " + "user account not found to reset password"
+			log.WithFields(logrus.Fields{
+				"hashemail": hashemail,
+			}).Errorf("user account not found to reset password")
+		}
+	}
+
+	newpassword := ""
+	cmfpassword := ""
+
+	// Process the form submission
+	if req.Method == http.MethodPost {
+		// Get form values and sanitize the strings
+		newpassword = sanitize.Accents(req.FormValue("newpassword"))
+		cmfpassword = sanitize.Accents(req.FormValue("cmfpassword"))
+
+		// Validates the input fields from the user
+		if err := authenticate.ValidatePassword(newpassword, cmfpassword); err != nil {
+			clientMsg = "ERROR: " + err.Error()
+			log.Error(err)
+		} else {
+
+			// Hashed the password from user input before saving
+			bPassword, err := bcrypt.GenerateFromPassword([]byte(newpassword), bcrypt.MinCost)
+
+			if err != nil {
+				clientMsg = "WARNING: " + "internal server error"
+				log.Warn("internal server error")
+			} else {
+				// Update password information into the database
+				err = database.UpdatePassword(repid, username, string(bPassword))
+
+				if err != nil {
+					clientMsg = "ERROR: " + "error resetting password"
+					log.WithFields(logrus.Fields{
+						"username": username,
+					}).Errorf("[%s] error resetting password", username)
+				} else {
+					clientMsg = "Password reset successfully. Please login with your new password."
+					log.WithFields(logrus.Fields{
+						"userName": username,
+					}).Infof("[%s] password reset successfully", username)
+
+					newpassword = ""
+					cmfpassword = ""
+				}
+			}
+		}
+	}
+
+	data := struct {
+		UserName    string
+		NewPassword string
+		CmfPassword string
+		ClientMsg   string
+	}{
+		username,
+		newpassword,
+		cmfpassword,
+		clientMsg,
+	}
+	tpl.ExecuteTemplate(res, "resetpwd.gohtml", data)
+}
+
+// resetpwd is a handler func to reset user password
+// It triggers an email to user registered email address to activate password reset
+// Author: Amanda
+func resetpwdreq(res http.ResponseWriter, req *http.Request) {
+	clientMsg := "" // To display message to the user on the client
+
+	email := ""
+
+	// Process the form submission
+	if req.Method == http.MethodPost {
+		// Get form values and sanitize the strings
+		email = sanitize.Accents(req.FormValue("email"))
+
+		// Validates the input fields from the user
+		if err := authenticate.ValidateEmail(email); err != nil {
+			clientMsg = "ERROR: " + err.Error()
+			log.Error(err)
+		} else {
+
+			err = smtpserver.EmailResetPassword(email)
+
+			if err != nil {
+				clientMsg = "ERROR: " + err.Error()
+				log.WithFields(logrus.Fields{
+					"email": email,
+				}).Errorf(err.Error())
+			} else {
+				clientMsg = "Reset password email sent"
+				log.WithFields(logrus.Fields{
+					"email": email,
+				}).Infof("Reset password email sent")
+
+				email = ""
+			}
+		}
+	}
+
+	data := struct {
+		Email     string
+		ClientMsg string
+	}{
+		email,
+		clientMsg,
+	}
+	tpl.ExecuteTemplate(res, "resetpwdreq.gohtml", data)
 }
 
 // logout func is a handler to logout the current user. Redirects to index page if user has not login.
