@@ -13,7 +13,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
-	"ProjectGoLive/smtpserver"
+	"ProjectGoLive/testing"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -31,17 +31,32 @@ var (
 	tpl  *template.Template
 	log  = logrus.New()
 	file *os.File
+
+	//bFirst = true
 )
 
-const cookieName = "sessionToken"
+// user struct for storing user account information
+type user struct {
+	UserName       string
+	Password       []byte
+	FirstName      string
+	LastName       string
+	Email          string
+	IsAdmin        bool
+	CreatedDT      time.Time
+	LastModifiedDT time.Time
+	CurrentLoginDT time.Time
+	LastLoginDT    time.Time
+}
 
 // req struct for storing request information
 type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
-		1 (item donation)
-		2 (errands)
+		1 (monetary donation)
+		2 (item donation)
+		3 (errands)
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
@@ -77,7 +92,6 @@ type viewRequest struct {
 	RecipientName string
 	Description   string
 	ToCompleteBy  string
-	FulfillAt     string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server.
@@ -122,9 +136,14 @@ func StartServer() {
 	// Initialise the handlers
 	initaliseHandlers(router)
 
+	// Testing functions created by Ahmad
+	//test()
+	//testDelete()
+
 	// Set the listen port
 	fmt.Println("Listening at port 5221")
 	err := http.ListenAndServeTLS(":5221", "certs//cert.pem", "certs//key.pem", router)
+	//err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Fatal("FATAL: ListenAndServeTLS - ", err)
 	}
@@ -137,10 +156,16 @@ func StartServer() {
 func initaliseHandlers(router *mux.Router) {
 
 	router.HandleFunc("/", index)
+
+	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
+	router.HandleFunc("/categorytable", categorytable)
+	router.HandleFunc("/membertypetable", membertypetable)
+	router.HandleFunc("/requeststatustable", requeststatustable)
+	//router.HandleFunc("/delcourse", delcourse)
 	router.HandleFunc("/managerecipient", manageRecipient)
 	router.HandleFunc("/addrecipient", addRecipient)
 	router.HandleFunc("/getrecipient", getRecipient)
@@ -150,6 +175,9 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/resetpwdreq", resetpwdreq)
 	router.HandleFunc("/addrequest", addrequest)
 	router.HandleFunc("/deleterequest", deleterequest)
+	router.HandleFunc("/selectrequest", selectrequest)
+	router.HandleFunc("/fulfilrequest", fulfilrequest)
+	router.HandleFunc("/requestcompleted", requestcompleted)
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
 	router.HandleFunc("/viewrequest", viewrequest)
@@ -228,11 +256,29 @@ func initFieldsLen() {
 
 	// Set the max characters for password
 	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
+}
 
-	// Setup fields for email sending feature
-	smtpserver.HostPath = os.Getenv("HOST_PATH")
-	smtpserver.SMTPHost = os.Getenv("SMTP_HOST")
-	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
-	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
-	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
+// Author: Ahmad Bahrudin
+func test() {
+	testing.TestCatInsert()
+	testing.TestCatUpdate()
+	testing.TestCatGet()
+	testing.TestCatGetAll()
+
+	testing.TestMemTInsert()
+	testing.TestMemTUpdate()
+	testing.TestMemTGet()
+	testing.TestMemTGetAll()
+
+	testing.TestReqSInsert()
+	testing.TestReqSUpdate()
+	testing.TestReqSGet()
+	testing.TestReqSGetAll()
+}
+
+// Author: Ahmad Bahrudin
+func testDelete() {
+	testing.TestCatDelete()
+	testing.TestMemTDelete()
+	testing.TestReqSDelete()
 }

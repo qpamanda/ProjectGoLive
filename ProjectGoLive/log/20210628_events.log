@@ -1,0 +1,133 @@
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:25:23+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:25:32+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:27:47+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:31:42+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:32:36+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:33:38+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:38:00+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:38:19+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:39:48+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:45:53+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:49:11+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:49:20+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:49:30+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:50:21+08:00","userName":"admin"}
+{"level":"error","line":"server/handler.go:45","msg":"username and/or password do not match","time":"2021-06-28T11:50:31+08:00"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:50:39+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:54:16+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:54:27+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T11:57:14+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T12:11:18+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T12:13:27+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T15:40:48+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T15:52:44+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:73","msg":"[admin] user login successfully","time":"2021-06-28T15:52:54+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:77","msg":"[admin] user login successfully","time":"2021-06-28T15:55:28+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:77","msg":"[admin] user login successfully","time":"2021-06-28T15:55:38+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:77","msg":"[admin] user login successfully","time":"2021-06-28T15:56:02+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:77","msg":"[admin] user login successfully","time":"2021-06-28T15:56:10+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:77","msg":"[admin] user login successfully","time":"2021-06-28T16:07:21+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:09:09+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:09:16+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:13:02+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:13:13+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:13:18+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:15:10+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:15:30+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:17:51+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:18:23+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:20:27+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:78","msg":"[admin] user login successfully","time":"2021-06-28T16:20:47+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T00:27:47+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T00:28:51+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T00:29:47+08:00","userName":"admin"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-28T00:30:41+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T00:30:47+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:01:04+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:09:07+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:09:11+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T01:30:33+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[admin] user account updated successfully","time":"2021-06-28T01:30:41+08:00","userName":"admin"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[admin] user logout successfully","time":"2021-06-28T01:30:45+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:30:52+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:30:58+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:31:02+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:31:06+08:00","userName":"user1"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-28T01:33:54+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:34:00+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:34:05+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T01:34:09+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-28T01:34:15+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[admin] user login successfully","time":"2021-06-28T01:34:20+08:00","userName":"admin"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:45:00+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T01:45:57+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T09:23:32+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T10:41:29+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T10:41:35+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T10:41:39+08:00","userName":"user1"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-28T10:42:43+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T10:42:48+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T11:08:47+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T12:34:11+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T12:38:04+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T12:41:31+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T12:43:19+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-28T12:43:37+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T13:26:34+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T13:28:44+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T14:19:42+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T14:42:00+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T14:52:18+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T14:55:19+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T14:56:01+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:04:08+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:09:08+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:18:01+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:19:22+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T15:21:42+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-28T15:21:52+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:22:00+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T15:22:13+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T15:22:20+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:23:59+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:26:32+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:28:10+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:31:01+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-28T15:33:30+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user2] user login successfully","time":"2021-06-28T15:33:34+08:00","userName":"user2"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user2] user account updated successfully","time":"2021-06-28T15:33:39+08:00","userName":"user2"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:40:22+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T15:43:25+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:03:05+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:13:36+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:25:30+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:31:22+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:36:37+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:38:18+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:42:09+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:46:23+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:568","msg":"[user1] user logout successfully","time":"2021-06-28T16:47:32+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:50:37+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:262","msg":"[user1] user account updated successfully","time":"2021-06-28T16:50:42+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T16:55:28+08:00","userName":"user1"}
+{"level":"error","line":"server/handler.go:35","msg":"username and/or password do not match","time":"2021-06-28T16:58:45+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:22:58+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:25:01+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:31:59+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:569","msg":"[user1] user logout successfully","time":"2021-06-28T17:32:54+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:33:01+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user2] user login successfully","time":"2021-06-28T17:47:52+08:00","userName":"user2"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:49:02+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:51:04+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T17:59:10+08:00","userName":"user1"}
+{"createdBy":"user one","createdDT":"2021-06-28T17:59:32.78808+08:00","level":"error","line":"server/requestHandler.go:174","msg":"No request added","repID":2001,"time":"2021-06-28T17:59:32+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user2] user login successfully","time":"2021-06-28T18:00:20+08:00","userName":"user2"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:05:28+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:06:36+08:00","userName":"user1"}
+{"level":"info","line":"server/userHandler.go:569","msg":"[user1] user logout successfully","time":"2021-06-28T18:07:13+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:07:19+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:44:21+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:45:03+08:00","userName":"user1"}
+{"level":"info","line":"server/handler.go:61","msg":"[user2] user login successfully","time":"2021-06-28T18:45:47+08:00","userName":"user2"}
+{"level":"error","line":"server/handler.go:46","msg":"username and/or password do not match","time":"2021-06-28T18:46:35+08:00"}
+{"level":"info","line":"server/handler.go:61","msg":"[user1] user login successfully","time":"2021-06-28T18:46:41+08:00","userName":"user1"}
