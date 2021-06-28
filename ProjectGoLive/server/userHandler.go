@@ -587,6 +587,7 @@ func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, boo
 	var myUser authenticate.User
 
 	if username, ok := authenticate.MapSessions[sessionToken.Value]; ok {
+		//fmt.Println(username)
 		myUser, err = database.GetUser(username) // Get user from database
 		if err != nil {
 			return myUser, false
