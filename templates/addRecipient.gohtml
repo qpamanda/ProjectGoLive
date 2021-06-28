@@ -1,0 +1,41 @@
+{{template "header" }}
+
+    <p style="color:red;">{{.ClientMsg}} </p>
+    <p>Enter new recipient details</p>
+    <form method="post" autocomplete="off">
+        <table border="0">
+            <tr>
+                <td><label for="name">Recipient Name:</label></td>
+                <td><input type="text" name="name" placeholder="name"></td>
+            </tr>
+
+            <tr>
+                <td><label for="category">Choose a category</label></td>
+                <td><select id="category" name="category">
+                    <option value="Individual">Individual</option>
+                    <option value="Organisation">Organisation</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label for="contact">Recipient Contact No:</label></td>
+                <td><input type="text" name="contact" placeholder="contact number"></td>
+            </tr>
+
+            <tr>
+                <td><label for="profile">Recipient Profile:</label></td>
+                <td><textarea name="profile" id="profile" cols="25" rows="10"></textarea></td>
+            </tr>
+
+            <tr> 
+                <td colspan="3">
+                    <input type="submit">&nbsp;
+                </td>
+            </tr>   
+        </table>
+    </form>
+{{template "footer"}}  
+  
+</body>
+</html>
