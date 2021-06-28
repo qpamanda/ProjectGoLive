@@ -95,6 +95,7 @@ type viewRequest struct {
 	Description   string
 	ToCompleteBy  string
 	FulfillAt     string
+	Status        string
 }
 
 // InitServer initialises the templates for displaying the web pages at the server.
