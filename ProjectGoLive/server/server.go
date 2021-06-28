@@ -37,20 +37,6 @@ var (
 
 const cookieName = "sessionToken"
 
-// user struct for storing user account information
-type user struct {
-	UserName       string
-	Password       []byte
-	FirstName      string
-	LastName       string
-	Email          string
-	IsAdmin        bool
-	CreatedDT      time.Time
-	LastModifiedDT time.Time
-	CurrentLoginDT time.Time
-	LastLoginDT    time.Time
-}
-
 // req struct for storing request information
 type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
@@ -260,6 +246,13 @@ func initFieldsLen() {
 
 	// Set the max characters for password
 	authenticate.MaxPassword, _ = strconv.Atoi(os.Getenv("MAX_PASSWORD"))
+	
+	// Setup fields for email sending feature
+	smtpserver.HostPath = os.Getenv("HOST_PATH")
+	smtpserver.SMTPHost = os.Getenv("SMTP_HOST")
+	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
+	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
+	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
 }
 
 // Author: Ahmad Bahrudin
