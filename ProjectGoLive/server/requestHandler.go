@@ -141,6 +141,9 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		} else {
 			if !isFilled {
 				clientMsg = "One and/or more fields are empty. No request added."
+			} else if toCompleteBy.Equal(time.Time{}) {
+				// checks if time fill is not entered
+				clientMsg = "Please enter a valid time."
 			} else {
 				clientMsg = "Time indicated has already passed. No request added."
 			}
@@ -342,11 +345,17 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		var requestID int
 
-		for _, v := range viewRequestSlice {
-			selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
-			if selectedRequest != "" {
-				requestID = v.RequestID
+		/*
+			for _, v := range viewRequestSlice {
+				selectedRequest := req.FormValue(strconv.Itoa(v.RequestID))
+				if selectedRequest != "" {
+					requestID = v.RequestID
+				}
 			}
+		*/
+		selectedRequest := req.FormValue("selection")
+		if selectedRequest != "" {
+			requestID, _ = strconv.Atoi(selectedRequest)
 		}
 
 		if requestID != 0 {
@@ -455,30 +464,42 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 			toCompleteBy = r.ToCompleteBy
 		}
 
-		if err := database.EditRequest(reqID, categoryID, reqDesc, toCompleteBy, address); err != nil {
-			clientMsg = "Could not edit request: "
+		// disallow user to change toCompleteBy to before current datetime
+		if toCompleteBy.Before(time.Now()) {
+			clientMsg = "Time indicated has already passed. No request added."
 
 			log.WithFields(logrus.Fields{
 				"repID":     repID,
 				"createdBy": createdBy,
 				"requestID": reqID,
-			}).Error(clientMsg + err.Error())
+			}).Warn(clientMsg)
 		} else {
-			clientMsg = "Successfully edited request."
 
-			rid = 0
-			hasSelected = false
-			submitted = true
+			if err := database.EditRequest(reqID, categoryID, reqDesc, toCompleteBy, address); err != nil {
+				clientMsg = "Could not edit request: "
 
-			tmpTime := toCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
-			viewR := viewRequest{reqID, convertCategoryID(categoryID), r.RecipientName, reqDesc, tmpTime, address}
-			viewRequestSlice = []viewRequest{viewR}
+				log.WithFields(logrus.Fields{
+					"repID":     repID,
+					"createdBy": createdBy,
+					"requestID": reqID,
+				}).Error(clientMsg + err.Error())
+			} else {
+				clientMsg = "Successfully edited request."
 
-			log.WithFields(logrus.Fields{
-				"repID":     repID,
-				"createdBy": createdBy,
-				"requestID": reqID,
-			}).Info(clientMsg)
+				rid = 0
+				hasSelected = false
+				submitted = true
+
+				tmpTime := toCompleteBy.Format("Mon, 02 Jan 2006, 15:04")
+				viewR := viewRequest{reqID, convertCategoryID(categoryID), r.RecipientName, reqDesc, tmpTime, address}
+				viewRequestSlice = []viewRequest{viewR}
+
+				log.WithFields(logrus.Fields{
+					"repID":     repID,
+					"createdBy": createdBy,
+					"requestID": reqID,
+				}).Info(clientMsg)
+			}
 		}
 
 	}
