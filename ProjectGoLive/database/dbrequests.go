@@ -41,7 +41,7 @@ func GetRepresentativeDetails(username string) map[int][]string {
 
 // Author: Tan Jun Jie
 // GetRecipientDetails queries the database for the ID and names of recipients that a representative is in charge of.
-func GetRecipientDetails(RepresentativeId int) map[int][]string {
+func GetRecipientDetails(RepresentativeId int, isAdmin bool) map[int][]string {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(">> Panic:", err)
@@ -54,21 +54,39 @@ func GetRecipientDetails(RepresentativeId int) map[int][]string {
 	// Instantiate recipients' details
 	var details = make(map[int][]string)
 
-	query := "SELECT RecipientID, Name FROM Recipients WHERE RepID_FK=?"
+	if !isAdmin {
 
-	results, err := DB.Query(query, RepresentativeId)
-	if err != nil {
-		panic("error executing sql select: " + err.Error())
-	} else {
-		for results.Next() {
-			err := results.Scan(&recipientID, &name)
-			if err != nil {
-				panic("error getting results from sql select")
+		query := "SELECT RecipientID, Name FROM Recipients WHERE RepID_FK=?"
+
+		results, err := DB.Query(query, RepresentativeId)
+		if err != nil {
+			panic("error executing sql select: " + err.Error())
+		} else {
+			for results.Next() {
+				err := results.Scan(&recipientID, &name)
+				if err != nil {
+					panic("error getting results from sql select")
+				}
+				details[recipientID] = []string{name}
 			}
-			details[recipientID] = []string{name}
 		}
-		return details
+	} else {
+		query := "SELECT RecipientID, Name FROM Recipients"
+
+		results, err := DB.Query(query)
+		if err != nil {
+			panic("error executing sql select: " + err.Error())
+		} else {
+			for results.Next() {
+				err := results.Scan(&recipientID, &name)
+				if err != nil {
+					panic("error getting results from sql select")
+				}
+				details[recipientID] = []string{name}
+			}
+		}
 	}
+	return details
 }
 
 // Author: Tan Jun Jie
