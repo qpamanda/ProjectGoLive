@@ -442,6 +442,8 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 	)
 	query := "SELECT MemberTypeID, MemberType " +
 		"FROM MemberType "
+		//+
+		//"WHERE UPPER(MemberType) NOT IN ('ADMIN') "
 
 	results, err := DB.Query(query)
 	if err != nil {

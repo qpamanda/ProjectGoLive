@@ -74,8 +74,10 @@ func ValidateUserInput(adduser bool, username string, password string, cmfpasswo
 	}
 
 	// Validate email
-	if err := ValidateEmail(email); err != nil {
-		return err
+	if email == "" {
+		return errors.New("email cannot be blank")
+	} else if !IsValidEmail(email) {
+		return errors.New("invalid email")
 	}
 
 	// Validate contact no
@@ -121,19 +123,13 @@ next:
 	return nil
 }
 
-// ValidateEmail validates if the string parameter is a valid email using regexp
+// isValidEmail validates if the string parameter is a valid email using regexp
 // Author: Amanda
-func ValidateEmail(email string) error {
-	if email == "" {
-		return errors.New("email cannot be blank")
-	}
+func IsValidEmail(e string) bool {
 	emailRegex := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-	if len(email) < 3 && len(email) > 254 {
-		return errors.New("invalid email")
+	if len(e) < 3 && len(e) > 254 {
+		return false
 	}
-	if !emailRegex.MatchString(email) {
-		return errors.New("invalid email")
-	}
-	return nil
+	return emailRegex.MatchString(e)
 }

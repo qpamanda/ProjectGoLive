@@ -29,25 +29,42 @@ func index(res http.ResponseWriter, req *http.Request) {
 		if username == "" || password == "" {
 			clientMsg = "ERROR: username and/or password cannot be blank"
 			log.Error("username and/or password cannot be blank")
+			return
 		} else {
 			if !database.UserNameExist(username) {
 				clientMsg = "ERROR: username and/or password do not match"
 				log.Error("username and/or password do not match")
+				return
 			} else {
 				hashpassword, err := database.GetHashPassword(username)
 				if err != nil {
 					clientMsg = "ERROR: username and/or password do not match"
 					log.Error("username and/or password do not match")
+					return
 				} else {
 					// Matching of password entered
 					err := bcrypt.CompareHashAndPassword([]byte(hashpassword), []byte(password))
 					if err != nil {
-						clientMsg = "ERROR: " + "username and/or password do not match"
+						clientMsg = "ERROR: username and/or password do not match"
 						log.Error("username and/or password do not match")
+						return
 					} else {
-						// Call createCookie func to set the cookie
-						sessionToken := createCookie(res, req)
+						// Create a new session token
+						id, _ := uuid.NewV4()
 
+						// Set an expiry time of 120 seconds for the cookie, the same as the cache
+						sessionToken := &http.Cookie{
+							Name:     "sessionToken",
+							Value:    id.String(),
+							Expires:  time.Now().Add(120 * time.Second),
+							HttpOnly: true,
+							Path:     "/",
+							Domain:   "localhost",
+							Secure:   true,
+						}
+						// Set the session token as a cookie on the client
+						http.SetCookie(res, sessionToken)
+						// Set user to session token cookie
 						authenticate.MapSessions[sessionToken.Value] = username
 
 						// Checks if user is an admin
@@ -59,11 +76,6 @@ func index(res http.ResponseWriter, req *http.Request) {
 						log.WithFields(logrus.Fields{
 							"userName": username,
 						}).Infof("[%s] user login successfully", username)
-
-						// Redirect to the main index page
-						http.Redirect(res, req, "/", http.StatusSeeOther)
-						return
-						//}
 					}
 				}
 			}
@@ -83,6 +95,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 		authenticate.IsAdmin,
 		clientMsg,
 	}
+
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
 }
 
@@ -94,11 +107,11 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 
 	// Add new session token cookie
 	id, _ := uuid.NewV4()
-	// Set an expiry time of 180 seconds for the cookie
+	// Set an expiry time of 120 seconds for the cookie
 	cookie := &http.Cookie{
 		Name:     cookieName,
 		Value:    id.String(),
-		Expires:  time.Now().Add(30 * time.Second),
+		Expires:  time.Now().Add(120 * time.Second),
 		HttpOnly: true,
 		Path:     "/",
 		Domain:   host, // set cookie with the host
