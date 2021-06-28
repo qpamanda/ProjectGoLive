@@ -257,11 +257,11 @@ INSERT INTO Requests VALUES (6006, 2004, 2, 3009, 0, "Need walking stick", now()
 
 INSERT INTO `dbProject`.`Category` (`CategoryID`, `Category`, 
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
-VALUES ('2', 'Item Donation', 'admin', now(), 'admin', now());
+VALUES ('1', 'Item Donation', 'admin', now(), 'admin', now());
 
 INSERT INTO `dbProject`.`Category` (`CategoryID`, `Category`, 
 `CreatedBy`, `Created_dt`, `LastModifiedBy`, `LastModified_dt`) 
-VALUES ('3', 'Errand', 'admin', now(), 'admin', now());
+VALUES ('2', 'Errand', 'admin', now(), 'admin', now());
 
 
 INSERT INTO `dbProject`.`RequestStatus` (`StatusCode`, `Status`, 
