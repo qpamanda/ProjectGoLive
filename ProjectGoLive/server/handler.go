@@ -3,6 +3,7 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"net"
 	"net/http"
 	"time"
 
@@ -96,4 +97,27 @@ func index(res http.ResponseWriter, req *http.Request) {
 	}
 
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
+}
+
+// createCookie func creates sets the struct for a cookie
+// Author: Amanda
+func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
+	domain := req.Host                      // the domain can be localhost:5221 or //127.0.0.1:5221
+	host, _, _ := net.SplitHostPort(domain) // get the host either localhost or 127.0.0.1
+
+	// Add new session token cookie
+	id, _ := uuid.NewV4()
+	// Set an expiry time of 120 seconds for the cookie
+	cookie := &http.Cookie{
+		Name:     cookieName,
+		Value:    id.String(),
+		Expires:  time.Now().Add(120 * time.Second),
+		HttpOnly: true,
+		Path:     "/",
+		Domain:   host, // set cookie with the host
+		Secure:   true,
+	}
+	// Set the session token as a cookie on the client
+	http.SetCookie(res, cookie)
+	return cookie
 }

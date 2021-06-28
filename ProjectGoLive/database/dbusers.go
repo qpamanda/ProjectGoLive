@@ -2,6 +2,7 @@ package database
 
 import (
 	"ProjectGoLive/authenticate"
+	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
@@ -27,7 +28,7 @@ func GetUser(username string) (authenticate.User, error) {
 		email        string
 		contactno    string
 		organisation string
-		lastlogin_dt string
+		lastloginDT  time.Time
 	)
 	query := "SELECT RepID, Password, " +
 		"FirstName, LastName, Email, " +
@@ -36,11 +37,11 @@ func GetUser(username string) (authenticate.User, error) {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetUser - " + err.Error())
 	} else {
 		if results.Next() {
 			err := results.Scan(&repid, &password, &firstname, &lastname,
-				&email, &contactno, &organisation, &lastlogin_dt)
+				&email, &contactno, &organisation, &lastloginDT)
 
 			if err != nil {
 				panic("error getting results from sql select")
@@ -49,19 +50,90 @@ func GetUser(username string) (authenticate.User, error) {
 			return user, errors.New("user not found")
 		}
 
-		user.RepID = repid
-		user.UserName = username
-		user.Password = password
-		user.FirstName = firstname
-		user.LastName = lastname
-		user.Email = email
-		user.ContactNo = contactno
-		user.Organisation = organisation
+		isAdmin := IsMemberType("ADMIN", username)
+		isRequester := IsMemberType("REQUESTER", username)
+		isHelper := IsMemberType("HELPER", username)
 
-		const layout = "2006-01-02 15:04:05"
-		user.LastLoginDT, _ = time.Parse(layout, lastlogin_dt)
-
+		user = authenticate.User{
+			RepID:        repid,
+			UserName:     username,
+			Password:     password,
+			FirstName:    firstname,
+			LastName:     lastname,
+			Email:        email,
+			ContactNo:    contactno,
+			Organisation: organisation,
+			LastLoginDT:  lastloginDT,
+			IsAdmin:      isAdmin,
+			IsRequester:  isRequester,
+			IsHelper:     isHelper,
+		}
 		return user, nil
+	}
+}
+
+// GetAllUsers implements the sql operations to retrieve all users.
+// Author: Amanda
+func GetAllUsers() ([]authenticate.User, error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	// Instantiate user
+	var (
+		user         authenticate.User
+		repid        int
+		username     string
+		password     string
+		firstname    string
+		lastname     string
+		email        string
+		contactno    string
+		organisation string
+		lastloginDT  time.Time
+	)
+	users := make([]authenticate.User, 0)
+
+	query := "SELECT RepID, UserName, Password, " +
+		"FirstName, LastName, Email, " +
+		"ContactNo, Organisation, LastLogin_dt " +
+		"FROM Representatives"
+
+	results, err := DB.Query(query)
+	if err != nil {
+		panic("error executing sql select in GetAllUsers")
+	} else {
+		for results.Next() {
+			err := results.Scan(&repid, &username, &password, &firstname, &lastname,
+				&email, &contactno, &organisation, &lastloginDT)
+
+			if err != nil {
+				panic("error getting results from sql select")
+			}
+
+			isAdmin := IsMemberType("ADMIN", username)
+			isRequester := IsMemberType("REQUESTER", username)
+			isHelper := IsMemberType("HELPER", username)
+
+			user = authenticate.User{
+				RepID:        repid,
+				UserName:     username,
+				Password:     password,
+				FirstName:    firstname,
+				LastName:     lastname,
+				Email:        email,
+				ContactNo:    contactno,
+				Organisation: organisation,
+				LastLoginDT:  lastloginDT,
+				IsAdmin:      isAdmin,
+				IsRequester:  isRequester,
+				IsHelper:     isHelper,
+			}
+			users = append(users, user)
+		}
+		return users, nil
 	}
 }
 
@@ -81,7 +153,7 @@ func GetHashPassword(username string) (string, error) {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetHashPassword")
 	} else {
 		if results.Next() {
 			err := results.Scan(&hashpassword)
@@ -234,7 +306,44 @@ func UserNameExist(username string) bool {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in UserNameExist - " + err.Error())
+	} else {
+		if results.Next() {
+			return true
+		}
+	}
+	return false
+}
+
+// EmailExist checks if email exists in the database table
+// Author: Amanda
+func EmailExist(email string, username string) bool {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	var (
+		query   string
+		results *sql.Rows
+		err     error
+	)
+	if username != "" {
+		query := "SELECT Email " +
+			"FROM Representatives WHERE UPPER(Email)=UPPER(?) " +
+			"AND UserName <> ?"
+
+		results, err = DB.Query(query, email, username)
+	} else {
+		query = "SELECT Email " +
+			"FROM Representatives WHERE UPPER(Email)=UPPER(?)"
+
+		results, err = DB.Query(query, email)
+	}
+
+	if err != nil {
+		panic("error executing sql select in EmailExist")
 	} else {
 		if results.Next() {
 			return true
@@ -257,7 +366,7 @@ func RepIDExist(repid string) bool {
 
 	results, err := DB.Query(query, repid)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in RepIDExist")
 	} else {
 		if results.Next() {
 			return true
@@ -282,7 +391,32 @@ func IsAdmin(username string) bool {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in IsAdmin")
+	} else {
+		if results.Next() {
+			return true
+		}
+	}
+	return false
+}
+
+// IsMemberType checks if user is a specified member type
+// Author: Amanda
+func IsMemberType(membertype string, username string) bool {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	query := "SELECT rep.RepID FROM Representatives rep " +
+		"INNER JOIN RepMemberType rmt ON rep.RepID = rmt.RepID " +
+		"INNER JOIN MemberType mt ON mt.MemberTypeID = rmt.MemberTypeID " +
+		"WHERE UPPER(mt.MemberType)=? AND rep.UserName=?"
+
+	results, err := DB.Query(query, membertype, username)
+	if err != nil {
+		panic("error executing sql select in IsMemberType")
 	} else {
 		if results.Next() {
 			return true
@@ -313,7 +447,7 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 
 	results, err := DB.Query(query)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetMemberType")
 	} else {
 		checked := ""
 		for results.Next() {
@@ -357,7 +491,7 @@ func GetRepMemberType(repid int) (map[int]authenticate.MemberTypeInfo, error) {
 
 	results, err := DB.Query(query, repid)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetRepMemberType")
 	} else {
 
 		for results.Next() {

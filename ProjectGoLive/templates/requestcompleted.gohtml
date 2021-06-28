@@ -1,0 +1,56 @@
+{{template "header" .User}}
+
+{{if .User.FirstName}}
+<h2>Your Completed Request(s)</h2>
+
+{{if eq .CntRequests 0}}
+    <p style="color:red;">There are no requests available. </p>   
+{{else}}
+    <table id="view">        
+    <tr>
+        <th colspan="6">Request Information</th>
+        <th colspan="3">Representative Information</th>
+    </tr>
+    <tr>
+        <!-- Request Information -->
+        <th><b>Category</b></th>
+        <th align="center"><b>Description</b></th>
+        <th align="center"><b>Recipient</b></th>
+        <th><b>To Complete By</b></th>
+        <th><b>To Fulfill At</b></th>
+        <th><b>Status</b></th>
+
+        <!-- Representative Information -->
+        <th><b>Representative Name</b></th>
+        <th align="center"><b>Contact No</b></th>
+        <th align="center"><b>Email</b></th> 
+    </tr>
+    {{range .Requests}}  
+    <tr>
+        <!-- Request Information -->
+        <td>    
+            {{.Category}}                    
+        </td>
+        <td align="left">{{.ReqDesc}}</td>
+        <td align="left">{{.RecName}}</td>
+        <td align="center">{{.ToCompleteBy.Format "2006-01-02 15:04:05"}}</td>
+        <td align="left">{{.FulfilAt}}</td> 
+        <td align="center" style="color:red;">{{.Status}}</td>
+
+        <!-- Representative Information -->
+        <td align="left">{{.FirstName}}&nbsp;{{.LastName}}</td>
+        <td align="center">{{.ContactNo}}</td>  
+        <td align="center">{{.Email}}</td>  
+    </tr>
+    {{end}}       
+    </table>    
+
+    <br>
+{{end}}
+
+{{template "footer"}}
+
+{{end}}
+
+</body>
+</html>

@@ -1,9 +1,9 @@
 {{template "header" .User}}
 
 {{if .ValidSession}}
-    {{template "mainmenu"}}
+    {{template "mainmenu" .User}}
 
-    {{if eq .IsAdmin true}}
+    {{if eq .User.IsAdmin true}}
         {{template "adminmenu"}}
     {{end}}
 

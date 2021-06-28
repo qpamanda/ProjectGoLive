@@ -1,5 +1,11 @@
 {{define "mainmenu"}}
 <br>
+{{if .IsRequester}}
+<table id="view">    
+    <tr><th>Requester Menu</th></tr>    
+    <tr><td><a href="/addrequest">Add Request</a></td></tr>
+    <tr><td><a href="/editrequest">Edit Request</a></td></tr>
+    <tr><td><a href="/deleterequest">Delete Request</a></td></tr>   
 <table id="view">
     <tr><th>Main Menu</th></tr>
     <tr><td><a href="/addorder">Add Order</a></td></tr>
@@ -7,3 +13,14 @@
     <tr><td><a href="/vieworders">View Orders</a></td></tr>     
 </table>
 {{end}}
+<br>
+{{if .IsHelper}}
+<table id="view">    
+    <tr><th>Helper Menu</th></tr>    
+    <tr><td><a href="/selectrequest">Select Request(s) to Fulfil</a></td></tr>    
+    <tr><td><a href="/fulfilrequest">View Selected Request(s) to Fulfil</a></td></tr>
+    <tr><td><a href="/requestcompleted">View Request(s) Completed</a></td></tr>     
+</table>
+{{end}}
+
+{{end}} <!--end define-->
