@@ -94,11 +94,11 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 
 	// Add new session token cookie
 	id, _ := uuid.NewV4()
-	// Set an expiry time of 120 seconds for the cookie, the same as the cache
+	// Set an expiry time of 180 seconds for the cookie
 	cookie := &http.Cookie{
 		Name:     cookieName,
 		Value:    id.String(),
-		Expires:  time.Now().Add(120 * time.Second),
+		Expires:  time.Now().Add(30 * time.Second),
 		HttpOnly: true,
 		Path:     "/",
 		Domain:   host, // set cookie with the host

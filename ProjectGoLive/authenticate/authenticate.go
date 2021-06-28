@@ -30,6 +30,9 @@ type User struct {
 	ContactNo    string
 	Organisation string
 	LastLoginDT  time.Time
+	IsAdmin      bool
+	IsRequester  bool
+	IsHelper     bool
 }
 
 // MemberType struct for storing Member Type info

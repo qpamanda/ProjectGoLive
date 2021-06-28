@@ -37,7 +37,7 @@ func GetUser(username string) (authenticate.User, error) {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetUser - " + err.Error())
 	} else {
 		if results.Next() {
 			err := results.Scan(&repid, &password, &firstname, &lastname,
@@ -50,6 +50,10 @@ func GetUser(username string) (authenticate.User, error) {
 			return user, errors.New("user not found")
 		}
 
+		isAdmin := IsMemberType("ADMIN", username)
+		isRequester := IsMemberType("REQUESTER", username)
+		isHelper := IsMemberType("HELPER", username)
+
 		user = authenticate.User{
 			RepID:        repid,
 			UserName:     username,
@@ -60,6 +64,9 @@ func GetUser(username string) (authenticate.User, error) {
 			ContactNo:    contactno,
 			Organisation: organisation,
 			LastLoginDT:  lastloginDT,
+			IsAdmin:      isAdmin,
+			IsRequester:  isRequester,
+			IsHelper:     isHelper,
 		}
 		return user, nil
 	}
@@ -96,7 +103,7 @@ func GetAllUsers() ([]authenticate.User, error) {
 
 	results, err := DB.Query(query)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetAllUsers")
 	} else {
 		for results.Next() {
 			err := results.Scan(&repid, &username, &password, &firstname, &lastname,
@@ -105,6 +112,10 @@ func GetAllUsers() ([]authenticate.User, error) {
 			if err != nil {
 				panic("error getting results from sql select")
 			}
+
+			isAdmin := IsMemberType("ADMIN", username)
+			isRequester := IsMemberType("REQUESTER", username)
+			isHelper := IsMemberType("HELPER", username)
 
 			user = authenticate.User{
 				RepID:        repid,
@@ -116,6 +127,9 @@ func GetAllUsers() ([]authenticate.User, error) {
 				ContactNo:    contactno,
 				Organisation: organisation,
 				LastLoginDT:  lastloginDT,
+				IsAdmin:      isAdmin,
+				IsRequester:  isRequester,
+				IsHelper:     isHelper,
 			}
 			users = append(users, user)
 		}
@@ -139,7 +153,7 @@ func GetHashPassword(username string) (string, error) {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetHashPassword")
 	} else {
 		if results.Next() {
 			err := results.Scan(&hashpassword)
@@ -292,7 +306,7 @@ func UserNameExist(username string) bool {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in UserNameExist - " + err.Error())
 	} else {
 		if results.Next() {
 			return true
@@ -329,7 +343,7 @@ func EmailExist(email string, username string) bool {
 	}
 
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in EmailExist")
 	} else {
 		if results.Next() {
 			return true
@@ -352,7 +366,7 @@ func RepIDExist(repid string) bool {
 
 	results, err := DB.Query(query, repid)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in RepIDExist")
 	} else {
 		if results.Next() {
 			return true
@@ -377,7 +391,32 @@ func IsAdmin(username string) bool {
 
 	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in IsAdmin")
+	} else {
+		if results.Next() {
+			return true
+		}
+	}
+	return false
+}
+
+// IsMemberType checks if user is a specified member type
+// Author: Amanda
+func IsMemberType(membertype string, username string) bool {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(">> Panic:", err)
+		}
+	}()
+
+	query := "SELECT rep.RepID FROM Representatives rep " +
+		"INNER JOIN RepMemberType rmt ON rep.RepID = rmt.RepID " +
+		"INNER JOIN MemberType mt ON mt.MemberTypeID = rmt.MemberTypeID " +
+		"WHERE UPPER(mt.MemberType)=? AND rep.UserName=?"
+
+	results, err := DB.Query(query, membertype, username)
+	if err != nil {
+		panic("error executing sql select in IsMemberType")
 	} else {
 		if results.Next() {
 			return true
@@ -406,7 +445,7 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 
 	results, err := DB.Query(query)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetMemberType")
 	} else {
 		checked := ""
 		for results.Next() {
@@ -450,7 +489,7 @@ func GetRepMemberType(repid int) (map[int]authenticate.MemberTypeInfo, error) {
 
 	results, err := DB.Query(query, repid)
 	if err != nil {
-		panic("error executing sql select")
+		panic("error executing sql select in GetRepMemberType")
 	} else {
 
 		for results.Next() {
