@@ -50,9 +50,7 @@ func GetUser(username string) (authenticate.User, error) {
 			return user, errors.New("user not found")
 		}
 
-		isAdmin := IsMemberType("ADMIN", username)
-		isRequester := IsMemberType("REQUESTER", username)
-		isHelper := IsMemberType("HELPER", username)
+		isAdmin, isRequester, isHelper := IsMemberType(username)
 
 		user = authenticate.User{
 			RepID:        repid,
@@ -103,7 +101,7 @@ func GetAllUsers() ([]authenticate.User, error) {
 
 	results, err := DB.Query(query)
 	if err != nil {
-		panic("error executing sql select in GetAllUsers")
+		panic("error executing sql select in GetAllUsers - " + err.Error())
 	} else {
 		for results.Next() {
 			err := results.Scan(&repid, &username, &password, &firstname, &lastname,
@@ -113,9 +111,7 @@ func GetAllUsers() ([]authenticate.User, error) {
 				panic("error getting results from sql select")
 			}
 
-			isAdmin := IsMemberType("ADMIN", username)
-			isRequester := IsMemberType("REQUESTER", username)
-			isHelper := IsMemberType("HELPER", username)
+			isAdmin, isRequester, isHelper := IsMemberType(username)
 
 			user = authenticate.User{
 				RepID:        repid,
@@ -194,6 +190,7 @@ func AddUser(repid int, username string, password string, firstname string, last
 	if err != nil {
 		panic("error executing sql insert")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -221,6 +218,7 @@ func UpdateUser(repid int, username string, firstname string, lastname string,
 	if err != nil {
 		panic("error executing sql update")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -242,6 +240,7 @@ func DeleteUser(userName string) error {
 	if err != nil {
 		panic("error executing sql delete")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -266,6 +265,7 @@ func UpdateLoginDate(username string) error {
 	if err != nil {
 		panic("error executing sql update")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -289,6 +289,7 @@ func UpdatePassword(repid int, username string, password string) error {
 	if err != nil {
 		panic("error executing sql update")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -402,27 +403,47 @@ func IsAdmin(username string) bool {
 
 // IsMemberType checks if user is a specified member type
 // Author: Amanda
-func IsMemberType(membertype string, username string) bool {
+func IsMemberType(username string) (bool, bool, bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(">> Panic:", err)
 		}
 	}()
 
-	query := "SELECT rep.RepID FROM Representatives rep " +
+	var membertype string
+
+	isAdmin := false
+	isRequester := false
+	isHelper := false
+
+	query := "SELECT mt.MemberType FROM Representatives rep " +
 		"INNER JOIN RepMemberType rmt ON rep.RepID = rmt.RepID " +
 		"INNER JOIN MemberType mt ON mt.MemberTypeID = rmt.MemberTypeID " +
-		"WHERE UPPER(mt.MemberType)=? AND rep.UserName=?"
+		"WHERE rep.UserName=?"
 
-	results, err := DB.Query(query, membertype, username)
+	results, err := DB.Query(query, username)
 	if err != nil {
-		panic("error executing sql select in IsMemberType")
+		panic("error executing sql select in IsMemberType - " + err.Error())
 	} else {
-		if results.Next() {
-			return true
+		for results.Next() {
+			err := results.Scan(&membertype)
+
+			if err != nil {
+				panic("error getting results from sql select")
+			}
+
+			if strings.ToUpper(membertype) == "ADMIN" {
+				isAdmin = true
+			}
+			if strings.ToUpper(membertype) == "REQUESTER" {
+				isRequester = true
+			}
+			if strings.ToUpper(membertype) == "HELPER" {
+				isHelper = true
+			}
 		}
 	}
-	return false
+	return isAdmin, isRequester, isHelper
 }
 
 // GetMemberType implements the sql operations to retrieve the member types.
@@ -541,6 +562,7 @@ func AddRepMemberType(repid int, membertypeid int, username string) error {
 	if err != nil {
 		panic("error executing sql insert")
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -566,5 +588,6 @@ func DeleteRepMemberType(repid int) error {
 	if err != nil {
 		panic("error executing sql delete")
 	}
+	stmt.Close()
 	return nil
 }

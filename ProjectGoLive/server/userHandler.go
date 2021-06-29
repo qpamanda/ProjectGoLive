@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofrs/uuid"
 	"github.com/kennygrant/sanitize"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -41,6 +40,7 @@ func signup(res http.ResponseWriter, req *http.Request) {
 		organisation string
 	)
 
+	var myUser authenticate.User
 	membertype, _ := database.GetRepMemberType(0)
 
 	// Process form submission
@@ -80,75 +80,101 @@ func signup(res http.ResponseWriter, req *http.Request) {
 		} else {
 			// Check if username exist i.e. exist means it is already taken
 			if database.UserNameExist(username) {
-				clientMsg = "ERROR: " + "username already taken"
+				clientMsg = "ERROR: " + "username already taken. Please use another username"
 				log.Error("[" + username + "] username already taken")
 			} else {
-				// Create a new session token
-				id, _ := uuid.NewV4()
-
-				// Set an expiry time of 120 seconds for the cookie, the same as the cache
-				sessionToken := &http.Cookie{
-					Name:     "sessionToken",
-					Value:    id.String(),
-					Expires:  time.Now().Add(120 * time.Second),
-					HttpOnly: true,
-					Path:     "/",
-					Domain:   "localhost",
-					Secure:   true,
-				}
-				// Set the session token as a cookie on the client
-				http.SetCookie(res, sessionToken)
-
-				// Store the session token in a map on the server
-				authenticate.MapSessions[sessionToken.Value] = username
-
-				// Hashed the password from user input before saving
-				bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
-
-				if err != nil {
-					clientMsg = "WARNING: " + "internal server error"
-					log.Warn("internal server error")
+				// Check if email exist i.e. exist means it is already taken
+				if database.EmailExist(email, "") {
+					clientMsg = "ERROR: " + "email already taken. Please use another email"
+					log.Error("[" + username + "] email already taken")
 				} else {
-					repid, err := GetRepID()
+					// Reset MapUsers and MapSessions for new login
+					resetSession()
+
+					// Call createCookie func to set the cookie
+					sessionToken := createCookie(res, req)
+
+					// Store the session token in a map on the server
+					authenticate.MapSessions[sessionToken.Value] = username
+
+					// Hashed the password from user input before saving
+					bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 
 					if err != nil {
-						clientMsg = "ERROR: " + "unable to add user"
-						log.Error("[" + username + "] unable to add user")
+						clientMsg = "WARNING: " + "internal server error"
+						log.Warn("internal server error")
 					} else {
-						// Insert user into the database
-						err = database.AddUser(repid, username, string(bPassword),
-							firstname, lastname, email, contactno, organisation)
-
-						for k := range membertype {
-							membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
-
-							if membertypeid != "" {
-								id, _ := strconv.Atoi(membertypeid)
-								// Add member type information by repid into the database
-								database.AddRepMemberType(repid, id, username)
-							}
-						}
+						repid, err := GetRepID()
 
 						if err != nil {
-							log.WithFields(logrus.Fields{
-								"repId":    repid,
-								"userName": username,
-							}).Errorf("[%s] error creating user account ", username)
+							clientMsg = "ERROR: " + "unable to add user"
+							log.Error("[" + username + "] unable to add user")
 						} else {
-							log.WithFields(logrus.Fields{
-								"repId":    repid,
-								"userName": username,
-							}).Infof("[%s] user account created successfully", username)
+							// Insert user into the database
+							err = database.AddUser(repid, username, string(bPassword),
+								firstname, lastname, email, contactno, organisation)
+
+							isAdmin := false
+							isRequester := false
+							isHelper := false
+
+							for k, v := range membertype {
+								membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+								if membertypeid != "" {
+									id, _ := strconv.Atoi(membertypeid)
+									// Add member type information by repid into the database
+									database.AddRepMemberType(repid, id, username)
+
+									if strings.ToUpper(v.MemberType) == "ADMIN" {
+										isAdmin = true
+									}
+									if strings.ToUpper(v.MemberType) == "REQUESTER" {
+										isRequester = true
+									}
+									if strings.ToUpper(v.MemberType) == "HELPER" {
+										isHelper = true
+									}
+								}
+							}
+
+							// Set user to map users
+							myUser = authenticate.User{
+								RepID:        repid,
+								UserName:     username,
+								Password:     string(bPassword),
+								FirstName:    firstname,
+								LastName:     lastname,
+								Email:        email,
+								ContactNo:    contactno,
+								Organisation: organisation,
+								LastLoginDT:  time.Now(),
+								IsAdmin:      isAdmin,
+								IsRequester:  isRequester,
+								IsHelper:     isHelper}
+
+							authenticate.MapUsers[username] = myUser
+
+							if err != nil {
+								log.WithFields(logrus.Fields{
+									"repId":    repid,
+									"userName": username,
+								}).Errorf("[%s] error creating user account ", username)
+							} else {
+								log.WithFields(logrus.Fields{
+									"repId":    repid,
+									"userName": username,
+								}).Infof("[%s] user account created successfully", username)
+							}
+							// Redirect to the main index page
+							http.Redirect(res, req, "/", http.StatusSeeOther)
+							return
 						}
-						// Redirect to the main index page
-						http.Redirect(res, req, "/", http.StatusSeeOther)
-						return
 					}
 				}
 			}
 		}
 	}
-
 	data := struct {
 		UserName     string
 		Password     string
@@ -239,39 +265,75 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 			clientMsg = "ERROR: " + err.Error()
 			log.Error(err)
 		} else {
-
-			// Update user information into the database
-			err = database.UpdateUser(repid, username, firstname, lastname, email, contactno, organisation)
-
-			// Delete member type information from the database
-			database.DeleteRepMemberType(repid)
-
-			for k := range membertype {
-				membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
-
-				if membertypeid != "" {
-					id, _ := strconv.Atoi(membertypeid)
-					// Add member type information by repid into the database
-					database.AddRepMemberType(repid, id, username)
-				}
-			}
-
-			if err != nil {
-				log.WithFields(logrus.Fields{
-					"userName": username,
-				}).Errorf("[%s] error updating user account", username)
+			// Check if email exist i.e. exist means it is already taken
+			if database.EmailExist(email, username) {
+				clientMsg = "ERROR: " + "email already taken. Please use another email"
+				log.Error("[" + username + "] email already taken")
 			} else {
-				log.WithFields(logrus.Fields{
-					"userName": username,
-				}).Infof("[%s] user account updated successfully", username)
 
-				// Redirect to the main index page
-				http.Redirect(res, req, "/", http.StatusSeeOther)
-				return
+				// Update user information into the database
+				err = database.UpdateUser(repid, username, firstname, lastname, email, contactno, organisation)
+
+				// Delete member type information from the database
+				database.DeleteRepMemberType(repid)
+
+				isAdmin := false
+				isRequester := false
+				isHelper := false
+
+				for k, v := range membertype {
+					membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+					if membertypeid != "" {
+						id, _ := strconv.Atoi(membertypeid)
+						// Add member type information by repid into the database
+						database.AddRepMemberType(repid, id, username)
+
+						if strings.ToUpper(v.MemberType) == "ADMIN" {
+							isAdmin = true
+						}
+						if strings.ToUpper(v.MemberType) == "REQUESTER" {
+							isRequester = true
+						}
+						if strings.ToUpper(v.MemberType) == "HELPER" {
+							isHelper = true
+						}
+					}
+				}
+
+				// Set user to map users
+				myUser = authenticate.User{
+					RepID:        repid,
+					UserName:     username,
+					Password:     password,
+					FirstName:    firstname,
+					LastName:     lastname,
+					Email:        email,
+					ContactNo:    contactno,
+					Organisation: organisation,
+					LastLoginDT:  time.Now(),
+					IsAdmin:      isAdmin,
+					IsRequester:  isRequester,
+					IsHelper:     isHelper}
+
+				authenticate.MapUsers[username] = myUser
+
+				if err != nil {
+					log.WithFields(logrus.Fields{
+						"userName": username,
+					}).Errorf("[%s] error updating user account", username)
+				} else {
+					log.WithFields(logrus.Fields{
+						"userName": username,
+					}).Infof("[%s] user account updated successfully", username)
+
+					// Redirect to the main index page
+					http.Redirect(res, req, "/", http.StatusSeeOther)
+					return
+				}
 			}
 		}
 	}
-
 	data := struct {
 		User         authenticate.User
 		UserName     string
@@ -375,9 +437,6 @@ func changepwd(res http.ResponseWriter, req *http.Request) {
 							password = ""
 							newpassword = ""
 							cmfpassword = ""
-							// Redirect to the main index page
-							//http.Redirect(res, req, "/", http.StatusSeeOther)
-							//return
 						}
 					}
 				}
@@ -554,16 +613,19 @@ func logout(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
-	sessionToken, _ := req.Cookie("sessionToken")
+	sessionToken, _ := req.Cookie(cookieName)
 
 	// Get username before session is deleted
 	username := authenticate.MapSessions[sessionToken.Value]
 
 	// Delete the session token from the server
-	delete(authenticate.MapSessions, sessionToken.Value)
+	//delete(authenticate.MapSessions, sessionToken.Value)
+	// Reset MapUsers and MapSessions for new login
+	resetSession()
+
 	// Remove the cookie from the client
 	sessionToken = &http.Cookie{
-		Name:   "sessionToken",
+		Name:   cookieName,
 		Value:  "",
 		MaxAge: -1,
 	}
@@ -582,33 +644,18 @@ func logout(res http.ResponseWriter, req *http.Request) {
 // Author: Amanda
 func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, bool) {
 	// Get current session cookie
-	sessionToken, err := req.Cookie("sessionToken")
+	sessionToken, err := req.Cookie(cookieName)
 	// No session token found
 	if err != nil {
-		// Add new session token cookie
-		id, _ := uuid.NewV4()
-		// Set an expiry time of 120 seconds for the cookie, the same as the cache
-		sessionToken = &http.Cookie{
-			Name:     "sessionToken",
-			Value:    id.String(),
-			Expires:  time.Now().Add(120 * time.Second),
-			HttpOnly: true,
-			Path:     "/",
-			Domain:   "localhost",
-			Secure:   true,
-		}
+		// Call createCookie func to set the cookie
+		sessionToken = createCookie(res, req)
 	}
-	http.SetCookie(res, sessionToken)
 
 	// If the user exists already, get user
 	var myUser authenticate.User
+	if username, ok := authenticate.MapSessions[sessionToken.Value]; ok {
+		myUser = authenticate.MapUsers[username]
 
-	if _, ok := authenticate.MapSessions[sessionToken.Value]; ok {
-		username := authenticate.MapSessions[sessionToken.Value]
-		myUser, err = database.GetUser(username) // Get user from database
-		if err != nil {
-			return myUser, false
-		}
 		return myUser, ok
 	}
 	return myUser, false
@@ -618,14 +665,15 @@ func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, boo
 // Returns true if already logged in, false otherwise.
 // Author: Amanda
 func alreadyLoggedIn(req *http.Request) bool {
-	sessionToken, err := req.Cookie("sessionToken")
+	sessionToken, err := req.Cookie(cookieName)
 	if err != nil {
 		return false
 	}
 
 	// Get username from session map
 	username := authenticate.MapSessions[sessionToken.Value]
-	return database.UserNameExist(username)
+	_, ok := authenticate.MapUsers[username]
+	return ok
 }
 
 func GetRepID() (int, error) {

@@ -10,6 +10,7 @@ import (
 
 var (
 	MapSessions = map[string]string{}
+	MapUsers    = map[string]User{}
 
 	MinUserName int // Set the min length for new Username
 	MaxUserName int // Set the max length for new Username

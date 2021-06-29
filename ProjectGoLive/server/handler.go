@@ -23,6 +23,9 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 	// Process the form submission
 	if req.Method == http.MethodPost {
+		// Reset MapUsers and MapSessions for new login
+		resetSession()
+
 		username := req.FormValue("username")
 		password := req.FormValue("password")
 
@@ -50,8 +53,14 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 						authenticate.MapSessions[sessionToken.Value] = username
 
-						// Checks if user is an admin
-						authenticate.IsAdmin = database.IsAdmin(username)
+						myUser, err := database.GetUser(username) // Get user from database
+						if err != nil {
+							clientMsg = "ERROR: " + "retrieving user information"
+							log.Error("error retrieving user information")
+						}
+
+						// Set user to map users
+						authenticate.MapUsers[username] = myUser
 
 						// Update LastLogin datetime in database
 						database.UpdateLoginDate(username)
@@ -75,12 +84,10 @@ func index(res http.ResponseWriter, req *http.Request) {
 	data := struct {
 		User         authenticate.User
 		ValidSession bool
-		IsAdmin      bool
 		ClientMsg    string
 	}{
 		myUser,
 		validSession,
-		authenticate.IsAdmin,
 		clientMsg,
 	}
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
@@ -98,7 +105,7 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 	cookie := &http.Cookie{
 		Name:     cookieName,
 		Value:    id.String(),
-		Expires:  time.Now().Add(30 * time.Second),
+		Expires:  time.Now().Add(180 * time.Second),
 		HttpOnly: true,
 		Path:     "/",
 		Domain:   host, // set cookie with the host
@@ -107,4 +114,16 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 	// Set the session token as a cookie on the client
 	http.SetCookie(res, cookie)
 	return cookie
+}
+
+func resetSession() {
+	for k1 := range authenticate.MapUsers {
+		// Delete the map user from the server
+		delete(authenticate.MapUsers, k1)
+	}
+
+	for k2 := range authenticate.MapSessions {
+		// Delete the session token from the server
+		delete(authenticate.MapSessions, k2)
+	}
 }

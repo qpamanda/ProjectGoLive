@@ -32,8 +32,6 @@ var (
 	tpl  *template.Template
 	log  = logrus.New()
 	file *os.File
-
-	//bFirst = true
 )
 
 const cookieName = "sessionToken"
@@ -141,6 +139,7 @@ func StartServer() {
 
 	// Defer file closure to the end
 	defer file.Close()
+	defer database.DB.Close()
 }
 
 // initaliseHandlers initialises the handlers for the server.
@@ -202,6 +201,8 @@ func initDB() {
 	} else {
 		fmt.Println("Ping to database success")
 	}
+
+	database.DB.SetMaxOpenConns(0)
 }
 
 // getDBConfig retrieves the database configurations and returns a struct.

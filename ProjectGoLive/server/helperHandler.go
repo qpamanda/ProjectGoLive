@@ -30,10 +30,7 @@ func selectrequest(res http.ResponseWriter, req *http.Request) {
 	requests, err := database.GetRequestsByStatus(0, myUser.RepID)
 
 	if err != nil {
-		clientMsg = "No requests found"
-		log.WithFields(logrus.Fields{
-			"userName": myUser.UserName,
-		}).Error("no requests found")
+		clientMsg = "No requests to select"
 	}
 
 	// Process the form submission
@@ -108,10 +105,7 @@ func fulfilrequest(res http.ResponseWriter, req *http.Request) {
 	requests, err := database.GetRequestsToHandle(1, myUser.RepID)
 
 	if err != nil {
-		clientMsg = "No requests found"
-		log.WithFields(logrus.Fields{
-			"userName": myUser.UserName,
-		}).Error("no requests found")
+		clientMsg = "No requests selected"
 	}
 
 	// Process the form submission
@@ -211,10 +205,7 @@ func requestcompleted(res http.ResponseWriter, req *http.Request) {
 	requests, err := database.GetRequestsToHandle(2, myUser.RepID)
 
 	if err != nil {
-		clientMsg = "No requests found"
-		log.WithFields(logrus.Fields{
-			"userName": myUser.UserName,
-		}).Error("no requests found")
+		clientMsg = "No requests completed"
 	}
 
 	data := struct {
