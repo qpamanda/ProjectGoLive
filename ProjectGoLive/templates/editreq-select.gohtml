@@ -13,6 +13,7 @@
         </tr>
 
         {{range .RequestSlice}}
+            {{if ne .Status "Completed"}}
             <tr>
                 <td>
                     <input type="radio" name="selection" value="{{.RequestID}}">&nbsp;
@@ -23,6 +24,7 @@
                 <td align="center">{{.RecipientName}}</td>
                 <td align="center">{{.ToCompleteBy}}</td>
             </tr>
+            {{end}}
         {{end}}
     </table>
     

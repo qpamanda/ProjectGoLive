@@ -35,6 +35,7 @@ func GetRepresentativeDetails(username string) map[int][]string {
 			}
 			details[repID] = []string{firstName, lastName}
 		}
+		results.Close()
 		return details
 	}
 }
@@ -69,6 +70,7 @@ func GetRecipientDetails(RepresentativeId int, isAdmin bool) map[int][]string {
 				}
 				details[recipientID] = []string{name}
 			}
+			results.Close()
 		}
 	} else {
 		query := "SELECT RecipientID, Name FROM Recipients"
@@ -84,6 +86,7 @@ func GetRecipientDetails(RepresentativeId int, isAdmin bool) map[int][]string {
 				}
 				details[recipientID] = []string{name}
 			}
+			results.Close()
 		}
 	}
 	return details
@@ -144,6 +147,7 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 		panic("error executing sql insert: " + err.Error())
 	}
 
+	stmt.Close()
 	return nil
 }
 
@@ -194,6 +198,7 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 				}
 				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 			}
+			results.Close()
 		}
 	} else {
 		//query := "SELECT RequestID, RequestID, CategoryID, Recipient, RequestDescription FROM Requests WHERE RepID_FK=?"
@@ -222,6 +227,7 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 				}
 				requests[requestID] = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 			}
+			results.Close()
 		}
 	}
 	return requests
@@ -270,6 +276,7 @@ func GetRequest(reqID int) viewRequest {
 			request = viewRequest{categoryID, name, desc, toCompleteBy, addr, status}
 		}
 	}
+	results.Close()
 	return request
 }
 
@@ -299,6 +306,7 @@ func DeleteRequest(reqID int) (e error) {
 	if err != nil {
 		panic("error executing sql delete: " + err.Error())
 	}
+	stmt.Close()
 	return nil
 }
 
@@ -328,6 +336,7 @@ func EditRequest(requestid, categoryid int, reqDesc string, toCompleteBy time.Ti
 	if err != nil {
 		panic("error executing sql update: " + err.Error())
 	}
+	stmt.Close()
 	return nil
 }
 

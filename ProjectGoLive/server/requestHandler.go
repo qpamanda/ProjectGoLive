@@ -62,7 +62,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		lastModifiedBy = tmpName
 	}
 
-	if currentUser.UserName == "admin" {
+	if currentUser.IsAdmin {
 		isAdmin = true
 		repID = adminID
 	}
@@ -197,13 +197,9 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 		repID = k
 	}
 
-	if currentUser.UserName == "admin" {
+	if currentUser.IsAdmin {
 		isAdmin = true
-		// Decide whether to add admin entry in Representative table
-		// or to add an arbitary non-zero value for admin repID
 		repID = adminID
-	} else {
-		isAdmin = false
 	}
 
 	viewRequestSlice := make([]viewRequest, 0)
@@ -317,13 +313,9 @@ func viewrequest(res http.ResponseWriter, req *http.Request) {
 		repID = k
 	}
 
-	if currentUser.UserName == "admin" {
+	if currentUser.IsAdmin {
 		isAdmin = true
-		// Decide whether to add admin entry in Representative table
-		// or to add an arbitary non-zero value for admin repID
 		repID = adminID
-	} else {
-		isAdmin = false
 	}
 
 	viewRequestSlice := make([]viewRequest, 0)
@@ -382,13 +374,9 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 		createdBy = repDetails[repID][0] + " " + repDetails[repID][1]
 	}
 
-	if currentUser.UserName == "admin" {
+	if currentUser.IsAdmin {
 		isAdmin = true
-		// Decide whether to add admin entry in Representative table
-		// or to add an arbitary non-zero value for admin repID
 		repID = adminID
-	} else {
-		isAdmin = false
 	}
 
 	viewRequestSlice := make([]viewRequest, 0)
@@ -469,7 +457,7 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 		createdBy = repDetails[repID][0] + " " + repDetails[repID][1]
 	}
 
-	if currentUser.UserName == "admin" {
+	if currentUser.IsAdmin {
 		repID = adminID
 	}
 
