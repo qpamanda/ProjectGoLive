@@ -11,12 +11,12 @@
     <form method="post" autocomplete="off">
     <table id="view">        
     <tr>
-        <th colspan="6">Request Information</th>
+        <th colspan="7">Request Information</th>
         <th colspan="3">Representative Information</th>
     </tr>
     <tr>
         <!-- Request Information -->
-        <th><b>Category</b></th>
+        <th colspan="2"><b>Category</b></th>
         <th align="center"><b>Description</b></th>
         <th align="center"><b>Recipient</b></th>
         <th><b>To Complete By</b></th>
@@ -31,8 +31,10 @@
     {{range .Requests}}  
     <tr>
         <!-- Request Information -->
-        <td>    
+        <td align="center">    
             <input type="checkbox" name="{{.RequestID}}" value="{{.RequestID}}">&nbsp;
+        </td> 
+        <td>    
             {{.Category}}                    
         </td>
         <td align="left">{{.ReqDesc}}</td>

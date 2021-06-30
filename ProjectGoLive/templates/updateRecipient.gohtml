@@ -1,17 +1,20 @@
 {{template "header"}}
 
     <p style="color:red;">{{.ClientMsg}} </p>
-    <p>Updating {{.Recipient.Name}} details</p>
+    <!--<p>Updating {{.Recipient.Name}} details</p>-->
+    <h2>Updating [{{.Recipient.Name}}] Details</h2>
     <form method="post">
         <table border="0">
             <tr>
-                <td><label for="name">Recipient Name:</label></td>
+                <td><label for="name">Recipient Name</label></td>
+                <td>:</td>
                 <td><input type="text" name="name" placeholder="name" value="{{.Recipient.Name}}"></td>
             </tr>
 
             {{if eq .Recipient.Category true}}
             <tr>
                 <td><label for="category">Choose a category</label></td>
+                <td>:</td>
                 <td><select id="category" name="category">
                     <option value="Individual">Individual</option>
                     <option value="Organisation">Organisation</option>
@@ -21,6 +24,7 @@
             {{else}}
             <tr>
             <td><label for="category">Choose a category</label></td>
+            <td>:</td>
                 <td><select id="category" name="category">
                     <option value="Organisation">Organisation</option>
                     <option value="Individual">Individual</option>
@@ -29,12 +33,14 @@
             {{end}}
 
             <tr>
-                <td><label for="contact">Recipient Contact No:</label></td>
+                <td><label for="contact">Recipient Contact No</label></td>
+                <td>:</td>
                 <td><input type="text" name="contact" placeholder="contact number" value="{{.Recipient.ContactNo}}"></td>
             </tr>
 
             <tr>
-                <td><label for="profile">Recipient Profile:</label></td>
+                <td><label for="profile">Recipient Profile</label></td>
+                <td>:</td>
                 <td><textarea name="profile" id="profile" cols="25" rows="10">{{.Recipient.Profile}}</textarea></td>
             </tr>
 

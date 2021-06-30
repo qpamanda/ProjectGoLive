@@ -90,6 +90,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 		validSession,
 		clientMsg,
 	}
+
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
 }
 
@@ -101,11 +102,11 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 
 	// Add new session token cookie
 	id, _ := uuid.NewV4()
-	// Set an expiry time of 180 seconds for the cookie
+	// Set an expiry time of 1200 seconds (20mins) for the cookie
 	cookie := &http.Cookie{
 		Name:     cookieName,
 		Value:    id.String(),
-		Expires:  time.Now().Add(180 * time.Second),
+		Expires:  time.Now().Add(1200 * time.Second),
 		HttpOnly: true,
 		Path:     "/",
 		Domain:   host, // set cookie with the host

@@ -55,16 +55,20 @@ func signup(res http.ResponseWriter, req *http.Request) {
 		contactno = sanitize.Accents(req.FormValue("contactno"))
 		organisation = sanitize.Accents(req.FormValue("organisation"))
 
+		cntchk := 0
 		for k, v := range membertype {
 			membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
 			checked := ""
 			disabled := ""
 			if membertypeid != "" {
 				checked = "checked"
+				cntchk = cntchk + 1
 			}
+			// Do not allow admin member type to be edited
 			if strings.ToUpper(v.MemberType) == "ADMIN" {
 				disabled = "disabled"
 			}
+			// Set whether checkbox should be checked or disbled
 			membertype[k] = authenticate.MemberTypeInfo{
 				MemberType: v.MemberType,
 				Checked:    checked,
@@ -88,87 +92,91 @@ func signup(res http.ResponseWriter, req *http.Request) {
 					clientMsg = "ERROR: " + "email already taken. Please use another email"
 					log.Error("[" + username + "] email already taken")
 				} else {
-					// Reset MapUsers and MapSessions for new login
-					resetSession()
-
-					// Call createCookie func to set the cookie
-					sessionToken := createCookie(res, req)
-
-					// Store the session token in a map on the server
-					authenticate.MapSessions[sessionToken.Value] = username
-
-					// Hashed the password from user input before saving
-					bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
-
-					if err != nil {
-						clientMsg = "WARNING: " + "internal server error"
-						log.Warn("internal server error")
+					if cntchk == 0 {
+						clientMsg = "ERROR: " + "select at least one member type"
 					} else {
-						repid, err := GetRepID()
+						// Reset MapUsers and MapSessions for new login
+						resetSession()
+
+						// Call createCookie func to set the cookie
+						sessionToken := createCookie(res, req)
+
+						// Store the session token in a map on the server
+						authenticate.MapSessions[sessionToken.Value] = username
+
+						// Hashed the password from user input before saving
+						bPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 
 						if err != nil {
-							clientMsg = "ERROR: " + "unable to add user"
-							log.Error("[" + username + "] unable to add user")
+							clientMsg = "WARNING: " + "internal server error"
+							log.Warn("internal server error")
 						} else {
-							// Insert user into the database
-							err = database.AddUser(repid, username, string(bPassword),
-								firstname, lastname, email, contactno, organisation)
-
-							isAdmin := false
-							isRequester := false
-							isHelper := false
-
-							for k, v := range membertype {
-								membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
-
-								if membertypeid != "" {
-									id, _ := strconv.Atoi(membertypeid)
-									// Add member type information by repid into the database
-									database.AddRepMemberType(repid, id, username)
-
-									if strings.ToUpper(v.MemberType) == "ADMIN" {
-										isAdmin = true
-									}
-									if strings.ToUpper(v.MemberType) == "REQUESTER" {
-										isRequester = true
-									}
-									if strings.ToUpper(v.MemberType) == "HELPER" {
-										isHelper = true
-									}
-								}
-							}
-
-							// Set user to map users
-							myUser = authenticate.User{
-								RepID:        repid,
-								UserName:     username,
-								Password:     string(bPassword),
-								FirstName:    firstname,
-								LastName:     lastname,
-								Email:        email,
-								ContactNo:    contactno,
-								Organisation: organisation,
-								LastLoginDT:  time.Now(),
-								IsAdmin:      isAdmin,
-								IsRequester:  isRequester,
-								IsHelper:     isHelper}
-
-							authenticate.MapUsers[username] = myUser
+							repid, err := GetRepID()
 
 							if err != nil {
-								log.WithFields(logrus.Fields{
-									"repId":    repid,
-									"userName": username,
-								}).Errorf("[%s] error creating user account ", username)
+								clientMsg = "ERROR: " + "unable to add user"
+								log.Error("[" + username + "] unable to add user")
 							} else {
-								log.WithFields(logrus.Fields{
-									"repId":    repid,
-									"userName": username,
-								}).Infof("[%s] user account created successfully", username)
+								// Insert user into the database
+								err = database.AddUser(repid, username, string(bPassword),
+									firstname, lastname, email, contactno, organisation)
+
+								isAdmin := false
+								isRequester := false
+								isHelper := false
+
+								for k, v := range membertype {
+									membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+
+									if membertypeid != "" {
+										id, _ := strconv.Atoi(membertypeid)
+										// Add member type information by repid into the database
+										database.AddRepMemberType(repid, id, username)
+
+										if strings.ToUpper(v.MemberType) == "ADMIN" {
+											isAdmin = true
+										}
+										if strings.ToUpper(v.MemberType) == "REQUESTER" {
+											isRequester = true
+										}
+										if strings.ToUpper(v.MemberType) == "HELPER" {
+											isHelper = true
+										}
+									}
+								}
+
+								// Set user to map users
+								myUser = authenticate.User{
+									RepID:        repid,
+									UserName:     username,
+									Password:     string(bPassword),
+									FirstName:    firstname,
+									LastName:     lastname,
+									Email:        email,
+									ContactNo:    contactno,
+									Organisation: organisation,
+									LastLoginDT:  time.Now(),
+									IsAdmin:      isAdmin,
+									IsRequester:  isRequester,
+									IsHelper:     isHelper}
+
+								authenticate.MapUsers[username] = myUser
+
+								if err != nil {
+									log.WithFields(logrus.Fields{
+										"repId":    repid,
+										"userName": username,
+									}).Errorf("[%s] error creating user account ", username)
+								} else {
+									log.WithFields(logrus.Fields{
+										"repId":    repid,
+										"userName": username,
+									}).Infof("[%s] user account created successfully", username)
+								}
+								// Redirect to the main index page
+								http.Redirect(res, req, "/", http.StatusSeeOther)
+								return
 							}
-							// Redirect to the main index page
-							http.Redirect(res, req, "/", http.StatusSeeOther)
-							return
 						}
 					}
 				}
@@ -239,6 +247,7 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 		contactno = sanitize.Accents(req.FormValue("contactno"))
 		organisation = sanitize.Accents(req.FormValue("organisation"))
 
+		cntchk := 0
 		for k, v := range membertype {
 			membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
 
@@ -246,6 +255,7 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 			disabled := ""
 			if membertypeid != "" {
 				checked = "checked"
+				cntchk = cntchk + 1
 			}
 
 			if strings.ToUpper(v.MemberType) == "ADMIN" {
@@ -270,66 +280,69 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 				clientMsg = "ERROR: " + "email already taken. Please use another email"
 				log.Error("[" + username + "] email already taken")
 			} else {
+				if cntchk == 0 {
+					clientMsg = "ERROR: " + "select at least one member type"
+				} else {
+					// Update user information into the database
+					err = database.UpdateUser(repid, username, firstname, lastname, email, contactno, organisation)
 
-				// Update user information into the database
-				err = database.UpdateUser(repid, username, firstname, lastname, email, contactno, organisation)
+					// Delete member type information from the database
+					database.DeleteRepMemberType(repid)
 
-				// Delete member type information from the database
-				database.DeleteRepMemberType(repid)
+					isAdmin := false
+					isRequester := false
+					isHelper := false
 
-				isAdmin := false
-				isRequester := false
-				isHelper := false
+					for k, v := range membertype {
+						membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
 
-				for k, v := range membertype {
-					membertypeid := req.FormValue("membertype" + strconv.Itoa(k))
+						if membertypeid != "" {
+							id, _ := strconv.Atoi(membertypeid)
+							// Add member type information by repid into the database
+							database.AddRepMemberType(repid, id, username)
 
-					if membertypeid != "" {
-						id, _ := strconv.Atoi(membertypeid)
-						// Add member type information by repid into the database
-						database.AddRepMemberType(repid, id, username)
-
-						if strings.ToUpper(v.MemberType) == "ADMIN" {
-							isAdmin = true
-						}
-						if strings.ToUpper(v.MemberType) == "REQUESTER" {
-							isRequester = true
-						}
-						if strings.ToUpper(v.MemberType) == "HELPER" {
-							isHelper = true
+							if strings.ToUpper(v.MemberType) == "ADMIN" {
+								isAdmin = true
+							}
+							if strings.ToUpper(v.MemberType) == "REQUESTER" {
+								isRequester = true
+							}
+							if strings.ToUpper(v.MemberType) == "HELPER" {
+								isHelper = true
+							}
 						}
 					}
-				}
 
-				// Set user to map users
-				myUser = authenticate.User{
-					RepID:        repid,
-					UserName:     username,
-					Password:     password,
-					FirstName:    firstname,
-					LastName:     lastname,
-					Email:        email,
-					ContactNo:    contactno,
-					Organisation: organisation,
-					LastLoginDT:  time.Now(),
-					IsAdmin:      isAdmin,
-					IsRequester:  isRequester,
-					IsHelper:     isHelper}
+					// Set user to map users
+					myUser = authenticate.User{
+						RepID:        repid,
+						UserName:     username,
+						Password:     password,
+						FirstName:    firstname,
+						LastName:     lastname,
+						Email:        email,
+						ContactNo:    contactno,
+						Organisation: organisation,
+						LastLoginDT:  time.Now(),
+						IsAdmin:      isAdmin,
+						IsRequester:  isRequester,
+						IsHelper:     isHelper}
 
-				authenticate.MapUsers[username] = myUser
+					authenticate.MapUsers[username] = myUser
 
-				if err != nil {
-					log.WithFields(logrus.Fields{
-						"userName": username,
-					}).Errorf("[%s] error updating user account", username)
-				} else {
-					log.WithFields(logrus.Fields{
-						"userName": username,
-					}).Infof("[%s] user account updated successfully", username)
+					if err != nil {
+						log.WithFields(logrus.Fields{
+							"userName": username,
+						}).Errorf("[%s] error updating user account", username)
+					} else {
+						log.WithFields(logrus.Fields{
+							"userName": username,
+						}).Infof("[%s] user account updated successfully", username)
 
-					// Redirect to the main index page
-					http.Redirect(res, req, "/", http.StatusSeeOther)
-					return
+						// Redirect to the main index page
+						http.Redirect(res, req, "/", http.StatusSeeOther)
+						return
+					}
 				}
 			}
 		}
