@@ -80,7 +80,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 		reqDesc = sanitize.Accents(req.FormValue("description"))
 
 		// Convert UTC timestamp to time.Time object set to GMT +8.
-		timezoneSuffix := ":00+08:00"
+		timezoneSuffix := ":00+00:00"
 		tmpTime := req.FormValue("tocompletebyDT") + timezoneSuffix
 		toCompleteBy, _ = time.Parse(time.RFC3339, tmpTime)
 
@@ -476,7 +476,7 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 		reqDesc := sanitize.Accents(req.FormValue("description"))
 
 		// Convert UTC timestamp to time.Time object set to GMT +8.
-		timezoneSuffix := ":00+08:00"
+		timezoneSuffix := ":00+00:00"
 		newTime := req.FormValue("tocompletebyDT")
 		tmpTime := newTime + timezoneSuffix
 		toCompleteBy, _ := time.Parse(time.RFC3339, tmpTime)
