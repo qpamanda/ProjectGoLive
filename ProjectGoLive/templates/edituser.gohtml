@@ -3,7 +3,10 @@
 {{if .ValidSession}}
 <h2>Edit User Account</h2>
 
-<p style="color:red;">{{.ClientMsg}} </p> 
+<p style="color:red;">{{.ClientMsg}} </p>
+
+[<a href="/changepwd">Change Password</a>]
+<br><br>
 
 <form method="post" autocomplete="off">
     <table border="0">
@@ -16,42 +19,36 @@
         </td>
     </tr>
 
-    <!--
     <tr>
-        <td><label for ="password">Password</label></td>
+        <td><label for ="firstname">First Name</label></td>
         <td>:</td>
-        <td><input type="password" name="password" placeholder="Password" value="{{.Password}}" autocomplete="off"></td>
-    </tr>
-
-    <tr>
-        <td><label for ="cmfpassword">Confirm Password</label></td>
-        <td>:</td>
-        <td><input type="password" name="cmfpassword" placeholder="Confirm Password" value="{{.CmfPassword}}" autocomplete="off"></td>
-    </tr>
-    -->
-    
-    <tr>
-        <td><label for ="firstname">First Name (*)</label></td>
-        <td>:</td>
-        <td><input type="text" name="firstname" placeholder="First Name" value="{{.FirstName}}"></td>
+        <td><input type="text" name="firstname" placeholder="First Name" value="{{.FirstName}}">
+            &nbsp;<label style="color:red;">*</label>
+        </td>
     </tr>
     
     <tr>
-        <td><label for ="lastname">Last Name (*)</label></td>
+        <td><label for ="lastname">Last Name</label></td>
         <td>:</td>
-        <td><input type="text" name="lastname" placeholder="Last Name" value="{{.LastName}}"></td>
+        <td><input type="text" name="lastname" placeholder="Last Name" value="{{.LastName}}">
+            &nbsp;<label style="color:red;">*</label>
+        </td>
     </tr>
 
     <tr>
-        <td><label for ="email">Email (*)</label></td>
+        <td><label for ="email">Email</label></td>
         <td>:</td>
-        <td><input type="text" name="email" placeholder="Email" value="{{.Email}}"></td>
+        <td><input type="text" name="email" placeholder="Email" value="{{.Email}}">
+            &nbsp;<label style="color:red;">*</label>
+        </td>
     </tr>
 
     <tr>
-        <td><label for ="contactno">Contact No (*)</label></td>
+        <td><label for ="contactno">Contact No</label></td>
         <td>:</td>
-        <td><input type="text" name="contactno" placeholder="Contact No" value="{{.ContactNo}}"></td>
+        <td><input type="text" name="contactno" placeholder="Contact No" value="{{.ContactNo}}">
+            &nbsp;<label style="color:red;">*</label>
+        </td>
     </tr>
 
     <tr>

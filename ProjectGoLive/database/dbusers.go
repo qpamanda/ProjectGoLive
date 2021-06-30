@@ -47,6 +47,7 @@ func GetUser(username string) (authenticate.User, error) {
 				panic("error getting results from sql select")
 			}
 		} else {
+			results.Close()
 			return user, errors.New("user not found")
 		}
 
@@ -66,6 +67,7 @@ func GetUser(username string) (authenticate.User, error) {
 			IsRequester:  isRequester,
 			IsHelper:     isHelper,
 		}
+		results.Close()
 		return user, nil
 	}
 }
@@ -129,6 +131,7 @@ func GetAllUsers() ([]authenticate.User, error) {
 			}
 			users = append(users, user)
 		}
+		results.Close()
 		return users, nil
 	}
 }
@@ -158,9 +161,10 @@ func GetHashPassword(username string) (string, error) {
 				panic("error getting results from sql select")
 			}
 		} else {
+			results.Close()
 			return hashpassword, errors.New("user not found")
 		}
-
+		results.Close()
 		return hashpassword, nil
 	}
 }
@@ -310,9 +314,11 @@ func UserNameExist(username string) bool {
 		panic("error executing sql select in UserNameExist - " + err.Error())
 	} else {
 		if results.Next() {
+			results.Close()
 			return true
 		}
 	}
+	results.Close()
 	return false
 }
 
@@ -347,9 +353,11 @@ func EmailExist(email string, username string) bool {
 		panic("error executing sql select in EmailExist")
 	} else {
 		if results.Next() {
+			results.Close()
 			return true
 		}
 	}
+	results.Close()
 	return false
 }
 
@@ -370,9 +378,11 @@ func RepIDExist(repid string) bool {
 		panic("error executing sql select in RepIDExist")
 	} else {
 		if results.Next() {
+			results.Close()
 			return true
 		}
 	}
+	results.Close()
 	return false
 }
 
@@ -395,9 +405,11 @@ func IsAdmin(username string) bool {
 		panic("error executing sql select in IsAdmin")
 	} else {
 		if results.Next() {
+			results.Close()
 			return true
 		}
 	}
+	results.Close()
 	return false
 }
 
@@ -443,6 +455,7 @@ func IsMemberType(username string) (bool, bool, bool) {
 			}
 		}
 	}
+	results.Close()
 	return isAdmin, isRequester, isHelper
 }
 
@@ -485,7 +498,7 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 				MemberType: membertypedesc,
 				Checked:    checked}
 		}
-
+		results.Close()
 		return membertype, nil
 	}
 }
@@ -537,7 +550,7 @@ func GetRepMemberType(repid int) (map[int]authenticate.MemberTypeInfo, error) {
 				Disabled:   disabled,
 			}
 		}
-
+		results.Close()
 		return membertype, nil
 	}
 }

@@ -86,8 +86,6 @@ type viewRequest struct {
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
-	// Parse templates
-	tpl = template.Must(template.ParseGlob("templates/*"))
 
 	// Log file name is based on current day. Thus a new file is created for each day.
 	date := time.Now().Format("20060102")
@@ -146,8 +144,6 @@ func StartServer() {
 func initaliseHandlers(router *mux.Router) {
 
 	router.HandleFunc("/", index)
-
-	// ADD HANDLERFUNC BELOW
 	router.HandleFunc("/logout", logout)
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
@@ -155,7 +151,6 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/categorytable", categorytable)
 	router.HandleFunc("/membertypetable", membertypetable)
 	router.HandleFunc("/requeststatustable", requeststatustable)
-	//router.HandleFunc("/delcourse", delcourse)
 	router.HandleFunc("/managerecipient", manageRecipient)
 	router.HandleFunc("/addrecipient", addRecipient)
 	router.HandleFunc("/getrecipient", getRecipient)
@@ -171,8 +166,15 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
 	router.HandleFunc("/viewrequest", viewrequest)
-	//router.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir("./img"))))
+
 	router.Handle("/favicon.ico", http.NotFoundHandler())
+
+	router.Handle("/static/main.css", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+	router.Handle("/static/img/logo.jpg", http.StripPrefix("/static/img", http.FileServer(http.Dir("./static/img"))))
+	router.Handle("/static/img/user.jpg", http.StripPrefix("/static/img", http.FileServer(http.Dir("./static/img"))))
+
+	// Parse templates
+	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
 // initDB initialises the database

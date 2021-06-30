@@ -1,18 +1,56 @@
 {{template "header"}}
 
+<h2>View Recipient Details</h2>
+
     <p style="color:red;">{{.ClientMsg}} </p>
+
+    <table>
+    <tr>
+        <td><b>Recipient Name</b></td>
+        <td>:</td>
+        <td>{{.Recipient.Name}}</td>
+    </tr>
+
+    <tr>
+        <td><b>Category</b></td>
+        <td>:</td>
+        <td>
+            {{if eq .Recipient.Category true}}
+               Individual
+            {{else}}
+               Organisation
+            {{end}}
+        </td>
+    </tr>
+
+    <tr>
+        <td><b>Contact Number</b></td>
+        <td>:</td>
+        <td>{{.Recipient.ContactNo}}</td>
+    </tr>
+
+    <tr>
+        <td><b>Profile</b></td>
+        <td>:</td>
+        <td>{{.Recipient.Profile}}</td>
+    </tr>
+    </table>
+
+    <!--
     <p>{{.Recipient.Name}} Details</p>
     {{if eq .Recipient.Category true}}
         <p>Category: Individual</h3>
     {{else}}
         <p>Category: Organisation</p>
     {{end}}
-    <p>Conact Number: {{.Recipient.ContactNo}}</p>
+    <p>Contact Number: {{.Recipient.ContactNo}}</p>
     <p>Profile: {{.Recipient.Profile}}</p>
+    -->
+    <br>
     <table border="0">
         <tr>
-            <td><p><a href="/updaterecipient?recipientID={{.Recipient.RecipientID}}">Update</a></p></td>
-            <td><p><a href="/deleterecipient?recipientID={{.Recipient.RecipientID}}" onclick="return confirm('Are you sure?')">Delete</a></p></td>
+            <td>[<a href="/updaterecipient?recipientID={{.Recipient.RecipientID}}">Update</a>]</td>
+            <td>[<a href="/deleterecipient?recipientID={{.Recipient.RecipientID}}" onclick="return confirm('Are you sure?')">Delete</a>]</td>
         </tr>
     </table>
 {{template "footer"}}

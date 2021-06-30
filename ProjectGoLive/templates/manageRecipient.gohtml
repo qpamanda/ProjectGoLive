@@ -1,8 +1,12 @@
 {{template "header" .User}}
 
-    <h2><a href="/addrecipient">Add new recipient</a></h2>
+<h2>Manage Recipients</h2>
+    
     <p style="color:red;">{{.ClientMsg2}} </p> 
     <p style="color:red;">{{.ClientMsg}} </p> 
+
+    [<a href="/addrecipient">Add New Recipient</a>]
+    <br><br>
     <table id="view">
         <tr><th colspan="4">My Recipients</th></tr>
 

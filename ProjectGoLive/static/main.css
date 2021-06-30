@@ -1,0 +1,92 @@
+
+        body {
+            font-family: "Calibri", sans-serif;           
+        }
+
+        #view {
+        border-collapse: collapse;
+        width: 90%;
+        }
+
+        #view td, #view th {
+        border: 1px solid #ddd;
+        padding: 5px;
+        }
+
+        #view tr:nth-child(even){background-color: #f2f2f2;}
+
+        #view tr:hover {background-color: #ddd;}
+
+        #view th {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: center;
+        background-color: #2572b1;
+        color: white;
+        }
+
+
+        #menu {
+        border-collapse: collapse;
+        width: 90%;
+        }
+    
+        #menu td, #menu th {
+        border: 1px solid #ddd;
+        padding: 5px;
+        }
+    
+        #menu tr:nth-child(even){background-color: #f2f2f2;}
+    
+        #menu tr:hover {background-color: #ddd;}
+    
+        #menu th {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: left;
+        background-color: #2572b1;
+        color: white;
+        }
+
+        #aboutus {
+        border-collapse: collapse;
+        width: 60%;
+        font-family: "Verdana"; 
+        font-size: 9pt;
+        }
+
+        #aboutus td, #aboutus th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+
+        #aboutus th {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: justify;
+        background-color: #2572b1;
+        color: white;
+        }
+
+        input[type=button], input[type=submit], input[type=reset] {
+        background-color: #2572b1;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+        }
+
+        input[type=text], input[type=password], input[type=datetime-local], select, textarea {
+        width: 280px; 
+        padding: 4px 6px;
+        margin: 2px 0;
+        box-sizing: border-box;
+        border: 1px solid #2572b1;
+        border-radius: 2px;  
+        }
+
+        input[type=text]:focus, input[type=password]:focus, input[type=datetime-local]:focus, select:focus, textarea:focus {
+        background-color: rgb(207, 217, 228);
+        }
