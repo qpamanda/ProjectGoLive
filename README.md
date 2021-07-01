@@ -10,6 +10,8 @@
 
 Project Name: Giving Grace Portal
 
+![GG Logo](/ProjectGoLive/static/img/logo.jpg)
+
 A platform for helping the needy, elderly, or charity organisations. An application that allows representatives for the needy (individuals or organisations) to sign up and put up requests for the needs required. The needy (individuals or organisation) will be our recipients. The requests to put up can be for a donation (monetary), donation (items) or errands. Example of an errand "XXX needs lunch/dinner for date/time". A helper who is also a user of the application can view the list of request and select a request to fulfill.
 
 Constraints: The application cannot validate if the request is really fullfilled or not thus this is solely based on trust/honesty and helpers will liaise with representatives outside of the application to complete the request. The request status can then be updated into the system when it is completed.
