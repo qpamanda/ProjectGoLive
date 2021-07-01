@@ -1,0 +1,37 @@
+{{template "header" .User}}
+
+<p style="color:red;">{{.ClientMsg}}</p>
+<form method="post" autocomplete="off">
+    <table id="view">
+        <tr><th colspan="6">Request Status</th></tr>
+        <tr>
+            <td></td>
+            <td align="center"><b>Status</b></td>
+            <td align="center"><b>Created By</b></td>
+            <td align="center"><b>Created Date & Time</b></td>
+            <td align="center"><b>Last Modified By</b></td>
+            <td align="center"><b>Last Modified Date & Time</b></td>
+        </tr>
+        {{range .MapRequestStatus}}
+            <tr>
+                <td>
+                    <input type="radio" name="selection" value="{{.StatusCode}}">&nbsp;
+                </td>
+                <td align="center">{{.Status}}</td>
+                <td align="center">{{.CreatedBy}}</td>
+                <td align="center">{{.Created_dt}}</td>
+                <td align="center">{{.LastModifiedBy}}</td>
+                <td align="center">{{.LastModified_dt}}</td>
+            </tr>
+        {{end}}
+    </table>
+    <table>
+        <tr> 
+            <td align="left"><input type="submit"></td>                    
+        </tr> 
+    </table>
+</form>
+<br>
+[<a href="/aaReqSView">Back</a>]
+</body>
+</html>

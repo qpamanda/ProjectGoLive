@@ -10,33 +10,15 @@
 
 Project Name: Giving Grace Portal
 
-![Logo](/images/logo.jpg)
-
 A platform for helping the needy, elderly, or charity organisations. An application that allows representatives for the needy (individuals or organisations) to sign up and put up requests for the needs required. The needy (individuals or organisation) will be our recipients. The requests to put up can be for a donation (monetary), donation (items) or errands. Example of an errand "XXX needs lunch/dinner for date/time". A helper who is also a user of the application can view the list of request and select a request to fulfill.
 
-
-![tech](/images/Software Architecture.JPG)
-
-
-![DMBS](/images/DBMS.JPG)
-
-    - For every tables created we will include following fields for accountability purpose.
-        - CreatedBy
-        - Created_dt
-        - LastModifiedBy
-        - LastModified_dt   
- 
-
-![Stakeholders](/images/Stakeholders.JPG)
-
+Constraints: The application cannot validate if the request is really fullfilled or not thus this is solely based on trust/honesty and helpers will liaise with representatives outside of the application to complete the request. The request status can then be updated into the system when it is completed.
 
 The following is the discussion and jobs delegations for our group thus far:
 
 #### **APPLICATION FEATURES**
 
-![Features](/images/Features.JPG)
-
-###### 1)  USER LOGIN/REGISTRATION FEATURE (FOR REPRESENTATIVES - REQUESTERS/HELPERS) - AMANDA
+###### 1)  ACCOUNT REGISTRATION FEATURE (FOR REPRESENTATIVES/HELPERS) - AMANDA
 
     **Representatives Table**
     - RepID INT (Primary key , unique identifier for the account)
@@ -66,7 +48,7 @@ The following is the discussion and jobs delegations for our group thus far:
     - LastModified    
    
 
-###### 2) RECIPIENT FEATURE (INDIVIDUAL/ORGANISATION WHO NEED HELP) - YANPING
+###### 2) RECIPIENT FEATURE (INDIVIDUAL/ORGANISATION NEED HELP) - YANPING
 
     Recipent is the person or organisation needing help. Each Recipient is tied to a Representative
     
@@ -91,7 +73,7 @@ The following is the discussion and jobs delegations for our group thus far:
      **Requests Table**
      - RequestID (Primary key , unique identifier for the request)
      - RepID
-     - CategoryID (1 - Item Donation, 2 - Errand)
+     - CategoryID (1 - Donation (Monetary), 2 - Donation (Physical Items), 3 - Errands)
      - RecipientID
      - RequestStatusCode (P - Pending, H - Being Handled, C - Completed)
      - RequestDetails
@@ -103,7 +85,7 @@ The following is the discussion and jobs delegations for our group thus far:
      - LastModified_dt
       
       
-###### 4) HELPERS FEATURE (PERSON HELPING THE REQUEST) - AMANDA
+###### 4) HELPER FEATURE (PERSON HELPING THE REQUEST) - AMANDA
     
     The helper who has selected to fulfil the request(s).
     
@@ -118,7 +100,7 @@ The following is the discussion and jobs delegations for our group thus far:
 
 ###### 5) ADMIN MODULES (FOR SYSTEM SETUP) - AHMAD
 
-    - CategoryID/CategoryName: 1 - Item Donation, 2 - Errand
+    - CategoryID/CategoryName: 1 - Donation (Monetary), 2 - Donation (Physical Items), 3 - Errands
     
     **Category Table**
     - CategoryID
@@ -153,19 +135,27 @@ The following is the discussion and jobs delegations for our group thus far:
 
 #### **BASIC FEATURES - COMPLETED**
 
-    - [x] Connection to server via HTTPS/TLS (@port 5221) - Uses OpenSSL to create certificates
-    - [x] Connection to database (using docker container @port 55005)
-    - [x] Login/Logout
-    - [x] Session Management
-    - [x] Events Logging
+- [x] Connection to server via https (@port 5221)
+- [x] Connection to database (using docker container @port 55005)
+- [x] Login/Logout
+- [x] Session Management
+- [x] Events Logging
 
 
-#### **LIMITATIONS**    
-The application cannot validate if the request is really fullfilled or not thus this is solely based on trust/honesty and helpers will liaise with representatives outside of the application to complete the request. The request status can then be updated into the system when it is completed.   
 
-
-#### **FEATURES FOR IMPROVEMENTS**      
+#### **FEATURES - ON HOLD**      
 
 - [ ] Chat system ? (To facilitate the helpers and requesters) 
 - [ ] Web Service for Helpers/Requesters to update request status?
 
+
+
+#### **ADHOC**    
+
+    - For every tables created we will include following fields for accountability purpose.
+        - CreatedBy
+        - Created_dt
+        - LastModifiedBy
+        - LastModified_dt   
+    
+   
