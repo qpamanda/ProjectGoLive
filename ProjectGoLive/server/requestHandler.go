@@ -1,6 +1,7 @@
 package server
 
 import (
+	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
 	"net/http"
 	"strconv"
@@ -18,6 +19,26 @@ var (
 
 // representative ID of admin user
 const adminID = 5000
+
+// Author: Tan Jun Jie
+// managerequest is a handler func to manage the request menu.
+func managerequest(res http.ResponseWriter, req *http.Request) {
+	currentUser, _ := getUser(res, req)
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	data := struct {
+		User authenticate.User
+	}{
+		currentUser,
+	}
+
+	tpl.ExecuteTemplate(res, "managerequest.gohtml", data)
+
+}
 
 // Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
@@ -161,11 +182,13 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	data := struct {
 		RecipientSlice []viewRecipient
 		RequestSlice   []viewRequest
+		User           authenticate.User
 		ClientMsg      string
 		FormSubmitted  bool
 	}{
 		viewRecipientSlice,
 		viewRequestSlice,
+		currentUser,
 		clientMsg,
 		submitted,
 	}
@@ -278,12 +301,14 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	data := struct {
 		RequestSlice        []viewRequest
 		DeletedRequestSlice []viewRequest
+		User                authenticate.User
 		CntCurrentItems     int
 		ClientMsg           string
 		FormSubmitted       bool
 	}{
 		viewRequestSlice,
 		viewDeletedRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 		submitted,
@@ -334,9 +359,11 @@ func viewrequest(res http.ResponseWriter, req *http.Request) {
 
 	data := struct {
 		RequestSlice []viewRequest
+		User         authenticate.User
 		ClientMsg    string
 	}{
 		viewRequestSlice,
+		currentUser,
 		clientMsg,
 	}
 
@@ -416,10 +443,12 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
 	data := struct {
 		RequestSlice    []viewRequest
+		User            authenticate.User
 		CntCurrentItems int
 		ClientMsg       string
 	}{
 		viewRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 	}
@@ -533,13 +562,16 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 		}
 
 	}
+
 	data := struct {
 		RequestSlice    []viewRequest
+		User            authenticate.User
 		CntCurrentItems int
 		ClientMsg       string
 		FormSubmitted   bool
 	}{
 		viewRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 		submitted,
