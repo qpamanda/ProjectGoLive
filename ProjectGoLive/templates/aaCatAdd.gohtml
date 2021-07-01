@@ -1,0 +1,23 @@
+{{template "header" .User}}
+
+<h2>Add Category</h2>
+<p style="color:red;">{{.ClientMsg}}</p>
+<p>Enter details</p>
+<form method="post" autocomplete="off">
+    <table border="0">
+        <tr>
+            <td><label for="name">Category Name</label></td>
+            <td>:</td>
+            <td><input type="text" name="name" placeholder="name"></td>
+        </tr>
+        <tr> 
+            <td colspan="3">
+                <input type="submit">
+            </td>
+        </tr>   
+    </table>
+</form>
+<br>
+[<a href="/aaCatView">Back</a>]
+</body>
+</html>
