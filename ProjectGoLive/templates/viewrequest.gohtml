@@ -1,4 +1,4 @@
-{{template "header"}}
+{{template "header" .User}}
 
 <h2>View Requests</h2>
 <p style="color:red;">{{.ClientMsg}} </p> 
@@ -26,5 +26,6 @@
     <br>
 
 {{template "footer"}}
+{{template "req-footer"}}
 </body>
 </html>

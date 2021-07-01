@@ -1,4 +1,4 @@
-{{template "header"}}
+{{template "header" .User}}
 
 <h2>Delete an Existing Request</h2>
 
@@ -13,7 +13,7 @@
 {{ template "delreq-complete" .}}
 {{end}}
 {{template "footer"}}
-
+{{template "req-footer"}}
 {{end}}
 </body>
 </html>

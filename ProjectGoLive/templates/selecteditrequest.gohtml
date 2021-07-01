@@ -1,4 +1,4 @@
-{{template "header"}}
+{{template "header" .User}}
 
 <h2>Edit an Existing Request</h2>
 
@@ -10,7 +10,7 @@
 {{template "editreq-select" .}}
 
 {{template "footer"}}
-
+{{template "req-footer"}}
 {{end}}
 </body>
 </html>
