@@ -1,7 +1,9 @@
 package server
 
 import (
+	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -161,11 +163,13 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	data := struct {
 		RecipientSlice []viewRecipient
 		RequestSlice   []viewRequest
+		User           authenticate.User
 		ClientMsg      string
 		FormSubmitted  bool
 	}{
 		viewRecipientSlice,
 		viewRequestSlice,
+		currentUser,
 		clientMsg,
 		submitted,
 	}
@@ -278,12 +282,14 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	data := struct {
 		RequestSlice        []viewRequest
 		DeletedRequestSlice []viewRequest
+		User                authenticate.User
 		CntCurrentItems     int
 		ClientMsg           string
 		FormSubmitted       bool
 	}{
 		viewRequestSlice,
 		viewDeletedRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 		submitted,
@@ -334,9 +340,11 @@ func viewrequest(res http.ResponseWriter, req *http.Request) {
 
 	data := struct {
 		RequestSlice []viewRequest
+		User         authenticate.User
 		ClientMsg    string
 	}{
 		viewRequestSlice,
+		currentUser,
 		clientMsg,
 	}
 
@@ -416,10 +424,12 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
 	data := struct {
 		RequestSlice    []viewRequest
+		User            authenticate.User
 		CntCurrentItems int
 		ClientMsg       string
 	}{
 		viewRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 	}
@@ -533,13 +543,17 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 		}
 
 	}
+
+	fmt.Fprintln(res, currentUser)
 	data := struct {
 		RequestSlice    []viewRequest
+		User            authenticate.User
 		CntCurrentItems int
 		ClientMsg       string
 		FormSubmitted   bool
 	}{
 		viewRequestSlice,
+		currentUser,
 		len(viewRequestSlice),
 		clientMsg,
 		submitted,
