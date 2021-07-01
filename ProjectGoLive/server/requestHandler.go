@@ -3,7 +3,6 @@ package server
 import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -20,6 +19,26 @@ var (
 
 // representative ID of admin user
 const adminID = 5000
+
+// Author: Tan Jun Jie
+// managerequest is a handler func to manage the request menu.
+func managerequest(res http.ResponseWriter, req *http.Request) {
+	currentUser, _ := getUser(res, req)
+
+	if !alreadyLoggedIn(req) {
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
+
+	data := struct {
+		User authenticate.User
+	}{
+		currentUser,
+	}
+
+	tpl.ExecuteTemplate(res, "managerequest.gohtml", data)
+
+}
 
 // Author: Tan Jun Jie
 // addrequest is a handler func to create a new request.
@@ -543,9 +562,6 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 		}
 
 	}
-
-	fmt.Println("IN EDIT REQUEST HANDLER")
-	fmt.Println(currentUser)
 
 	data := struct {
 		RequestSlice    []viewRequest

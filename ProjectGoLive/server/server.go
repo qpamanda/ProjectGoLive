@@ -166,6 +166,7 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/selecteditrequest", selecteditrequest)
 	router.HandleFunc("/editrequest", editrequest)
 	router.HandleFunc("/viewrequest", viewrequest)
+	router.HandleFunc("/managerequest", managerequest)
 
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 
