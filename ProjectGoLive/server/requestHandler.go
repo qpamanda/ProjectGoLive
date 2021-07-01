@@ -544,7 +544,9 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 
 	}
 
-	fmt.Fprintln(res, currentUser)
+	fmt.Println("IN EDIT REQUEST HANDLER")
+	fmt.Println(currentUser)
+
 	data := struct {
 		RequestSlice    []viewRequest
 		User            authenticate.User
