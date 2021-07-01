@@ -14,7 +14,6 @@ import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
 	"ProjectGoLive/smtpserver"
-	"ProjectGoLive/testing"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -148,9 +147,6 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
-	router.HandleFunc("/categorytable", categorytable)
-	router.HandleFunc("/membertypetable", membertypetable)
-	router.HandleFunc("/requeststatustable", requeststatustable)
 	router.HandleFunc("/managerecipient", manageRecipient)
 	router.HandleFunc("/addrecipient", addRecipient)
 	router.HandleFunc("/getrecipient", getRecipient)
@@ -167,6 +163,18 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/editrequest", editrequest)
 	router.HandleFunc("/viewrequest", viewrequest)
 	router.HandleFunc("/managerequest", managerequest)
+	router.HandleFunc("/aaCatAdd", aaCatAdd)
+	router.HandleFunc("/aaCatUpdate", aaCatUpdate)
+	router.HandleFunc("/aaCatUpdate2", aaCatUpdate2)
+	router.HandleFunc("/aaCatView", aaCatView)
+	router.HandleFunc("/aaMemTypeAdd", aaMemTypeAdd)
+	router.HandleFunc("/aaMemTypeUpdate", aaMemTypeUpdate)
+	router.HandleFunc("/aaMemTypeUpdate2", aaMemTypeUpdate2)
+	router.HandleFunc("/aaMemTypeView", aaMemTypeView)
+	router.HandleFunc("/aaReqSAdd", aaReqSAdd)
+	router.HandleFunc("/aaReqSUpdate", aaReqSUpdate)
+	router.HandleFunc("/aaReqSUpdate2", aaReqSUpdate2)
+	router.HandleFunc("/aaReqSView", aaReqSView)
 
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 
@@ -258,29 +266,4 @@ func initFieldsLen() {
 	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
 	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
 	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
-}
-
-// Author: Ahmad Bahrudin
-func test() {
-	testing.TestCatInsert()
-	testing.TestCatUpdate()
-	testing.TestCatGet()
-	testing.TestCatGetAll()
-
-	testing.TestMemTInsert()
-	testing.TestMemTUpdate()
-	testing.TestMemTGet()
-	testing.TestMemTGetAll()
-
-	testing.TestReqSInsert()
-	testing.TestReqSUpdate()
-	testing.TestReqSGet()
-	testing.TestReqSGetAll()
-}
-
-// Author: Ahmad Bahrudin
-func testDelete() {
-	testing.TestCatDelete()
-	testing.TestMemTDelete()
-	testing.TestReqSDelete()
 }
