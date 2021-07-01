@@ -1,10 +1,10 @@
 package database
 
-import "strings"
+import "errors"
 
 // Author: Ahmad Bahrudin
-// Category struct for storing category information
-type Category struct {
+// category struct for storing category information
+type category struct {
 	CategoryID      int    // To store category's id
 	Category        string // To store category's name
 	CreatedBy       string // To store category's created by
@@ -14,36 +14,13 @@ type Category struct {
 }
 
 var (
-	Cat = &Category{0, "", "", "", "", ""}
+	Cat = &category{0, "", "", "", "", ""}
 )
 
-// Author: Ahmad Bahrudin
-// GetNextID function that get next category's id from the database
-func (cat Category) GetNextID() (int, error) {
-	query := "SELECT CategoryID " +
-		"FROM Category"
-
-	results, err := DB.Query(query)
-	if err != nil {
-		panic("error executing sql select")
-	}
-
-	for results.Next() {
-		err := results.Scan(&cat.CategoryID)
-
-		if err != nil {
-			panic("error getting results from sql select")
-		}
-	}
-	return (cat.CategoryID + 1), nil
-}
-
-// Author: Ahmad Bahrudin
-// Insert function that adds new category to the database
-func (*Category) Insert(categoryID int, category string, userName string) error {
+func (*category) Insert(categoryID int, category string, userName string) error {
 	stmt, err := DB.Prepare("INSERT INTO Category " +
 		"(CategoryID, Category, CreatedBy, Created_dt, LastModifiedBy, LastModified_dt) " +
-		"VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL 8 HOUR), ?, DATE_ADD(NOW(), INTERVAL 8 HOUR))")
+		"VALUES (?, ?, ?, now(), ?, now())")
 
 	if err != nil {
 		panic("error preparing sql insert")
@@ -57,18 +34,16 @@ func (*Category) Insert(categoryID int, category string, userName string) error 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
-// Update function that update exist category from the database
-func (*Category) Update(categoryID int, category string, userName string) error {
+func (*category) Update(categoryID int, category string, userName string) error {
 	stmt, err := DB.Prepare("UPDATE Category " +
-		"SET Category=?, LastModifiedBy=?, LastModified_dt=DATE_ADD(NOW(), INTERVAL 8 HOUR) " +
+		"SET CategoryID=?, Category=?, LastModifiedBy=?, LastModified_dt=now() " +
 		"WHERE CategoryID=?")
 
 	if err != nil {
 		panic("error preparing sql update")
 	}
 
-	_, err = stmt.Exec(category, userName, categoryID)
+	_, err = stmt.Exec(categoryID, category, userName, categoryID)
 	if err != nil {
 		panic("error executing sql update")
 	}
@@ -76,9 +51,27 @@ func (*Category) Update(categoryID int, category string, userName string) error 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
-// GetAll function that get all category from the database
-func (cat Category) GetAll() (map[int]Category, error) {
+func (cat category) Get(categoryID int) (category, error) {
+	query := "SELECT * " +
+		"FROM Category " +
+		"WHERE categoryID=?"
+
+	results, err := DB.Query(query, categoryID)
+	if err != nil {
+		panic("error executing sql select")
+	}
+
+	if results.Next() {
+		err := results.Scan(&cat.CategoryID, &cat.Category, &cat.CreatedBy, &cat.Created_dt, &cat.LastModifiedBy, &cat.LastModified_dt)
+
+		if err != nil {
+			panic("error getting results from sql select")
+		}
+	}
+	return cat, errors.New("category not found")
+}
+
+func (cat category) GetAll() (map[int]category, error) {
 	query := "SELECT * " +
 		"FROM Category "
 
@@ -87,27 +80,20 @@ func (cat Category) GetAll() (map[int]Category, error) {
 		panic("error executing sql select")
 	}
 
-	c := make(map[int]Category)
+	c := make(map[int]category)
 	for results.Next() {
 		err := results.Scan(&cat.CategoryID, &cat.Category, &cat.CreatedBy, &cat.Created_dt, &cat.LastModifiedBy, &cat.LastModified_dt)
 
 		if err != nil {
 			panic("error getting results from sql select")
 		}
-		cat.Created_dt = strings.Replace(cat.Created_dt, "T", " ", -1)
-		cat.Created_dt = strings.Replace(cat.Created_dt, "Z", " ", -1)
-		cat.LastModified_dt = strings.Replace(cat.LastModified_dt, "T", " ", -1)
-		cat.LastModified_dt = strings.Replace(cat.LastModified_dt, "Z", " ", -1)
 
 		c[cat.CategoryID] = cat
 	}
 	return c, nil
 }
 
-// Author: Ahmad Bahrudin
-// Delete function that delete category from the database
-// IMPORTANT: ONLY USE FOR TESTING
-func (cat Category) Delete(categoryID int) error {
+func (cat category) Delete(categoryID int) error {
 	stmt, err := DB.Prepare("DELETE FROM Category " +
 		"WHERE categoryID=?")
 
