@@ -168,3 +168,4 @@ The application cannot validate if the request is really fullfilled or not thus 
 
 - [ ] Chat system ? (To facilitate the helpers and requesters) 
 - [ ] Web Service for Helpers/Requesters to update request status?
+
