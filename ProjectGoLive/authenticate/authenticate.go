@@ -1,3 +1,9 @@
+/*
+Author: Amanda Soh.
+
+Package authenticate initialises the session map and user map. It implements the User
+struct where functions can call to retrieve a user as well as performs user validations.
+*/
 package authenticate
 
 import (
@@ -43,8 +49,8 @@ type MemberTypeInfo struct {
 	Disabled   string
 }
 
+// Author: Amanda Soh.
 // validateUserInput func validates user input
-// Author: Amanda
 func ValidateUserInput(adduser bool, username string, password string, cmfpassword string,
 	firstname string, lastname string, email string,
 	contactno string, organisation string) error {
@@ -87,9 +93,9 @@ func ValidateUserInput(adduser bool, username string, password string, cmfpasswo
 	return nil
 }
 
+// Author: Amanda Soh.
 // validatePassword validates that the input user password must contain as least
 // one upper case, lower case, numeric and special characters.
-// Author: Amanda
 func ValidatePassword(password string, cmfpassword string) error {
 	if password == "" {
 		return errors.New("password cannot be blank")
@@ -122,8 +128,8 @@ next:
 	return nil
 }
 
+// Author: Amanda Soh.
 // ValidateEmail validates if the string parameter is a valid email using regexp
-// Author: Amanda
 func ValidateEmail(email string) error {
 	if email == "" {
 		return errors.New("email cannot be blank")

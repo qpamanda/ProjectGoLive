@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaReqSAdd is a handler func that add request status.
 func aaReqSAdd(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -75,7 +75,7 @@ func aaReqSAdd(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaReqSUpdate is a handler func that update existing request status.
 func aaReqSUpdate(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -108,7 +108,7 @@ func aaReqSUpdate(res http.ResponseWriter, req *http.Request) {
 		MapRequestStatus: reqS})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaReqSUpdate2 is a handler func that update existing request status.
 func aaReqSUpdate2(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -157,7 +157,7 @@ func aaReqSUpdate2(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaReqSView is a handler func that display the request status.
 func aaReqSView(res http.ResponseWriter, req *http.Request) {
 	myUser, _ := getUser(res, req)

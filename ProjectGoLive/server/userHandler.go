@@ -19,9 +19,9 @@ import (
 
 var nums = []byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
 
+// Author: Amanda Soh.
 // signup is a handler func to create a new user account.
 // Validates user information and creates a new user account.
-// Author: Amanda
 func signup(res http.ResponseWriter, req *http.Request) {
 	if alreadyLoggedIn(req) {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
@@ -210,10 +210,10 @@ func signup(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "signup.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // edituser is a handler func to edit user account information.
 // Redirects to index page if user has not login.
 // Validates user input and updates the information.
-// Author: Amanda
 func edituser(res http.ResponseWriter, req *http.Request) {
 	myUser, validSession := getUser(res, req)
 
@@ -377,10 +377,10 @@ func edituser(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "edituser.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // changepwd is a handler func to change user password
 // Redirects to index page if user has not login.
 // Validates user input and updates the information.
-// Author: Amanda
 func changepwd(res http.ResponseWriter, req *http.Request) {
 	myUser, validSession := getUser(res, req)
 
@@ -475,9 +475,9 @@ func changepwd(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "changepwd.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // resetpwd is a handler func to reset user password without login
 // Validates user input and updates the information.
-// Author: Amanda
 func resetpwd(res http.ResponseWriter, req *http.Request) {
 	clientMsg := "" // To display message to the user on the client
 	repid := 0
@@ -572,9 +572,9 @@ func resetpwd(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "resetpwd.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // resetpwd is a handler func to reset user password
 // It triggers an email to user registered email address to activate password reset
-// Author: Amanda
 func resetpwdreq(res http.ResponseWriter, req *http.Request) {
 	clientMsg := "" // To display message to the user on the client
 
@@ -619,6 +619,7 @@ func resetpwdreq(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "resetpwdreq.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // logout func is a handler to logout the current user. Redirects to index page if user has not login.
 // Otherwise, delete session token from server and client, then redirects to index page.
 func logout(res http.ResponseWriter, req *http.Request) {
@@ -651,10 +652,10 @@ func logout(res http.ResponseWriter, req *http.Request) {
 	http.Redirect(res, req, "/", http.StatusSeeOther)
 }
 
+// Author: Amanda Soh.
 // getUser func checks for valid session token.
 // Add a new session token cookie to the client if one is not found.
 // Return user and true if session is set
-// Author: Amanda
 func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, bool) {
 	// Get current session cookie
 	sessionToken, err := req.Cookie(cookieName)
@@ -674,9 +675,9 @@ func getUser(res http.ResponseWriter, req *http.Request) (authenticate.User, boo
 	return myUser, false
 }
 
+// Author: Amanda Soh.
 // alreadyLoggedIn func checks if a user has already logged in. Checks for valid session token.
 // Returns true if already logged in, false otherwise.
-// Author: Amanda
 func alreadyLoggedIn(req *http.Request) bool {
 	sessionToken, err := req.Cookie(cookieName)
 	if err != nil {
@@ -689,6 +690,8 @@ func alreadyLoggedIn(req *http.Request) bool {
 	return ok
 }
 
+// Author: Amanda Soh.
+// GetRepID generates the RepID
 func GetRepID() (int, error) {
 	x := 4 // change this value for the number of digits to generate for the random no
 	randomNo := GenerateRandomNo(x)
@@ -696,6 +699,8 @@ func GetRepID() (int, error) {
 	return strconv.Atoi(randomNo)
 }
 
+// Author: Amanda Soh.
+// GenerateRandomNo generates a num with x digits
 func GenerateRandomNo(x int) string {
 	buffer := make([]byte, x)
 	n, err := io.ReadAtLeast(rand.Reader, buffer, x)

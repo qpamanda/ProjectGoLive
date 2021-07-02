@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaCatAdd is a handler func that adds new category.
 func aaCatAdd(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -75,7 +75,7 @@ func aaCatAdd(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaCatUpdate is a handler func that update existing category.
 func aaCatUpdate(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -108,7 +108,7 @@ func aaCatUpdate(res http.ResponseWriter, req *http.Request) {
 		MapCategory: cat})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaCatUpdate2 is a handler func that update existing category.
 func aaCatUpdate2(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -157,7 +157,7 @@ func aaCatUpdate2(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaCatView is a handler func that display the category.
 func aaCatView(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {

@@ -1,7 +1,11 @@
 /*
+Author: Ahmad Bahrudin, Amanda Soh, Huang Yanping, Tan Jun Jie.
+
 Package server initialises the handler functions for the server web pages
-and implements ......
-It is separated into x .go files to segregate the functionalities of the application.
+and implements the functionalities each handler.
+
+It is separated into serveral .go files to segregate the functionalities of the application done
+by each team members.
 
 	server.go: Initialises the templates and handler functions, then starts the server to run
 	on the designated port.
@@ -82,6 +86,7 @@ type viewRequest struct {
 	Status        string
 }
 
+// Author: Amanda Soh.
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
@@ -109,6 +114,7 @@ func InitServer() {
 	log.AddHook(filenameHook)
 }
 
+// Author: Amanda Soh.
 // StartServer initialises the database and handler functions then
 // listens on the designated port to start the server running.
 func StartServer() {
@@ -139,6 +145,7 @@ func StartServer() {
 	defer database.DB.Close()
 }
 
+// Author: Amanda Soh, Huang Yanping, Tan Jun Jie, Ahmad Bahrudin.
 // initaliseHandlers initialises the handlers for the server.
 func initaliseHandlers(router *mux.Router) {
 
@@ -186,6 +193,7 @@ func initaliseHandlers(router *mux.Router) {
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
+// Author: Amanda Soh.
 // initDB initialises the database
 func initDB() {
 	defer func() {
@@ -216,6 +224,7 @@ func initDB() {
 	database.DB.SetMaxOpenConns(0)
 }
 
+// Author: Amanda Soh.
 // getDBConfig retrieves the database configurations and returns a struct.
 func getDBConfig() database.Config {
 	// Load setup.env file from same directory
@@ -241,6 +250,8 @@ func getDBConfig() database.Config {
 	return config
 }
 
+// Author: Amanda Soh.
+// Initiate fields from .env file
 func initFieldsLen() {
 	// Load setup.env file from same directory
 	err := godotenv.Load("setup.env")

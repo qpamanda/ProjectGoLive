@@ -2,7 +2,7 @@ package database
 
 import "strings"
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // MemberType struct for storing member type information
 type MemberType struct {
 	MemberTypeID    int    // To store member type's id
@@ -17,7 +17,7 @@ var (
 	MemT = &MemberType{0, "", "", "", "", ""}
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetNextID function that get next member type's id from the database
 func (memT MemberType) GetNextID() (int, error) {
 	query := "SELECT MemberTypeID " +
@@ -38,7 +38,7 @@ func (memT MemberType) GetNextID() (int, error) {
 	return (memT.MemberTypeID + 1), nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Insert function that adds new member type to the database
 func (*MemberType) Insert(memberTypeID int, memberType string, userName string) error {
 	stmt, err := DB.Prepare("INSERT INTO MemberType " +
@@ -57,7 +57,7 @@ func (*MemberType) Insert(memberTypeID int, memberType string, userName string) 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Update function that update exist member type from the database
 func (*MemberType) Update(memberTypeID int, memberType string, userName string) error {
 	stmt, err := DB.Prepare("UPDATE MemberType " +
@@ -76,7 +76,7 @@ func (*MemberType) Update(memberTypeID int, memberType string, userName string) 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetAll function that get all member type from the database
 func (memT MemberType) GetAll() (map[int]MemberType, error) {
 	query := "SELECT * " +
@@ -104,7 +104,7 @@ func (memT MemberType) GetAll() (map[int]MemberType, error) {
 	return m, nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Delete function that delete member type from the database
 // IMPORTANT: ONLY USE FOR TESTING
 func (memT MemberType) Delete(categoryID int) error {

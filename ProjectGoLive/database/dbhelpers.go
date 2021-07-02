@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
+// Author: Amanda Soh.
 // GetRequestsByStatus implements the sql operations to retrieve all requests by statuscode
-// Author: Amanda
 func GetRequestsByStatus(currstatus int, helperid int) ([]recipients.Request, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -98,8 +98,8 @@ func GetRequestsByStatus(currstatus int, helperid int) ([]recipients.Request, er
 	}
 }
 
+// Author: Amanda Soh.
 // GetRequestsToHandle implements the sql operations to retrieve all requests that helper has selected to fulfil.
-// Author: Amanda
 func GetRequestsToHandle(currstatus int, helperid int) ([]recipients.Request, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -191,8 +191,8 @@ func GetRequestsToHandle(currstatus int, helperid int) ([]recipients.Request, er
 	}
 }
 
+// Author: Amanda Soh.
 // UpdateRequestStatus implements the sql operations to update request status from the database.
-// Author: Amanda
 func UpdateRequestStatus(requestid int, username string, statuscode int) error {
 
 	defer func() {
@@ -215,8 +215,8 @@ func UpdateRequestStatus(requestid int, username string, statuscode int) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // AddRequestHelper implements the sql operations to insert a requests that helpers selected to fulfil into the database.
-// Author: Amanda
 func AddRequestHelper(repid int, requestid int, username string) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -238,8 +238,8 @@ func AddRequestHelper(repid int, requestid int, username string) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // DeleteRequestHelper implements the sql operations to delete requests that helper has selected to fulfil from the database.
-// Author: Amanda
 func DeleteRequestHelper(repid int, requestid int) error {
 	defer func() {
 		if err := recover(); err != nil {
