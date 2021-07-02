@@ -1,3 +1,9 @@
+/*
+Author: Amanda Soh.
+
+Package recipients implements the Request struct where functions can call to retrieve
+a request. Used for Helpers Features.
+*/
 package recipients
 
 import "time"
