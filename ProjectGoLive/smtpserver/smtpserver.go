@@ -1,3 +1,8 @@
+/*
+Author: Amanda Soh.
+
+Package smtpserver triggers the email sending feature.
+*/
 package smtpserver
 
 import (
@@ -18,8 +23,8 @@ var (
 	FromEmail     string
 )
 
+// Author: Amanda.
 // SendResetPwdEmail sends an email to user to reset their password
-// Author: Amanda
 func EmailResetPassword(email string) error {
 
 	var body bytes.Buffer

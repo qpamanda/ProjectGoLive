@@ -1,7 +1,3 @@
-/*
-Author: Huang Yanping
-Last Updated: 28-Jun-2021
-*/
 package database
 
 import (
@@ -21,6 +17,7 @@ type Recipient struct {
 	LastModifiedDT time.Time
 }
 
+// Author: Huang Yanping
 // GetMyRecipient implements the sql operations to retrieve all the recipients under the repID.
 func GetMyRecipient(RepID int) ([]Recipient, error) {
 	defer func() {
@@ -50,6 +47,7 @@ func GetMyRecipient(RepID int) ([]Recipient, error) {
 	}
 }
 
+// Author: Huang Yanping
 // AddRecipient implements the sql operations to add a new recipient into the database.
 func AddRecipient(RepID int, Name string, Category bool, Profile string, ContactNo string) error {
 	defer func() {
@@ -70,6 +68,7 @@ func AddRecipient(RepID int, Name string, Category bool, Profile string, Contact
 	return nil
 }
 
+// Author: Huang Yanping
 // GetRecipient implements the sql operations to retrieve the recipient details using repID and RecipientID.
 func GetRecipient(RepID int, RecipientID int64) (Recipient, error) {
 	defer func() {
@@ -97,6 +96,7 @@ func GetRecipient(RepID int, RecipientID int64) (Recipient, error) {
 	}
 }
 
+// Author: Huang Yanping
 // UpdateRecipient implements the sql operations to update the recipient details.
 func UpdateRecipient(RepID int, RecipientID int64, Name string, Category bool, Profile string, ContactNo string) error {
 	defer func() {
@@ -117,6 +117,7 @@ func UpdateRecipient(RepID int, RecipientID int64, Name string, Category bool, P
 	return nil
 }
 
+// Author: Huang Yanping
 // DeleteRecipient implements the sql operations to delete the recipient using repID and RecipientID.
 func DeleteRecipient(RepID int, RecipientID int64) error {
 	defer func() {

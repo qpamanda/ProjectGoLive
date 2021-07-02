@@ -14,9 +14,9 @@ type Request struct {
 	RepID int
 }
 
+// Author: Amanda Soh.
 // selectrequest is a handler func to select request(s) to fulfil
 // Redirects to index page if user has not login.
-// Author: Amanda
 func selectrequest(res http.ResponseWriter, req *http.Request) {
 	myUser, _ := getUser(res, req)
 
@@ -90,9 +90,9 @@ func selectrequest(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "selectrequest.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // fulfilrequest is a handler func to view selected requests to fulfil
 // Redirects to index page if user has not login.
-// Author: Amanda
 func fulfilrequest(res http.ResponseWriter, req *http.Request) {
 	myUser, _ := getUser(res, req)
 
@@ -191,9 +191,9 @@ func fulfilrequest(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "fulfilrequest.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // requestcompleted is a handler func to view all completed requests of current user (the helper)
 // Redirects to index page if user has not login.
-// Author: Amanda
 func requestcompleted(res http.ResponseWriter, req *http.Request) {
 	myUser, _ := getUser(res, req)
 

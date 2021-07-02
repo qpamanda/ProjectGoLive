@@ -1,5 +1,9 @@
-// Package database implements the connection to the database server at the designated port.
-// It performs the DB operations as invoked by the server.
+/*
+Author: Ahmad Bahrudin, Amanda Soh, Huang Yanping, Tan Jun Jie.
+
+Package database implements the connection to the database server at the designated port.
+It performs the DB operations as invoked by the server.
+*/
 package database
 
 import (

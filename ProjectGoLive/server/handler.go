@@ -12,11 +12,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Author: Amanda Soh.
 // index is a handler func that display the home page of the application.
 // On start, it will default as the login page first. Once user login,
 // the page will change to show the main menu for the users.
 // If user is an admin, it will display the admin menu as well.
-// Author: Amanda
 func index(res http.ResponseWriter, req *http.Request) {
 
 	clientMsg := "" // To display client-side message to user
@@ -94,8 +94,8 @@ func index(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "index.gohtml", data)
 }
 
+// Author: Amanda Soh.
 // createCookie func creates sets the struct for a cookie
-// Author: Amanda
 func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 	domain := req.Host                      // the domain can be localhost:5221 or //127.0.0.1:5221
 	host, _, _ := net.SplitHostPort(domain) // get the host either localhost or 127.0.0.1
@@ -117,6 +117,8 @@ func createCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 	return cookie
 }
 
+// Author: Amanda Soh.
+// resetSession delete map data prior to create for new session
 func resetSession() {
 	for k1 := range authenticate.MapUsers {
 		// Delete the map user from the server

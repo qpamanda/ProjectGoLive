@@ -20,7 +20,7 @@ var (
 // representative ID of admin user
 const adminID = 5000
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // managerequest is a handler func to manage the request menu.
 func managerequest(res http.ResponseWriter, req *http.Request) {
 	currentUser, _ := getUser(res, req)
@@ -40,7 +40,7 @@ func managerequest(res http.ResponseWriter, req *http.Request) {
 
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // addrequest is a handler func to create a new request.
 // It creates a new request and adds in to the database.
 func addrequest(res http.ResponseWriter, req *http.Request) {
@@ -196,7 +196,7 @@ func addrequest(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "addrequest.gohtml", data)
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // deleterequest is a handler func to delete an existing request.
 // A representative can only choose from the requests he made,
 // whereas an admin can choose any request to delete.
@@ -317,7 +317,7 @@ func deleterequest(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "deleterequest.gohtml", data)
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // viewrequest is a handler func to view existing requests.
 func viewrequest(res http.ResponseWriter, req *http.Request) {
 
@@ -371,7 +371,7 @@ func viewrequest(res http.ResponseWriter, req *http.Request) {
 
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // selecteditrequest is a handler func to select an existing request to edit.
 func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
@@ -457,7 +457,7 @@ func selecteditrequest(res http.ResponseWriter, req *http.Request) {
 
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // editrequest is a handler func to edit an existing request.
 func editrequest(res http.ResponseWriter, req *http.Request) {
 
@@ -580,7 +580,7 @@ func editrequest(res http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(res, "editrequest.gohtml", data)
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // isValidRequest checks whether a request has non-empty fields
 // and if the requested time is not in the past
 func isValidRequest(req newRequest) (isFilled, timeInFuture bool) {
@@ -604,7 +604,7 @@ func isValidRequest(req newRequest) (isFilled, timeInFuture bool) {
 	return
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // convertCategoryID returns the string description of a category id
 func convertCategoryID(id int) string {
 	switch id {
@@ -617,7 +617,7 @@ func convertCategoryID(id int) string {
 	}
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // convertStatusID returns the string description of a status
 func convertStatusID(id int) string {
 	switch id {

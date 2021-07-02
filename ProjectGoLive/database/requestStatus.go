@@ -2,7 +2,7 @@ package database
 
 import "strings"
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // RequestStatus struct for storing request status information
 type RequestStatus struct {
 	StatusCode      int    // To store request status' id
@@ -17,7 +17,7 @@ var (
 	ReqS = &RequestStatus{0, "", "", "", "", ""}
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetNextID function that get next request status' id from the database
 func (reqS RequestStatus) GetNextID() (int, error) {
 	query := "SELECT StatusCode " +
@@ -38,7 +38,7 @@ func (reqS RequestStatus) GetNextID() (int, error) {
 	return (reqS.StatusCode + 1), nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Insert function that adds new request status to the database
 func (*RequestStatus) Insert(statusCode int, status string, userName string) error {
 	stmt, err := DB.Prepare("INSERT INTO RequestStatus " +
@@ -57,7 +57,7 @@ func (*RequestStatus) Insert(statusCode int, status string, userName string) err
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Update function that update exist request status from the database
 func (*RequestStatus) Update(statusCode int, status string, userName string) error {
 	stmt, err := DB.Prepare("UPDATE RequestStatus " +
@@ -76,7 +76,7 @@ func (*RequestStatus) Update(statusCode int, status string, userName string) err
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetAll function that get all request status from the database
 func (reqS RequestStatus) GetAll() (map[int]RequestStatus, error) {
 	query := "SELECT * " +
@@ -104,7 +104,7 @@ func (reqS RequestStatus) GetAll() (map[int]RequestStatus, error) {
 	return m, nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Delete function that delete request status from the database
 // IMPORTANT: ONLY USE FOR TESTING
 func (reqS RequestStatus) Delete(categoryID int) error {
