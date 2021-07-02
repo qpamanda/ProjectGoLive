@@ -23,9 +23,8 @@ type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
+		1 (item donation)
+		2 (errands)
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
