@@ -340,6 +340,8 @@ func EditRequest(requestid, categoryid int, reqDesc string, toCompleteBy time.Ti
 	return nil
 }
 
+// Author: Tan Jun Jie.
+// unpackRequest unpacks a newRequest struct into its individual field.
 func unpackRequest(request newRequest) (repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) {
 	return request.RepresentativeId,
 		request.RequestCategoryId,

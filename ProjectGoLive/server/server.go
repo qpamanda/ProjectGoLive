@@ -41,9 +41,8 @@ type newRequest struct {
 	RepresentativeId int // id of the coordinator/representative
 	/*
 		RequestCategoryId
-		1 (monetary donation)
-		2 (item donation)
-		3 (errands)
+		1 (item donation)
+		2 (errands)
 	*/
 	RequestCategoryId int
 	RecipientId       int // id of recipient who receives the aid
@@ -68,11 +67,13 @@ type requestDetails struct {
 	FulfilAt           string
 }
 
+// viewRecipient struct for storing a view on Recipient details
 type viewRecipient struct {
 	RecipientID int
 	Name        string
 }
 
+// viewRequest struct for storing a view on Request details
 type viewRequest struct {
 	RequestID     int
 	Category      string
