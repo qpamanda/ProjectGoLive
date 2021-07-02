@@ -1,7 +1,11 @@
 /*
+Author: Ahmad Bahrudin, Amanda Soh, Huang Yanping, Tan Jun Jie.
+
 Package server initialises the handler functions for the server web pages
-and implements ......
-It is separated into x .go files to segregate the functionalities of the application.
+and implements the functionalities each handler.
+
+It is separated into serveral .go files to segregate the functionalities of the application done
+by each team members.
 
 	server.go: Initialises the templates and handler functions, then starts the server to run
 	on the designated port.
@@ -14,7 +18,6 @@ import (
 	"ProjectGoLive/authenticate"
 	"ProjectGoLive/database"
 	"ProjectGoLive/smtpserver"
-	"ProjectGoLive/testing"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -84,6 +87,7 @@ type viewRequest struct {
 	Status        string
 }
 
+// Author: Amanda Soh.
 // InitServer initialises the templates for displaying the web pages at the server.
 // It also creates and opens the log file for events logging.
 func InitServer() {
@@ -111,6 +115,7 @@ func InitServer() {
 	log.AddHook(filenameHook)
 }
 
+// Author: Amanda Soh.
 // StartServer initialises the database and handler functions then
 // listens on the designated port to start the server running.
 func StartServer() {
@@ -141,6 +146,7 @@ func StartServer() {
 	defer database.DB.Close()
 }
 
+// Author: Amanda Soh, Huang Yanping, Tan Jun Jie, Ahmad Bahrudin.
 // initaliseHandlers initialises the handlers for the server.
 func initaliseHandlers(router *mux.Router) {
 
@@ -149,9 +155,6 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/signup", signup)
 	router.HandleFunc("/edituser", edituser)
 	router.HandleFunc("/changepwd", changepwd)
-	router.HandleFunc("/categorytable", categorytable)
-	router.HandleFunc("/membertypetable", membertypetable)
-	router.HandleFunc("/requeststatustable", requeststatustable)
 	router.HandleFunc("/managerecipient", manageRecipient)
 	router.HandleFunc("/addrecipient", addRecipient)
 	router.HandleFunc("/getrecipient", getRecipient)
@@ -168,6 +171,18 @@ func initaliseHandlers(router *mux.Router) {
 	router.HandleFunc("/editrequest", editrequest)
 	router.HandleFunc("/viewrequest", viewrequest)
 	router.HandleFunc("/managerequest", managerequest)
+	router.HandleFunc("/aaCatAdd", aaCatAdd)
+	router.HandleFunc("/aaCatUpdate", aaCatUpdate)
+	router.HandleFunc("/aaCatUpdate2", aaCatUpdate2)
+	router.HandleFunc("/aaCatView", aaCatView)
+	router.HandleFunc("/aaMemTypeAdd", aaMemTypeAdd)
+	router.HandleFunc("/aaMemTypeUpdate", aaMemTypeUpdate)
+	router.HandleFunc("/aaMemTypeUpdate2", aaMemTypeUpdate2)
+	router.HandleFunc("/aaMemTypeView", aaMemTypeView)
+	router.HandleFunc("/aaReqSAdd", aaReqSAdd)
+	router.HandleFunc("/aaReqSUpdate", aaReqSUpdate)
+	router.HandleFunc("/aaReqSUpdate2", aaReqSUpdate2)
+	router.HandleFunc("/aaReqSView", aaReqSView)
 
 	router.Handle("/favicon.ico", http.NotFoundHandler())
 
@@ -179,6 +194,7 @@ func initaliseHandlers(router *mux.Router) {
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
+// Author: Amanda Soh.
 // initDB initialises the database
 func initDB() {
 	defer func() {
@@ -209,6 +225,7 @@ func initDB() {
 	database.DB.SetMaxOpenConns(0)
 }
 
+// Author: Amanda Soh.
 // getDBConfig retrieves the database configurations and returns a struct.
 func getDBConfig() database.Config {
 	// Load setup.env file from same directory
@@ -234,6 +251,8 @@ func getDBConfig() database.Config {
 	return config
 }
 
+// Author: Amanda Soh.
+// Initiate fields from .env file
 func initFieldsLen() {
 	// Load setup.env file from same directory
 	err := godotenv.Load("setup.env")
@@ -259,29 +278,4 @@ func initFieldsLen() {
 	smtpserver.SMTPPort = os.Getenv("SMTP_PORT")
 	smtpserver.EmailPassword = os.Getenv("EMAIL_PASSWORD")
 	smtpserver.FromEmail = os.Getenv("FROM_EMAIL")
-}
-
-// Author: Ahmad Bahrudin
-func test() {
-	testing.TestCatInsert()
-	testing.TestCatUpdate()
-	testing.TestCatGet()
-	testing.TestCatGetAll()
-
-	testing.TestMemTInsert()
-	testing.TestMemTUpdate()
-	testing.TestMemTGet()
-	testing.TestMemTGetAll()
-
-	testing.TestReqSInsert()
-	testing.TestReqSUpdate()
-	testing.TestReqSGet()
-	testing.TestReqSGetAll()
-}
-
-// Author: Ahmad Bahrudin
-func testDelete() {
-	testing.TestCatDelete()
-	testing.TestMemTDelete()
-	testing.TestReqSDelete()
 }

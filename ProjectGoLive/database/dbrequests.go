@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // GetRepresentativeDetails queries the database for a logged-in representative's ID and name.
 func GetRepresentativeDetails(username string) map[int][]string {
 	defer func() {
@@ -40,7 +40,7 @@ func GetRepresentativeDetails(username string) map[int][]string {
 	}
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // GetRecipientDetails queries the database for the ID and names of recipients that a representative is in charge of.
 func GetRecipientDetails(RepresentativeId int, isAdmin bool) map[int][]string {
 	defer func() {
@@ -92,7 +92,7 @@ func GetRecipientDetails(RepresentativeId int, isAdmin bool) map[int][]string {
 	return details
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // AddRequest inserts a new request into the database.
 func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, toCompleteBy time.Time, address string, createdBy string, createdDT time.Time, lastModifiedBy string, lastModifiedDT time.Time) (e error) {
 	defer func() {
@@ -151,7 +151,7 @@ func AddRequest(repID, categoryID, recipientID, reqStatus int, reqDesc string, t
 	return nil
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // GetRequestByRep gets all requests tied to a representative
 // or all requests if one is logged in as an admin.
 func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
@@ -233,7 +233,7 @@ func GetRequestByRep(repID int, isAdmin bool) map[int]viewRequest {
 	return requests
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // GetRequest gets the request details of an existing request.
 func GetRequest(reqID int) viewRequest {
 	defer func() {
@@ -280,7 +280,7 @@ func GetRequest(reqID int) viewRequest {
 	return request
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // DeleteRequest deletes the request belonging to reqID.
 func DeleteRequest(reqID int) (e error) {
 	defer func() {
@@ -310,7 +310,7 @@ func DeleteRequest(reqID int) (e error) {
 	return nil
 }
 
-// Author: Tan Jun Jie
+// Author: Tan Jun Jie.
 // EditRequest edits an existing request.
 func EditRequest(requestid, categoryid int, reqDesc string, toCompleteBy time.Time, address string) (e error) {
 	defer func() {
