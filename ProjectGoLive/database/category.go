@@ -2,7 +2,7 @@ package database
 
 import "strings"
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Category struct for storing category information
 type Category struct {
 	CategoryID      int    // To store category's id
@@ -17,7 +17,7 @@ var (
 	Cat = &Category{0, "", "", "", "", ""}
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetNextID function that get next category's id from the database
 func (cat Category) GetNextID() (int, error) {
 	query := "SELECT CategoryID " +
@@ -38,7 +38,7 @@ func (cat Category) GetNextID() (int, error) {
 	return (cat.CategoryID + 1), nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Insert function that adds new category to the database
 func (*Category) Insert(categoryID int, category string, userName string) error {
 	stmt, err := DB.Prepare("INSERT INTO Category " +
@@ -57,7 +57,7 @@ func (*Category) Insert(categoryID int, category string, userName string) error 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Update function that update exist category from the database
 func (*Category) Update(categoryID int, category string, userName string) error {
 	stmt, err := DB.Prepare("UPDATE Category " +
@@ -76,7 +76,7 @@ func (*Category) Update(categoryID int, category string, userName string) error 
 	return nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // GetAll function that get all category from the database
 func (cat Category) GetAll() (map[int]Category, error) {
 	query := "SELECT * " +
@@ -104,7 +104,7 @@ func (cat Category) GetAll() (map[int]Category, error) {
 	return c, nil
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // Delete function that delete category from the database
 // IMPORTANT: ONLY USE FOR TESTING
 func (cat Category) Delete(categoryID int) error {

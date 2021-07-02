@@ -1,6 +1,6 @@
 package main
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 import (
 	"ProjectGoLive/database"
 	"fmt"
@@ -10,6 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Author: Ahmad Bahrudin.
 func db() {
 	// Load setup.env file from same directory
 	err := godotenv.Load("setup.env")
@@ -51,6 +52,7 @@ func db() {
 	database.DB.SetMaxOpenConns(0)
 }
 
+// Author: Ahmad Bahrudin.
 func TestCatInsert() {
 	if database.Cat.Insert(90001, "Category TESTING", "admin") != nil &&
 		database.Cat.Insert(90002, "Category TESTING", "admin") != nil &&
@@ -61,6 +63,7 @@ func TestCatInsert() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestCatUpdate() {
 	if database.Cat.Update(90001, "Category TESTING 1", "admin") != nil &&
 		database.Cat.Update(90002, "Category TESTING 1", "admin") != nil &&
@@ -71,6 +74,7 @@ func TestCatUpdate() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestCatGetAll() {
 	if _, err := database.Cat.GetAll(); err != nil {
 		fmt.Println("Category GetAll Function: Test Failed!")
@@ -79,6 +83,7 @@ func TestCatGetAll() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestCatDelete() {
 	if database.Cat.Delete(90001) != nil &&
 		database.Cat.Delete(90002) != nil &&
@@ -89,6 +94,7 @@ func TestCatDelete() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestMemTInsert() {
 	if database.MemT.Insert(90001, "Member Type TESTING", "admin") != nil &&
 		database.MemT.Insert(90002, "Member Type TESTING", "admin") != nil &&
@@ -99,6 +105,7 @@ func TestMemTInsert() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestMemTUpdate() {
 	if database.MemT.Update(90001, "Member Type TESTING 1", "admin") != nil &&
 		database.MemT.Update(90002, "Member Type TESTING 1", "admin") != nil &&
@@ -109,6 +116,7 @@ func TestMemTUpdate() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestMemTGetAll() {
 	if _, err := database.MemT.GetAll(); err != nil {
 		fmt.Println("Member Type GetAll Function: Test Failed!")
@@ -117,6 +125,7 @@ func TestMemTGetAll() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestMemTDelete() {
 	if database.MemT.Delete(90001) != nil &&
 		database.MemT.Delete(90002) != nil &&
@@ -127,6 +136,7 @@ func TestMemTDelete() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestReqSInsert() {
 	if database.ReqS.Insert(91, "Request Status TESTING", "admin") != nil &&
 		database.ReqS.Insert(92, "Request Status TESTING", "admin") != nil &&
@@ -137,6 +147,7 @@ func TestReqSInsert() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestReqSUpdate() {
 	if database.ReqS.Update(91, "Request Status TESTING 1", "admin") != nil &&
 		database.ReqS.Update(92, "Request Status TESTING 1", "admin") != nil &&
@@ -147,6 +158,7 @@ func TestReqSUpdate() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestReqSGetAll() {
 	if _, err := database.ReqS.GetAll(); err != nil {
 		fmt.Println("Request Status GetAll Function: Test Failed!")
@@ -155,16 +167,18 @@ func TestReqSGetAll() {
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func TestReqSDelete() {
 	if database.ReqS.Delete(91) != nil &&
 		database.ReqS.Delete(92) != nil &&
 		database.ReqS.Delete(93) != nil {
-		fmt.Println("Member Type Delete Function: Test Failed!")
+		fmt.Println("Request Status Delete Function: Test Failed!")
 	} else {
-		fmt.Println("Member Type Delete Function: Test Success!")
+		fmt.Println("Request Status Delete Function: Test Success!")
 	}
 }
 
+// Author: Ahmad Bahrudin.
 func main() {
 	fmt.Println("Begin Test...")
 	db()

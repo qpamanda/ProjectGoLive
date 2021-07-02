@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
+// Author: Amanda Soh.
 // GetUser implements the sql operations to retrieve a user.
-// Author: Amanda
 func GetUser(username string) (authenticate.User, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -72,8 +72,8 @@ func GetUser(username string) (authenticate.User, error) {
 	}
 }
 
+// Author: Amanda Soh.
 // GetAllUsers implements the sql operations to retrieve all users.
-// Author: Amanda
 func GetAllUsers() ([]authenticate.User, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -136,8 +136,8 @@ func GetAllUsers() ([]authenticate.User, error) {
 	}
 }
 
+// Author: Amanda Soh.
 // GetHashPassword implements the sql operations to retrieve user hashed password.
-// Author: Amanda
 func GetHashPassword(username string) (string, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -169,8 +169,8 @@ func GetHashPassword(username string) (string, error) {
 	}
 }
 
+// Author: Amanda Soh.
 // AddUser implements the sql operations to insert a new user to the database.
-// Author: Amanda
 func AddUser(repid int, username string, password string, firstname string, lastname string,
 	email string, contactno string, organisation string) error {
 
@@ -198,8 +198,8 @@ func AddUser(repid int, username string, password string, firstname string, last
 	return nil
 }
 
+// Author: Amanda Soh.
 // UpdateUser implements the sql operations to update a user from the database.
-// Author: Amanda
 func UpdateUser(repid int, username string, firstname string, lastname string,
 	email string, contactno string, organisation string) error {
 
@@ -226,8 +226,8 @@ func UpdateUser(repid int, username string, firstname string, lastname string,
 	return nil
 }
 
+// Author: Amanda Soh.
 // DeleteUser implements the sql operations to delete a user from the database.
-// Author: Amanda
 func DeleteUser(userName string) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -248,9 +248,9 @@ func DeleteUser(userName string) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // UpdateLoginDate updates the LastLoginDT to previous CurrentLoginDT.
 // Then updates the CurrentLoginDt to time.Now(). No changes to all other information.
-// Author: Amanda
 func UpdateLoginDate(username string) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -273,8 +273,8 @@ func UpdateLoginDate(username string) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // UpdatePassword updates the password of a user
-// Author: Amanda
 func UpdatePassword(repid int, username string, password string) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -297,8 +297,8 @@ func UpdatePassword(repid int, username string, password string) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // UserNameExist checks if UserName exists in the database table
-// Author: Amanda
 func UserNameExist(username string) bool {
 	defer func() {
 		if err := recover(); err != nil {
@@ -322,8 +322,8 @@ func UserNameExist(username string) bool {
 	return false
 }
 
+// Author: Amanda Soh.
 // EmailExist checks if email exists in the database table
-// Author: Amanda
 func EmailExist(email string, username string) bool {
 	defer func() {
 		if err := recover(); err != nil {
@@ -361,8 +361,8 @@ func EmailExist(email string, username string) bool {
 	return false
 }
 
+// Author: Amanda Soh.
 // RepIDExist checks if RepID exists in the database table
-// Author: Amanda
 func RepIDExist(repid string) bool {
 	defer func() {
 		if err := recover(); err != nil {
@@ -386,8 +386,8 @@ func RepIDExist(repid string) bool {
 	return false
 }
 
+// Author: Amanda Soh.
 // IsAdmin checks if user is an admin
-// Author: Amanda
 func IsAdmin(username string) bool {
 	defer func() {
 		if err := recover(); err != nil {
@@ -413,8 +413,8 @@ func IsAdmin(username string) bool {
 	return false
 }
 
+// Author: Amanda Soh.
 // IsMemberType checks if user is a specified member type
-// Author: Amanda
 func IsMemberType(username string) (bool, bool, bool) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -459,8 +459,8 @@ func IsMemberType(username string) (bool, bool, bool) {
 	return isAdmin, isRequester, isHelper
 }
 
+// Author: Amanda Soh.
 // GetMemberType implements the sql operations to retrieve the member types.
-// Author: Amanda
 func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -503,8 +503,8 @@ func GetMemberType() (map[int]authenticate.MemberTypeInfo, error) {
 	}
 }
 
+// Author: Amanda Soh.
 // GetRepMemberType implements the sql operations to retrieve the RepMemberType.
-// Author: Amanda
 func GetRepMemberType(repid int) (map[int]authenticate.MemberTypeInfo, error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -555,8 +555,8 @@ func GetRepMemberType(repid int) (map[int]authenticate.MemberTypeInfo, error) {
 	}
 }
 
+// Author: Amanda Soh.
 // AddRepMemberType implements the sql operations to insert a new RepMemberType record to the database.
-// Author: Amanda
 func AddRepMemberType(repid int, membertypeid int, username string) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -579,8 +579,8 @@ func AddRepMemberType(repid int, membertypeid int, username string) error {
 	return nil
 }
 
+// Author: Amanda Soh.
 // DeleteRepMemberType implements the sql operations to delete membertypes by repid from the database.
-// Author: Amanda
 func DeleteRepMemberType(repid int) error {
 	defer func() {
 		if err := recover(); err != nil {

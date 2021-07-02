@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaMemTypeAdd is a handler func that adds new member type.
 func aaMemTypeAdd(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -75,7 +75,7 @@ func aaMemTypeAdd(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaMemTypeUpdate is a handler func that update existing member type.
 func aaMemTypeUpdate(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -108,7 +108,7 @@ func aaMemTypeUpdate(res http.ResponseWriter, req *http.Request) {
 		MapMemberType: memT})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaMemTypeUpdate2 is a handler func that update existing member type.
 func aaMemTypeUpdate2(res http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(req) {
@@ -157,7 +157,7 @@ func aaMemTypeUpdate2(res http.ResponseWriter, req *http.Request) {
 		User: myUser})
 }
 
-// Author: Ahmad Bahrudin
+// Author: Ahmad Bahrudin.
 // aaMemTypeView is a handler func that display the member type.
 func aaMemTypeView(res http.ResponseWriter, req *http.Request) {
 	myUser, _ := getUser(res, req)

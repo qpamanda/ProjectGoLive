@@ -1,7 +1,3 @@
-/*
-Author: Huang Yanping
-Last Updated: 28-Jun-2021
-*/
 package server
 
 import (
@@ -43,6 +39,7 @@ type Recipient struct {
 	LastModifiedDT time.Time
 }
 
+// Author: Huang Yanping.
 // manageRecipient a handler func which will get all recipients under the user account
 // from the database.
 func manageRecipient(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +88,7 @@ func manageRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "manageRecipient.gohtml", data)
 }
 
+// Author: Huang Yanping.
 // addRecipient is a handler func which add recipient to the database
 func addRecipient(w http.ResponseWriter, r *http.Request) {
 	if !alreadyLoggedIn(r) {
@@ -198,6 +196,7 @@ func addRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "addRecipient.gohtml", data)
 }
 
+// Author: Huang Yanping.
 // getRecipient is a handler func that gets the recipient details
 // from the database using the recipientID.
 func getRecipient(w http.ResponseWriter, r *http.Request) {
@@ -249,6 +248,7 @@ func getRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "getRecipient.gohtml", data)
 }
 
+// Author: Huang Yanping.
 // updateRecipient is a handler func that update the recipient details
 // in the database using the recipientID.
 func updateRecipient(w http.ResponseWriter, r *http.Request) {
@@ -397,6 +397,7 @@ func updateRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "updateRecipient.gohtml", data)
 }
 
+// Author: Huang Yanping.
 // deleteRecipient is a handler func that delete the recipient
 // in the database using the recipientID.
 func deleteRecipient(w http.ResponseWriter, r *http.Request) {
@@ -460,6 +461,7 @@ func deleteRecipient(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "manageRecipient.gohtml", data)
 }
 
+// Author: Huang Yanping.
 // validateContactNo is a func that accepts a string input
 // and validate the string input whether it is a valid
 // contact number from Singapore using a external API from numverify.
